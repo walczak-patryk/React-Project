@@ -63,4 +63,8 @@ public class UserService {
         userRepository.delete(user);
         return user;
     }
+
+    public String login(String request) {
+        return request;
+    }
 }
