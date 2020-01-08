@@ -8,5 +8,5 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> findByowner(int owner);
     Booking findByid(int id);
-
+    List<Booking> findByactive(boolean active);
 }
