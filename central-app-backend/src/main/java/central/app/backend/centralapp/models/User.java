@@ -28,7 +28,7 @@ public class User implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "security_tocken")
+    @Column(name = "security_tocken",nullable = false)
     private String securityToken;
 
 	//constructors
@@ -62,7 +62,7 @@ public class User implements Serializable {
         return this.password;
     }
 
-    public void setPassword(String Password) { this.password = password; }
+    public void setPassword(String password) { this.password = password; }
 
     public String getFirstName() { return this.firstName; }
 
