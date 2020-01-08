@@ -1,9 +1,9 @@
 package central.app.backend.centralapp.controllers;
 
 import central.app.backend.centralapp.errors.ErrorResponse;
-import central.app.backend.centralapp.errors.UserAlreadyExistsException;
+import central.app.backend.centralapp.errors.IncorrectPasswordException;
 import central.app.backend.centralapp.errors.UserNotFoundException;
-import central.app.backend.centralapp.models.User;
+import central.app.backend.centralapp.forms.LoginForm;
 import central.app.backend.centralapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,10 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
-@RequestMapping(path = "/users")
+@RequestMapping(path = "")
 public class UserController {
     private UserService userService;
 
@@ -23,44 +22,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<User>> getUsers(@RequestParam(required = false) String login) {
-        if (login == null)
-            return ResponseEntity.ok().body(userService.findAll());
-        return ResponseEntity.ok().body(userService.findByLogin(login));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable(value = "id") int id) {
-        return ResponseEntity.ok().body(userService.findById(id));
-    }
-
-    @PostMapping("")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        return ResponseEntity.ok().body(userService.create(user));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable(value = "id") int id, @Valid @RequestBody User user) {
-        return ResponseEntity.ok().body(userService.update(id, user));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable(value = "id") int id) {
-        return ResponseEntity.ok().body(userService.delete(id));
-    }
-
-    @ExceptionHandler({UserAlreadyExistsException.class})
-    public ResponseEntity<ErrorResponse> alreadyExists(UserAlreadyExistsException ex) {
-        return new ResponseEntity<>(
-                new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value(), "The user already exists"),
-                HttpStatus.BAD_REQUEST);
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@Valid @RequestBody LoginForm loginForm) {
+        return ResponseEntity.ok().body(userService.login(loginForm));
     }
 
     @ExceptionHandler({UserNotFoundException.class})
     public ResponseEntity<ErrorResponse> notFound(UserNotFoundException ex) {
         return new ResponseEntity<>(
-                new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value(), "The user was not found"),
+                new ErrorResponse("The user was not found", HttpStatus.NOT_FOUND.value(), ex.getMessage()),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({IncorrectPasswordException.class})
+    public ResponseEntity<ErrorResponse> notFound(IncorrectPasswordException ex) {
+        return new ResponseEntity<>(
+                new ErrorResponse("Your password is invalid", HttpStatus.UNAUTHORIZED.value(), ex.getMessage()),
                 HttpStatus.NOT_FOUND);
     }
 }
