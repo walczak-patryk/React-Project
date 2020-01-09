@@ -1,4 +1,4 @@
-package central.app.backend.centralapp.errors;
+package central.app.backend.centralapp.exceptions;
 
 public class IncorrectPasswordException extends RuntimeException{
     public IncorrectPasswordException() {

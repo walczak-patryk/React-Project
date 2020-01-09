@@ -1,7 +1,7 @@
 package central.app.backend.centralapp.services;
 
-import central.app.backend.centralapp.errors.IncorrectPasswordException;
-import central.app.backend.centralapp.errors.UserNotFoundException;
+import central.app.backend.centralapp.exceptions.IncorrectPasswordException;
+import central.app.backend.centralapp.exceptions.UserNotExistException;
 import central.app.backend.centralapp.forms.LoginForm;
 import central.app.backend.centralapp.models.User;
 import central.app.backend.centralapp.repositories.UserRepository;
@@ -20,7 +20,7 @@ public class UserService {
     public String login(LoginForm loginForm) {
         User user = userRepository.findByLogin(loginForm.getLogin());
         if (user == null)
-            throw new UserNotFoundException("Login: " + loginForm.getLogin());
+            throw new UserNotExistException("Login: " + loginForm.getLogin());
         if (!user.getPassword().equals(loginForm.getPassword()))
             throw new IncorrectPasswordException(user.getPassword() + " " + loginForm.getPassword());
         return user.getSecurityToken();
