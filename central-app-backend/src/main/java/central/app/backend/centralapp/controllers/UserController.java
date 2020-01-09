@@ -1,8 +1,8 @@
 package central.app.backend.centralapp.controllers;
 
 import central.app.backend.centralapp.errors.ErrorResponse;
-import central.app.backend.centralapp.errors.IncorrectPasswordException;
-import central.app.backend.centralapp.errors.UserNotFoundException;
+import central.app.backend.centralapp.exceptions.IncorrectPasswordException;
+import central.app.backend.centralapp.exceptions.UserNotExistException;
 import central.app.backend.centralapp.forms.LoginForm;
 import central.app.backend.centralapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ public class UserController {
         return ResponseEntity.ok().body(userService.login(loginForm));
     }
 
-    @ExceptionHandler({UserNotFoundException.class})
-    public ResponseEntity<ErrorResponse> notFound(UserNotFoundException ex) {
+    @ExceptionHandler({UserNotExistException.class})
+    public ResponseEntity<ErrorResponse> notFound(UserNotExistException ex) {
         return new ResponseEntity<>(
                 new ErrorResponse("The user was not found", HttpStatus.NOT_FOUND.value(), ex.getMessage()),
                 HttpStatus.NOT_FOUND);
@@ -38,6 +38,6 @@ public class UserController {
     public ResponseEntity<ErrorResponse> notFound(IncorrectPasswordException ex) {
         return new ResponseEntity<>(
                 new ErrorResponse("Your password is invalid", HttpStatus.UNAUTHORIZED.value(), ex.getMessage()),
-                HttpStatus.NOT_FOUND);
+                HttpStatus.UNAUTHORIZED);
     }
 }
