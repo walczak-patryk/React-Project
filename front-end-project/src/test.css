@@ -1,0 +1,34 @@
+.Element{
+    width:80%;
+    height:10%;
+    margin: auto;
+    border: 1px solid black;
+    text-align: center;
+    position: relative;
+  }
+
+  .Content {
+    width:100%;
+    height:100%;
+    margin:auto;
+    display: inline-block;
+    background-color:#607dff;
+    display: flex;
+    position: relative;
+    margin-bottom: 1%;
+  }
+
+  .Booking {
+    width:100%;
+    height:100%;
+    margin:auto;
+    display: inline-block;
+    background-color:#607d8b;
+    display: flex;
+    position: relative;
+    margin-top: 0.5%;
+  }
+
+  .Wrapper {
+      margin: 1%;
+  }

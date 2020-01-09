@@ -1,0 +1,28 @@
+{
+    "bookings": [
+        {
+            "booking_id": 1,
+            "user_id": 1,
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "type": "flat",
+            "active": true,
+            "item_id": 12
+        },
+        {
+            "booking_id": 2,
+            "user_id": 11,
+            "type": "car",
+            "active": false,
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "item_id": 5
+        },
+        {
+            "booking_id": 3,
+            "user_id": 51,
+            "type": "parking",
+            "active": true,
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "item_id": 11
+        }
+    ]
+}
