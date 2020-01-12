@@ -1,5 +1,6 @@
 import React from 'react';
 import Booking from './Booking'
+import { withRouter } from "react-router-dom";
 import './test.css'
 
 class Test extends React.Component {
@@ -38,14 +39,19 @@ class Test extends React.Component {
         }
 
         const header = (
-            <div className="Content">
-                {this.element("Booking id:")}
-                {this.element("User id:")}
-                {this.element("Item id:")}
-                {this.element("Item type:")}
-                {this.element("Active:")}
-                {this.element("Start date:")} 
-                {this.element("Details:")} 
+            <div>
+                <div className="Title">
+                    <h2>Bookly - Reservation History</h2>
+                </div>
+                <div className="Content">
+                    {this.element("Booking id:")}
+                    {this.element("User id:")}
+                    {this.element("Item id:")}
+                    {this.element("Item type:")}
+                    {this.element("Active:")}
+                    {this.element("Start date:")} 
+                    {this.element("Details:")} 
+                </div>
             </div>
         )
 
@@ -75,4 +81,4 @@ class Test extends React.Component {
     }
 }
 
-export default Test
+export default withRouter(Test)

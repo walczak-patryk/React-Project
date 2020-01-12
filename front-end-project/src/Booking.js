@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 import './Booking.css';
 
 class Booking extends React.Component {
@@ -37,7 +38,7 @@ class Booking extends React.Component {
     }
 }
 
-export default Booking
+export default withRouter(Booking)
 
 // booking.start_date.getDate() + ' ' 
 // + booking.start_date.getMonth() + ' ' 
