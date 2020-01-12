@@ -5,24 +5,20 @@ import {
   Route,
   Link,
 } from 'react-router-dom'
+
 import Test from './test'
 import Details from './Details'
 import logo from './logo.svg';
 import './App.css';
+import LoginPage from './LoginPage'
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/">
-            <div>PLACEHOLDER</div>
-            <Link to="/bookings">
-              <button>XD</button>
-            </Link>
-          </Route>
+          <Route exact path="/" component={LoginPage}/> 
           <Route exact path="/bookings" component={Test}/>
-
           <Route exact path="/bookings/:id" component={Details}/> 
         </Switch>
       </Router>

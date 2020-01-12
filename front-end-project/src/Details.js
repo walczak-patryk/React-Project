@@ -1,5 +1,6 @@
-import React, { PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import Booking from './Booking'
+import { withRouter } from "react-router-dom";
 import './test.css'
 
 class Details extends React.Component {
@@ -14,4 +15,4 @@ class Details extends React.Component {
     }
 }
 
-export default Details
+export default withRouter(Details)

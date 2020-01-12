@@ -1,32 +1,34 @@
 .Element{
     width:80%;
-    height:10%;
+    height: 45px;
     margin: auto;
-    border: 1px solid black;
     text-align: center;
+    line-height: 45px;
     position: relative;
   }
 
   .Content {
-    width:100%;
+    width:95%;
     height:100%;
     margin:auto;
     display: inline-block;
     background-color:#607dff;
     display: flex;
     position: relative;
-    margin-bottom: 1%;
+    margin-bottom: 2%;
+    border-radius: 10px;
   }
 
   .Booking {
-    width:100%;
+    width:95%;
     height:100%;
     margin:auto;
     display: inline-block;
     background-color:#607d8b;
     display: flex;
     position: relative;
-    margin-top: 0.5%;
+    margin-top: 1%;
+    border-radius: 10px;
   }
 
   .Wrapper {
