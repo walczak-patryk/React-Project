@@ -7,27 +7,38 @@ class PageLogin extends React.Component {
         super(props);
     
         this.state = {
-            username: "",
-            password: ""
+            token: null,
+            error: false
         };
     
         this.loginHandler = this.loginHandler.bind(this);
-        this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
-        this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
-      }
-    
-    
-      usernameChangeHandler(e) {
-        this.setState({ username: e.target.value });
-      }
-
-      passwordChangeHandler(e) {
-        this.setState({ password: e.target.value });
       }
     
       loginHandler(e) {
         e.preventDefault();
-        this.props.history.push("/bookings");
+        this.setState({error: false})
+        var passwordHash = require('password-hash');
+        var hashedPassword = passwordHash.generate(e.target.psw.value);
+        console.log("hashed password: ", hashedPassword);
+        fetch('http://localhost:8080/login', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(e.target.uname.value, hashedPassword)
+            
+        })
+        .then(res => {
+        if (res.status !== 201) {
+            this.setState({error: true})
+            console.log(res.status)
+        } 
+        else {
+            this.setState({token: res.body})
+            this.props.history.push("/bookings");
+        }
+        })
       }
 
 
@@ -41,28 +52,27 @@ class PageLogin extends React.Component {
                     <form onSubmit={e => this.loginHandler(e)}>
                         <div className="container">
                             <div className="label-input">
-                                <label className="LoginLabel" for="uname">Username:</label>
+                                <label className="LoginLabel" htmlFor="uname">Username:</label>
                                 <input
                                     type="text"
                                     placeholder="Enter username"
                                     name="uname"
-                                    onChange={this.usernameChangeHandler}
                                     required
                                 />
                             </div>
                             <div className="label-input">
-                                <label className="LoginLabel" for="psw">Password:</label>
+                                <label className="LoginLabel" htmlFor="psw">Password:</label>
                                 <input
                                     type="password"
                                     placeholder="Enter password"
                                     name="psw"
-                                    onChange={this.passwordChangeHandler}
                                     required
                                 />
                             </div>
                             <button className="LoginButton" type="submit">
                                 Sign in
                             </button>
+                            {this.state.error === true && <p className="error">Invalid username or password</p>}
                         </div>
                     </form>
                 </div>

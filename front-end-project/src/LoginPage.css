@@ -59,3 +59,7 @@ input[type=text], input[type=password] {
 .label-input{
     display: block;
 }
+
+.error{
+    color: red
+}

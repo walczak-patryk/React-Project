@@ -20,10 +20,13 @@ class Test extends React.Component {
 		this.setState({
             isLoading: true
         });
-
-        fetch('http://localhost:3004/bookings')
+        //var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
+        //    targetUrl = 'http://localhost:8080/bookings/1'
+        //fetch('http://localhost:3004/bookings')
+        fetch('http://localhost:8080/bookings/1', { mode: 'no-cors'})
+        //fetch(proxyUrl + targetUrl)
             .then(response => response.json())
-            .then(data => this.setState({bookings: data}))
+            //.then(data => this.setState({bookings: data}))
             .then(() => this.setState({isLoading: false}));
     }
 
