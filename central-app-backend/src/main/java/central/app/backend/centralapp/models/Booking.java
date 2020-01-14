@@ -36,7 +36,25 @@ public class Booking implements Serializable {
     public Booking() {
     }
 
+    public Booking(Booking booking) {
+        this.id = booking.id;
+        this.owner = booking.owner;
+        this.startDateTime = booking.startDateTime;
+        this.active = booking.active;
+        this.itemId = booking.itemId;
+        this.itemType = booking.itemType;
+    }
+
     public Booking(int owner, LocalDate startDateTime, boolean active, int itemId, String itemType) {
+        this.owner = owner;
+        this.startDateTime = startDateTime;
+        this.active = active;
+        this.itemId = itemId;
+        this.itemType = itemType;
+    }
+
+    public Booking(int id,int owner, LocalDate startDateTime, boolean active, int itemId, String itemType) {
+        this.id = id;
         this.owner = owner;
         this.startDateTime = startDateTime;
         this.active = active;

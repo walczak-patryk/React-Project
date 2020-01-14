@@ -25,7 +25,7 @@ public class BookingService {
     public List<Booking> getAll(String filter) {
         List<Booking> bookings = bookingRepository.findAll();
         if (filter != null && filter.matches("active|inactive"))
-            bookings.removeIf(booking -> booking.getActive() == filter.equals("active"));
+            bookings.removeIf(booking -> booking.getActive() != filter.equals("active"));
         return bookings;
     }
 

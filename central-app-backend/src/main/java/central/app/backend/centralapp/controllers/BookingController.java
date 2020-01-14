@@ -2,7 +2,6 @@ package central.app.backend.centralapp.controllers;
 
 import central.app.backend.centralapp.errors.ErrorResponse;
 import central.app.backend.centralapp.exceptions.BookingNotExistException;
-import central.app.backend.centralapp.exceptions.UnauthorizedAccessException;
 import central.app.backend.centralapp.models.Booking;
 import central.app.backend.centralapp.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,12 +53,5 @@ public class BookingController {
         return new ResponseEntity<>(
                 new ErrorResponse("Booking does not exists", HttpStatus.NOT_FOUND.value(), ex.getMessage()),
                 HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler({UnauthorizedAccessException.class})
-    public ResponseEntity<ErrorResponse> notFound(UnauthorizedAccessException ex) {
-        return new ResponseEntity<>(
-                new ErrorResponse("Unauthorized access", HttpStatus.FORBIDDEN.value(), ex.getMessage()),
-                HttpStatus.FORBIDDEN);
     }
 }
