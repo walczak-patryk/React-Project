@@ -45,6 +45,14 @@ public class Booking implements Serializable {
     }
 
     // setters and getters
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getOwner() { return this.owner; }
 
     public void setOwner(int owner) { this.owner = owner; }
@@ -64,7 +72,7 @@ public class Booking implements Serializable {
     public String getItemType() { return this.itemType; }
 
     public void setItemType(String itemType) { this.itemType = itemType; }
-    
+
     public void setAll(int owner, LocalDate startDateTime, boolean active, int itemId, String itemType) {
         this.owner = owner;
         this.startDateTime = startDateTime;
@@ -73,12 +81,29 @@ public class Booking implements Serializable {
         this.itemType = itemType;
     }
 
+    public void setAll(int id, int owner, LocalDate startDateTime, boolean active, int itemId, String itemType) {
+        this.id = id;
+        this.owner = owner;
+        this.startDateTime = startDateTime;
+        this.active = active;
+        this.itemId = itemId;
+        this.itemType = itemType;
+    }
+
+    public void setAll(Booking booking) {
+        this.owner = booking.owner;
+        this.startDateTime = booking.startDateTime;
+        this.active = booking.active;
+        this.itemId = booking.itemId;
+        this.itemType = booking.itemType;
+    }
+
     @Override
     public String toString() {
         return "{" +",\n"+
                 "\"owner\":" + this.owner + ",\n"+
                 "\"startDateTime\":" + this.startDateTime + ",\n"+
-                "\"active\":" + String.valueOf(this.active) + ",\n"+
+                "\"active\":" + this.active + ",\n"+
                 "\"itemId\":" + this.itemId + ",\n"+
                 "\"itemType\":" + this.itemType +",\n"+
                 "}";
