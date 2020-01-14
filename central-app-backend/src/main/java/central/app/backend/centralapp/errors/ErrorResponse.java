@@ -10,24 +10,4 @@ public class ErrorResponse {
         this.code = code;
         this.additionalInfo = additionalInfo;
     }
-
-    public ErrorResponse(String message, int code) {
-        this(message, code, "");
-    }
-
-    public ErrorResponse(int code) {
-        this("", code, "");
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getAdditionalInfo() {
-        return additionalInfo;
-    }
 }
