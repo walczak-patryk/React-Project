@@ -6,6 +6,8 @@ import central.app.backend.centralapp.repositories.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BookingService {
 
@@ -16,39 +18,37 @@ public class BookingService {
         this.bookingRepository = bookingRepository;
     }
 
-    public Booking createBooking(Booking booking) {
-        Booking savedBooking = bookingRepository.save(booking);
-//        if (savedBooking == null) {
-//
-//        }
-
-        return savedBooking;
+    public Booking create(Booking booking) {
+        return bookingRepository.save(booking);
     }
 
-//    public List<Booking> getAllBookings(String filter)
-//    {
-//        List<Booking> allBookings;
-////        if(filter == null)
-////        {
-////            allBookings = bookingRepository.findAll();
-////        }
-////        else
-////        {
-////            if(!filter.equals("active")&&!filter.equals("inactive"))
-////            {
-////
-////            }
-////
-////            allBookings = bookingRepository.findByactive(true);
-////        }
-////
-//        return allBookings;
-//    }
+    public List<Booking> getAll(String filter) {
+        List<Booking> bookings = bookingRepository.findAll();
+        if (filter != null && filter.matches("active|inactive"))
+            bookings.removeIf(booking -> booking.getActive() == filter.equals("active"));
+        return bookings;
+    }
 
-    public Booking getBooking(int id) {
+    public Booking get(int id) {
         Booking booking = bookingRepository.findById(id);
         if (booking == null)
             throw new BookingNotExistException("Id " + id);
         return booking;
+    }
+
+    public String delete(int id) {
+        Booking booking = bookingRepository.findById(id);
+        if (booking == null)
+            throw new BookingNotExistException("Id: " + id);
+        bookingRepository.delete(booking);
+        return "Booking Deleted";
+    }
+
+    public Booking update(int id, Booking userToUpdate) {
+        Booking user = bookingRepository.findById(id);
+        if (user == null)
+            throw new BookingNotExistException("Id: " + id);
+        user.setAll(userToUpdate);
+        return bookingRepository.save(user);
     }
 }

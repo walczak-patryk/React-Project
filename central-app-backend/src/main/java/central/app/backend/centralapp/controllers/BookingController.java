@@ -2,7 +2,7 @@ package central.app.backend.centralapp.controllers;
 
 import central.app.backend.centralapp.errors.ErrorResponse;
 import central.app.backend.centralapp.exceptions.BookingNotExistException;
-import central.app.backend.centralapp.exceptions.IncorrectPasswordException;
+import central.app.backend.centralapp.exceptions.UnauthorizedAccessException;
 import central.app.backend.centralapp.models.Booking;
 import central.app.backend.centralapp.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +26,40 @@ public class BookingController {
 
     @PostMapping("/bookings")
     public ResponseEntity<Booking> createBooking(@Valid @RequestBody Booking booking) {
-        return ResponseEntity.ok().body(bookingService.createBooking(booking));
+        return ResponseEntity.ok().body(bookingService.create(booking));
     }
 
-//    @GetMapping("/bookings")
-//    public ResponseEntity<List<Booking>> getAllBookings(@PathVariable(name = "filter", required = false) String filter) {
-//        return ResponseEntity.ok().body(bookingService.getAllBookings(filter));
-//    }
+    @GetMapping("/bookings")
+    public ResponseEntity<List<Booking>> getAllBookings(@RequestParam(name = "filter", required = false) String filter) {
+        return ResponseEntity.ok().body(bookingService.getAll(filter));
+    }
 
     @GetMapping("/bookings/{id}")
     public ResponseEntity<Booking> getBooking(@PathVariable(value = "id") int id) {
-        return ResponseEntity.ok().body(bookingService.getBooking(id));
+        return ResponseEntity.ok().body(bookingService.get(id));
+    }
+
+    @DeleteMapping("/bookings/{id}")
+    public ResponseEntity<String> deleteBooking(@PathVariable(value = "id") int id) {
+        return ResponseEntity.ok().body(bookingService.delete(id));
+    }
+
+    @PutMapping("/bookings/{id}")
+    public ResponseEntity<Booking> updateBooking(@PathVariable(value = "id") int id, @Valid @RequestBody Booking booking) {
+        return ResponseEntity.ok().body(bookingService.update(id,booking));
     }
 
     @ExceptionHandler({BookingNotExistException.class})
     public ResponseEntity<ErrorResponse> notFound(BookingNotExistException ex) {
         return new ResponseEntity<>(
-                new ErrorResponse("Booking does not exists", HttpStatus.FORBIDDEN.value(), ex.getMessage()),
+                new ErrorResponse("Booking does not exists", HttpStatus.NOT_FOUND.value(), ex.getMessage()),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({UnauthorizedAccessException.class})
+    public ResponseEntity<ErrorResponse> notFound(UnauthorizedAccessException ex) {
+        return new ResponseEntity<>(
+                new ErrorResponse("Unauthorized access", HttpStatus.FORBIDDEN.value(), ex.getMessage()),
                 HttpStatus.FORBIDDEN);
     }
 }
