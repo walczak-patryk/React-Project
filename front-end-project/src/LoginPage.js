@@ -17,16 +17,13 @@ class PageLogin extends React.Component {
       loginHandler(e) {
         e.preventDefault();
         this.setState({error: false})
-        var passwordHash = require('password-hash');
-        var hashedPassword = passwordHash.generate(e.target.psw.value);
-        console.log("hashed password: ", hashedPassword);
         fetch('http://localhost:8080/login', {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(e.target.uname.value, hashedPassword)
+            body: JSON.stringify(e.target.uname.value, e.target.psw.value)
             
         })
         .then(res => {
