@@ -1,24 +1,35 @@
-.asd {
-    display: inlineBlock;
-    
-} 
-
 
 .Element{
-    width:80%;
-    height:10%;
-    margin: auto;
+    width: 100%;
+    height: 100%;
+    margin: 0.5%;
     text-align: center;
-    position: relative;
-    word-wrap: break-word;
+    /* position: relative; */
+    /* word-wrap: break-word; */
+    user-select: none;
   }
 
-.Content {
-    width:100%;
+  .Elementtest{
+    width:80%;
+    height: auto;
+    margin: auto;
+    text-align: center;
+    line-height: 45px;
+    position: relative;
+  }
+
+  .Booking {
+    width:95%;
     height:100%;
-    margin:auto;  
-    display: inline-block;
-    background-color:#607d8b;
+    margin:auto;
+    background-color:#6c99af;
     display: flex;
     position: relative;
+    margin-top: 1%;
+    border-radius: 1ex;
+    align-items: center;
+  }
+
+  .Booking:hover {
+    background-color:#9eddff;
   }
