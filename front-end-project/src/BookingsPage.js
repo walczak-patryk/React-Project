@@ -31,17 +31,18 @@ class Bookings extends React.Component {
 
   element = (value) => {
     if (value === "Item info:") {
+      const msg = "Click booking for detials;\n\nItem info for specific items:\n\nCar: Plate number\nFlat: Address\nParking: Street ParkingNumber"
       return (
-        <div className="Element">
+        <div className="ElementHeader">
           {value}
           <img src="https://img.icons8.com/office/16/000000/info.png"
-            onClick={() => alert("Item info for specific items:\n\nCar: Plate number\nFlat: Address\nParking: Street ParkingNumber")}
+            onClick={() => alert(msg)}
           />
         </div>
       )
     } else {
       return (
-        <div className="Element">{value}</div>
+        <div className="ElementHeader">{value}</div>
       )
     }
   }
@@ -62,7 +63,7 @@ class Bookings extends React.Component {
           {this.element("Item info:")}
           {this.element("Active:")}
           {this.element("Start date:")}
-          {this.element("Details:")}
+          {/* {this.element("Details:")} */}
         </div>
       </div>
     )

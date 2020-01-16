@@ -1,6 +1,6 @@
-.Element{
+.ElementHeader{
     width:80%;
-    height: 45px;
+    height: auto;
     margin: auto;
     text-align: center;
     line-height: 45px;
@@ -16,19 +16,7 @@
     display: flex;
     position: relative;
     margin-bottom: 2%;
-    border-radius: 10px;
-  }
-
-  .Booking {
-    width:95%;
-    height:100%;
-    margin:auto;
-    display: inline-block;
-    background-color:#81b8d4;
-    display: flex;
-    position: relative;
-    margin-top: 1%;
-    border-radius: 10px;
+    border-radius: 1ex;
   }
 
   .Wrapper {

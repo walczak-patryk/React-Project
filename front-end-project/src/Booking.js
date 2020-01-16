@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
 import { withRouter } from "react-router-dom";
 import Details from './Details'
 import './Booking.css';
@@ -48,9 +47,9 @@ class Booking extends React.Component {
   render() {
     const { booking } = this.props
 
-    const myButton = (
-      <button onClick={this.buttonHandler}>XD</button>
-    )
+    // const myButton = (
+    //   <button onClick={this.buttonHandler}>XD</button>
+    // )
 
     const preDetails = (
       this.state.detailsLoading ? <div style={{ marginTop: "0.5%" }}>Loading details...</div> : <Details data={this.state.details} itemType={booking.type} />
@@ -58,7 +57,7 @@ class Booking extends React.Component {
 
     return (
       <div>
-        <div className={this.props.className}>
+        <div className="Booking" onClick={this.buttonHandler}>
           {this.element(booking.booking_id)}
           {this.element(booking.user_id)}
           {this.element(booking.username)}
@@ -68,7 +67,7 @@ class Booking extends React.Component {
           {this.element(booking.active.toString())}
           {this.element(`${booking.start_date.getDate()} 
                     ${booking.start_date.getMonth() + 1} ${booking.start_date.getFullYear()}`)}
-          {this.element(myButton)}
+          {/* {this.element(myButton)} */}
         </div>
         {this.state.showDetails && preDetails}
       </div>
