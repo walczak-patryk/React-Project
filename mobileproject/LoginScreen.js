@@ -1,6 +1,22 @@
 import React from "react";
-import { StyleSheet, View, Text, Button, TextInput } from "react-native";
+import { 
+  StyleSheet, 
+  View, 
+  Text, 
+  Button, 
+  TextInput,
+  SafeAreaView, 
+  StatusBar 
+} from "react-native";
+import { StackActions, NavigationActions } from 'react-navigation';
 
+
+const resetAction = StackActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Main' }),
+  ],
+});
 
 export default class LoginScreen extends React.Component{
     state = {
@@ -32,16 +48,20 @@ export default class LoginScreen extends React.Component{
 
     
     render() {
-        const { navigate } = this.props.navigation;
+        //const { navigate } = this.props.navigation;
         return (
+          <SafeAreaView>
             <View style={styles.container}>
                 <Text style={styles.title}>Bookly</Text>
                 <Text style={styles.credentialsText}>Username:</Text>
                 <TextInput style={styles.input}/>
                 <Text style={styles.credentialsText}>Password:</Text>
                 <TextInput style={styles.input}/>
-                <Button style={styles.logButton} title="Sign in" onPress={() => navigate("Main")}/>
+                <View style={styles.logButton}>
+                  <Button title="Sign in" onPress={() => this.props.navigation.dispatch(resetAction)}/>
+                </View>
             </View>
+          </SafeAreaView>
         );
     }
 }
@@ -49,12 +69,15 @@ export default class LoginScreen extends React.Component{
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    
   },
   title: {
     fontSize: 40,
     textAlign: 'center',
     marginTop: 10,
-    marginBottom: 50
+    marginBottom: 50,
+    color: '#5B5B5B'
   },
   instructions: {
     textAlign: 'center',
@@ -65,6 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     margin: 5,
     marginTop: -5,
+    color: '#5B5B5B'
   },
   input: {
     width: 200,
@@ -77,8 +101,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   logButton: {
-    width: 200,
+    width: 150,
     padding: 10,
-    margin: 200
+    margin: 30,
   }
 });

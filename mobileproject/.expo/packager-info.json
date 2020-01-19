@@ -2,8 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 10080,
-  "expoServerNgrokUrl": "https://db-wis.anonymous.mobileproject.exp.direct",
-  "packagerNgrokUrl": "https://packager.db-wis.anonymous.mobileproject.exp.direct",
-  "ngrokPid": 9336
+  "packagerPid": 3296,
+  "expoServerNgrokUrl": "https://em-38y.anonymous.mobileproject.exp.direct",
+  "packagerNgrokUrl": "https://packager.em-38y.anonymous.mobileproject.exp.direct",
+  "ngrokPid": 2300
 }
