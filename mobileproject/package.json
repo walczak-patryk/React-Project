@@ -4,11 +4,13 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "mockserver": "json-server server/db.json --port 3004"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.6",
     "expo": "~36.0.0",
+    "json-server": "^0.15.1",
     "moment": "^2.24.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",

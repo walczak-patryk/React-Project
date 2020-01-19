@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import LoginScreen from "./LoginScreen";
 import MainScreen from "./MainScreen"
 import SearchScreen from "./SearchScreen"
+import BookingsScreen from "./BookingsScreen"
 
 // const instructions = Platform.select({
 //   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -30,6 +31,9 @@ const MainNavigator = createStackNavigator(
      },
     // ItemList: { screen: ListScreen },
     // ItemDetails: { scree: DetailsScreen }
+    MyBookings :{
+      screen: BookingsScreen
+    },
   },
   {
     defaultNavigationOptions: {
