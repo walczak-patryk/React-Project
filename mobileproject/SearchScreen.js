@@ -6,7 +6,9 @@ import {
     TextInput, 
     SafeAreaView, 
     StatusBar, 
-    TouchableOpacity 
+    TouchableOpacity,
+    ScrollView,
+    FlatList
 } from "react-native";
 import CalendarPicker from 'react-native-calendar-picker';
 
@@ -55,9 +57,10 @@ export default class LoginScreen extends React.Component{
         const endDate = selectedEndDate ? selectedEndDate.toString() : '';
         return (
             
-            <SafeAreaView>
-                <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
+                <ScrollView style={styles.scrollView}>
                     <Text>Service: {this.props.navigation.getParam('service')}</Text>
+                    <TextInput style={styles.cityInput} placeholder="City" placeholderTextColor="#4F4F4F"/>
                     <TouchableOpacity style={styles.calendar} onPress={() => {this.setState(prevState => ({showStartCalendar: !prevState.showStartCalendar}));}}>
                         <Text style={styles.calendarText}>START DATE: { startDate }</Text>
                     </TouchableOpacity>
@@ -75,7 +78,7 @@ export default class LoginScreen extends React.Component{
                     <TouchableOpacity style={styles.button} >
                         <Text style={styles.buttonText}>Search</Text>
                     </TouchableOpacity>
-                </View>
+                </ScrollView>
             </SafeAreaView>
         );
     }
@@ -83,7 +86,8 @@ export default class LoginScreen extends React.Component{
 
 const styles = StyleSheet.create({
     container: {
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+      //width: '85%'
     },
     button: {
         height: 100,
@@ -94,7 +98,6 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         alignSelf: 'center',
         marginTop: 80,
-        marginBottom: -20
     },
     buttonText: {
         height: 100,
@@ -112,5 +115,19 @@ const styles = StyleSheet.create({
         lineHeight: 40,
         fontSize: 20,
         paddingLeft: 5,
-    }
+    },
+    cityInput: {
+        alignSelf: 'center',
+        //borderWidth: 0.5,
+        borderRadius: 7,
+        backgroundColor: '#BCBCBC',
+        width: '89%',
+        paddingLeft: 5,
+        height: 40,
+        lineHeight: 40,
+        fontSize: 20,
+        margin: 20,
+    },
+    scrollView: {
+      },
 })
