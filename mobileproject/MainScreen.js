@@ -23,6 +23,9 @@ export default class LoginScreen extends React.Component{
                     <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Parkly"})}}>
                         <Text style={styles.buttonText}>Parkly</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={() => {navigate("MyBookings")}}>
+                        <Text style={styles.buttonText}>My Bookings</Text>
+                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
         );
@@ -37,13 +40,13 @@ const styles = StyleSheet.create({
     },
     button: {
         height: 100,
-        width: 150,
+        width: 200,
         margin: 20,
         alignItems: 'center',
         backgroundColor:'#BCBCBC',
         borderRadius: 7,
         alignSelf: 'center',
-        marginTop: 80,
+        marginTop: 60,
         marginBottom: -20
     },
     buttonText: {
