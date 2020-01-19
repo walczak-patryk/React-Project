@@ -6,4 +6,6 @@ public class LoginForm {
 
     public String getLogin() { return this.login; }
     public String getPassword() { return this.password; }
+
+
 }
