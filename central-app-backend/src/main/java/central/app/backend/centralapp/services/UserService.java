@@ -23,6 +23,6 @@ public class UserService {
             throw new UserNotExistException("Login: " + loginForm.getLogin());
         if (!user.getPassword().equals(loginForm.getPassword()))
             throw new IncorrectPasswordException(user.getPassword() + " " + loginForm.getPassword());
-        return user.getSecurityToken();
+        return user.getSecurityToken().toString();
     }
 }

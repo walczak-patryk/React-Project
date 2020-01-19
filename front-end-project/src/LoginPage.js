@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import './LoginPage.css'
+import './LoginPage.css';
 
 class PageLogin extends React.Component {
     constructor(props) {
@@ -23,17 +23,21 @@ class PageLogin extends React.Component {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(e.target.uname.value, e.target.psw.value)
+            body: JSON.stringify({"login":e.target.uname.value, "password":e.target.psw.value})
             
         })
         .then(res => {
-        if (res.status !== 201) {
+        if (res.status != "200") {
             this.setState({error: true})
             console.log(res.status)
+            res.text().then(text => { console.log(text); })
         } 
         else {
+            console.log(res.status)
+            console.log("test")
+            res.text().then(text => { console.log(text); })
             this.setState({token: res.body})
-            this.props.history.push("/bookings");
+            //this.props.history.push("/bookings");
         }
         })
       }
@@ -79,4 +83,4 @@ class PageLogin extends React.Component {
 }
 
   
-  export default withRouter(PageLogin);
+export default withRouter(PageLogin);

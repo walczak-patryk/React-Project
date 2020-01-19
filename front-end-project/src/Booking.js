@@ -38,7 +38,7 @@ class Booking extends React.Component {
       detailsLoading: true
     });
     //console.log(this.props.booking.type)
-    fetch(`http://localhost:3004/${this.props.booking.type}/${this.props.booking.item_id}`)
+    fetch(`http://localhost:8080/${this.props.booking.type}/${this.props.booking.item_id}`)
       .then(response => response.json())
       .then(data => this.setState({ details: data }))
       .then(() => this.setState({ detailsLoading: false, detailsLoaded: true }));
