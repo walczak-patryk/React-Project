@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import LoginScreen from "./LoginScreen";
@@ -12,16 +11,41 @@ import SearchScreen from "./SearchScreen"
 // });
 
 
-const MainNavigator = createStackNavigator({
-  Home: { screen: LoginScreen },
-  Main: { screen: MainScreen },
-  Search: { screen: SearchScreen },
-  // ItemList: { screen: ListScreen },
-  // ItemDetails: { scree: DetailsScreen }
-});
+const MainNavigator = createStackNavigator(
+  {
+    Login: { 
+      screen: LoginScreen,
+    },
+    Main: { 
+      screen: MainScreen,
+      navigationOptions: {
+        headerLeft: () => null
+      }
+    },
+    Search: { 
+      screen: SearchScreen,
+      navigationOptions: {
+        headerShown: true,
+      }
+     },
+    // ItemList: { screen: ListScreen },
+    // ItemDetails: { scree: DetailsScreen }
+  },
+  {
+    defaultNavigationOptions: {
+      headerShown: false,
+    },
+  }
+);
 
-const App = createAppContainer(MainNavigator);
+const Navigation = createAppContainer(MainNavigator);
 
-export default App;
+export default class App extends React.Component {
+  render() {
+    return (
+        <Navigation/>
+    );
+  }
+}
 
 
