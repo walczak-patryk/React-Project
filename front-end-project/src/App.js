@@ -11,19 +11,20 @@ import Details from './Details'
 import logo from './logo.svg';
 import './App.css';
 import LoginPage from './LoginPage'
+import NavBar from './NavBar'
 
 function App() {
   return (
     <div className="App">
-      <div className="Title">
-        <h2>Bookly - Reservation History</h2>
-      </div>
+
       <Router>
+        <NavBar />
         <Switch>
           <Route exact path="/" component={LoginPage} />
           <Route exact path="/bookings" component={Bookings} />
         </Switch>
       </Router>
+
     </div>
   );
 }
