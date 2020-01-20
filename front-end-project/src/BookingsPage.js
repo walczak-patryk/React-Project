@@ -19,7 +19,11 @@ class Bookings extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.getCookieValue("token"))
+    if (this.getCookieValue("token") === undefined) {
+      this.props.history.push("/");
+      return;
+    }
+    console.log("cookie 'token' value: ", this.getCookieValue("token"))
     this.loadBookings();
   }
 
@@ -28,8 +32,8 @@ class Bookings extends React.Component {
       isLoading: true
     });
 
-    fetch('http://localhost:8080/bookings')
-      .then(response =>   response.json())
+    fetch('http://localhost:3004/bookings')
+      .then(response => response.json())
       .then(data => this.setState({ bookings: data }))
       .then(() => this.setState({ isLoading: false }));
   }
