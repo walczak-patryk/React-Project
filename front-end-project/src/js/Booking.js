@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
 import Details from './Details'
-import './Booking.css';
+import '../css/Booking.css';
 
 class Booking extends React.Component {
   constructor(props) {

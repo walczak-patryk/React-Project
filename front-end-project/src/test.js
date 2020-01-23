@@ -1,5 +1,5 @@
 import React from 'react';
-import Booking from './Booking'
+import Booking from './js/Booking'
 import { withRouter } from "react-router-dom";
 import './test.css'
 
