@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import './LoginPage.css'
+import '../css/LoginPage.css'
 
 class PageLogin extends React.Component {
     constructor(props) {
