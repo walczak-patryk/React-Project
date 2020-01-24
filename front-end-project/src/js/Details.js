@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import './Details.css'
+import '../css/Details.css'
 import { withRouter } from "react-router-dom";
 
 class Details extends React.Component {

@@ -1,0 +1,37 @@
+.Element {
+  width: 100%;
+  height: 100%;
+  margin: 0.5%;
+  margin-left: 0%;
+  text-align: center;
+  /* position: relative; */
+  /* word-wrap: break-word; */
+  user-select: none;
+  text-align: left;
+}
+
+.Elementtest {
+  width: 80%;
+  height: auto;
+  margin: auto;
+  text-align: center;
+  line-height: 45px;
+  position: relative;
+}
+
+.Booking {
+  width: 95%;
+  height: 100%;
+  margin: auto;
+  background-color: #6c99af;
+  display: flex;
+  position: relative;
+  margin-top: 1%;
+  border-radius: 1ex;
+  align-items: center;
+  border: solid 4px #0274ad;
+}
+
+.Booking:hover {
+  background-color: #9eddff;
+}
