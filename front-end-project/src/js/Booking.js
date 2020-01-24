@@ -19,7 +19,9 @@ class Booking extends React.Component {
 
   element = (value) => {
     return (
-      <div className="Element">{value}</div>
+      <div className="Element">
+        <text style={{ marginLeft: "1%" }}>{value}</text>
+      </div>
     )
   }
 
