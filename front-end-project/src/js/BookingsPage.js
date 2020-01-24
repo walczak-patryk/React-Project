@@ -31,10 +31,10 @@ class Bookings extends React.Component {
   }
 
   componentDidMount() {
-    if (this.getCookieValue("token") === undefined) {
-      this.props.history.push("/");
-      return;
-    }
+    // if (this.getCookieValue("token") === undefined) {
+    //   this.props.history.push("/");
+    //   return;
+    // }
     console.log("cookie 'token' value: ", this.getCookieValue("token"))
     this.loadBookings();
   }

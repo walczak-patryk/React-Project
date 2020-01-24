@@ -32,7 +32,10 @@ const MainNavigator = createStackNavigator(
     // ItemList: { screen: ListScreen },
     // ItemDetails: { scree: DetailsScreen }
     MyBookings :{
-      screen: BookingsScreen
+      screen: BookingsScreen,
+      navigationOptions: {
+        headerShown: true,
+      }
     },
   },
   {
