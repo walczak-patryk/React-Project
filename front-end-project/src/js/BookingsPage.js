@@ -1,6 +1,7 @@
 import React from 'react';
 import Booking from './Booking'
 import { withRouter } from "react-router-dom";
+import { Icon, Input } from "semantic-ui-react"
 import '../css/BookingsPage.css'
 
 class Bookings extends React.Component {
@@ -8,15 +9,21 @@ class Bookings extends React.Component {
     super(props);
     this.state = {
       bookings: null,
-      bookingIdAsc: null,
+      bookingIdAsc: false,
       userIdAsc: null,
       userNameAsc: null,
       itemIdAsc: null,
       startDateAsc: null,
       isLoading: false
     }
-    this.loadBookings = this.loadBookings.bind(this)
-    this.element = this.element.bind(this)
+    this.loadBookings = this.loadBookings.bind(this);
+    this.Element = this.Element.bind(this);
+    this.handlerBID = this.handlerBID.bind(this);
+    this.handlerSD = this.handlerSD.bind(this);
+    this.handlerUId = this.handlerUId.bind(this);
+    this.hanlderIID = this.hanlderIID.bind(this);
+    this.hanlderUName = this.hanlderUName.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   getCookieValue = (key) => {
@@ -43,97 +50,120 @@ class Bookings extends React.Component {
       .then(() => this.setState({ isLoading: false }));
   }
 
-  handlerImgInfo = () => {
-
-  }
-
-  element = (value, handler) => {
-    if (value === "Item info:") {
-      const msg = "Click booking for detials;\n\nItem info for specific items:\n\nCar: Plate number\nFlat: Address\nParking: Street ParkingNumber"
-      return (
-        <div className="ElementHeader">
-          {value}
-          <img src="https://img.icons8.com/office/16/000000/info.png"
-            onClick={() => alert(msg)}
-          />
-        </div>
-      )
-    } else {
-      return (
-        <div className="ElementHeader" onClick={handler}>
-          {value}
-        </div>
-      )
-    }
-  }
-
-  mySort = (a, b, predicament) => {
-    if (!predicament)
+  mySort = (a, b, cond) => {
+    if (!cond)
       return a < b ? 1 : -1;
     else {
       return a > b ? 1 : -1;
     }
   }
 
-  handlerB = () => {
+  handlerBID = () => {
     if (this.state.bookingIdAsc === null) {
-      this.state.bookingIdAsc = false;
+      this.state.bookingIdAsc = false; // i know this is stupid but it works (same for all sorting handlers)
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.booking_id, b.booking_id, this.state.bookingIdAsc))
     this.setState(prevstate => ({
       bookings: sorted,
-      bookingIdAsc: !prevstate.bookingIdAsc
+      bookingIdAsc: !prevstate.bookingIdAsc,
+      userIdAsc: null,
+      userNameAsc: null,
+      itemIdAsc: null,
+      startDateAsc: null,
     }),
       console.log("booking id: ", this.state.bookingIdAsc))
-    //console.log(this.state.bookingIdAsc);
   }
 
   handlerUId = () => {
     if (this.state.userIdAsc === null) {
-      this.state.userIdAsc = false;
+      this.state.userIdAsc = false; // check handlerBID
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.user_id, b.user_id, this.state.userIdAsc))
     this.setState(prevstate => ({
       bookings: sorted,
-      userIdAsc: !prevstate.userIdAsc
+      userIdAsc: !prevstate.userIdAsc,
+      bookingIdAsc: null,
+      userNameAsc: null,
+      itemIdAsc: null,
+      startDateAsc: null,
     }),
       console.log("User id: ", this.state.userIdAsc))
   }
 
   hanlderUName = () => {
     if (this.state.userNameAsc === null) {
-      this.state.userNameAsc = false;
+      this.state.userNameAsc = false; // check handlerBID
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.username, b.username, this.state.userNameAsc))
     this.setState(prevstate => ({
       bookings: sorted,
-      userNameAsc: !prevstate.userNameAsc
+      userNameAsc: !prevstate.userNameAsc,
+      bookingIdAsc: null,
+      userIdAsc: null,
+      itemIdAsc: null,
+      startDateAsc: null,
     }),
       console.log("user name: ", this.state.userNameAsc))
   }
 
   hanlderIID = () => {
     if (this.state.itemIdAsc === null) {
-      this.state.itemIdAsc = false;
+      this.state.itemIdAsc = false; // check handlerBID
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.item_id, b.item_id, this.state.itemIdAsc))
     this.setState(prevstate => ({
       bookings: sorted,
-      itemIdAsc: !prevstate.itemIdAsc
+      itemIdAsc: !prevstate.itemIdAsc,
+      bookingIdAsc: null,
+      userIdAsc: null,
+      userNameAsc: null,
+      startDateAsc: null,
     }),
       console.log("item id:", this.state.itemIdAsc))
   }
 
   handlerSD = () => {
     if (this.state.startDateAsc === null) {
-      this.state.startDateAsc = false;
+      this.state.startDateAsc = false; // check handlerBID
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.start_date, b.start_date, this.state.startDateAsc))
     this.setState(prevstate => ({
       bookings: sorted,
-      startDateAsc: !prevstate.startDateAsc
+      startDateAsc: !prevstate.startDateAsc,
+      bookingIdAsc: null,
+      userIdAsc: null,
+      userNameAsc: null,
+      itemIdAsc: null,
     }),
       console.log("start date", this.state.startDateAsc))
+  }
+
+  Element = (value, hanlder, cond, sortable) => {
+    if (value === "Item info:") {
+      return (
+        <div className="ElementHeader">
+          <text style={{ marginLeft: "1%" }}>{value}</text>
+          <Icon name='info circle' onClick={() => alert("Click booking for detials;\n\nItem info for specific items:\n\nCar: Plate number\nFlat: Address\nParking: Street ParkingNumber")} />
+        </div>
+      )
+    }
+    else if (sortable) {
+      return (
+        <div className="ElementHeader Clickable" onClick={hanlder}>
+          <text style={{ marginLeft: "1%" }}>{value}</text>
+          {cond === null ? <div></div>
+            : cond ? <Icon name='caret down' style={{ float: "right" }} />
+              : <Icon name='caret up' style={{ float: "right" }} />}
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="ElementHeader">
+          <text style={{ marginLeft: "1%" }}>{value}</text>
+        </div>
+      )
+    }
   }
 
   render() {
@@ -143,14 +173,14 @@ class Bookings extends React.Component {
 
     const header = (
       <div className="Content">
-        {this.element("Booking id:", this.handlerB)}
-        {this.element("User id:", this.handlerUId)}
-        {this.element("User name:", this.hanlderUName)}
-        {this.element("Item id:", this.hanlderIID)}
-        {this.element("Item type:")}
-        {this.element("Item info:")}
-        {this.element("Active:")}
-        {this.element("Start date:", this.handlerSD)}
+        {this.Element("Booking id:", this.handlerBID, this.state.bookingIdAsc, 1)}
+        {this.Element("User id:", this.handlerUId, this.state.userIdAsc, 1)}
+        {this.Element("Username:", this.hanlderUName, this.state.userNameAsc, 1)}
+        {this.Element("Item id:", this.hanlderIID, this.state.itemIdAsc, 1)}
+        {this.Element("Item type:", null, null, 0)}
+        {this.Element("Item info:")}
+        {this.Element("Active:", null, null, 0)}
+        {this.Element("Start date:", this.handlerSD, this.state.startDateAsc, 1)}
       </div>
     )
 
@@ -172,7 +202,6 @@ class Bookings extends React.Component {
               <input type="date"></input>
             </div>
           </div>
-
           {header}
           {listBookings}
         </div>

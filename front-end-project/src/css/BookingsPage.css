@@ -1,14 +1,15 @@
 .ElementHeader {
-  width: 80%;
+  width: 100%;
   height: auto;
   margin: auto;
   text-align: center;
   line-height: 45px;
   position: relative;
   user-select: none;
+  text-align: left;
 }
 
-.ElementHeader:hover {
+.Clickable:hover {
   background-color: #aebcfa;
 }
 
@@ -22,6 +23,7 @@
   position: relative;
   margin-bottom: 2%;
   border-radius: 1ex;
+  border: #0532fc solid 4px;
 }
 
 .Wrapper {
@@ -29,8 +31,6 @@
   margin-top: 0%;
   position: relative;
 }
-
-.SearchButton {}
 
 .Helper {
   border: 1px solid;
