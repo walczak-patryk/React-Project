@@ -29,6 +29,96 @@
             "active": true,
             "start_date": "2020-01-08T20:21:21.234Z",
             "item_id": 11
+        },
+        {
+            "booking_id": 4,
+            "user_id": 1,
+            "username": "reactlol",
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "type": "car",
+            "item_info": "ELS 13PM",
+            "active": true,
+            "item_id": 12
+        },
+        {
+            "booking_id": 5,
+            "user_id": 11,
+            "username": "jankowalski",
+            "type": "flat",
+            "item_info": "Warszawa Koszykowa 75",
+            "active": false,
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "item_id": 5
+        },
+        {
+            "booking_id": 6,
+            "user_id": 51,
+            "username": "XD",
+            "type": "parking",
+            "item_info": "Koszykowa 22",
+            "active": true,
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "item_id": 11
+        },
+        {
+            "booking_id": 7,
+            "user_id": 1,
+            "username": "reactlol",
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "type": "car",
+            "item_info": "ELS 13PM",
+            "active": true,
+            "item_id": 12
+        },
+        {
+            "booking_id": 8,
+            "user_id": 11,
+            "username": "jankowalski",
+            "type": "flat",
+            "item_info": "Warszawa Koszykowa 75",
+            "active": false,
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "item_id": 5
+        },
+        {
+            "booking_id": 9,
+            "user_id": 51,
+            "username": "XD",
+            "type": "parking",
+            "item_info": "Koszykowa 22",
+            "active": true,
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "item_id": 11
+        },
+        {
+            "booking_id": 10,
+            "user_id": 1,
+            "username": "reactlol",
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "type": "car",
+            "item_info": "ELS 13PM",
+            "active": true,
+            "item_id": 12
+        },
+        {
+            "booking_id": 11,
+            "user_id": 11,
+            "username": "jankowalski",
+            "type": "flat",
+            "item_info": "Warszawa Koszykowa 75",
+            "active": false,
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "item_id": 5
+        },
+        {
+            "booking_id": 12,
+            "user_id": 51,
+            "username": "XD",
+            "type": "parking",
+            "item_info": "Koszykowa 22",
+            "active": true,
+            "start_date": "2020-01-08T20:21:21.234Z",
+            "item_id": 11
         }
     ],
     "cars": [

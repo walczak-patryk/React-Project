@@ -5,7 +5,7 @@
     "web": "expo start --web",
     "start": "react-native start",
     "test": "jest",
-    "mockserver": "json-server --host 192.168.0.122 server/db.json --port 3004"
+    "mockserver": "json-server --host 192.168.8.125 server/db.json --port 3004"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.6",
