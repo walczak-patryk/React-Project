@@ -18,18 +18,21 @@ function Item({ details }) {
             <Text>{details.booking_id}</Text>
             <Text>{details.start_date}</Text>
             <Text>{details.type}</Text>
+            <Text>{details.item_info}</Text>
         </View>}
         {details.type == 'flat' &&
         <View style={styles.flat}>
             <Text>{details.booking_id}</Text>
             <Text>{details.start_date}</Text>
             <Text>{details.type}</Text>
+            <Text>{details.item_info}</Text>
         </View>}
         {details.type == 'parking' &&
         <View style={styles.parking}>
             <Text>{details.booking_id}</Text>
             <Text>{details.start_date}</Text>
             <Text>{details.type}</Text>
+            <Text>{details.item_info}</Text>
         </View>}
     </View>
     );
@@ -51,7 +54,7 @@ export default class BookingsScreen extends React.Component{
     
     getBookings() {
         this.setState({ isFetching: true });
-        fetch('http://192.168.0.122:3004/bookings')
+        fetch('http://192.168.1.104:3004/bookings')
         .then(response => response.json())
         .then(response => this.setState({ bookings: response}))
         .then(() => this.setState({isFetching: false}));
