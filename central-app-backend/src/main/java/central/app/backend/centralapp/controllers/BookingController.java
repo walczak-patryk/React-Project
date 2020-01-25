@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "")
+@RequestMapping(path = "/bookings")
 public class BookingController {
 
     private BookingService bookingService;
@@ -23,29 +23,30 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    @PostMapping("/bookings")
+    @PostMapping("")
     public ResponseEntity<Booking> createBooking(@Valid @RequestBody Booking booking) {
         return ResponseEntity.ok().body(bookingService.create(booking));
     }
 
-    @GetMapping("/bookings")
-    public ResponseEntity<List<Booking>> getAllBookings(@RequestParam(name = "filter", required = false) String filter) {
-        return ResponseEntity.ok().body(bookingService.getAll(filter));
+    @GetMapping("")
+    public ResponseEntity<List<Booking>> getAllBookings(@RequestParam(name = "filter", required = false) String filter,
+                                                        @RequestParam(name = "user", required = false) Integer userId) {
+        return ResponseEntity.ok().body(bookingService.getAll(filter, userId));
     }
 
-    @GetMapping("/bookings/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Booking> getBooking(@PathVariable(value = "id") int id) {
         return ResponseEntity.ok().body(bookingService.get(id));
     }
 
-    @DeleteMapping("/bookings/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBooking(@PathVariable(value = "id") int id) {
         return ResponseEntity.ok().body(bookingService.delete(id));
     }
 
-    @PutMapping("/bookings/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable(value = "id") int id, @Valid @RequestBody Booking booking) {
-        return ResponseEntity.ok().body(bookingService.update(id,booking));
+        return ResponseEntity.ok().body(bookingService.update(id, booking));
     }
 
     @ExceptionHandler({BookingNotExistException.class})

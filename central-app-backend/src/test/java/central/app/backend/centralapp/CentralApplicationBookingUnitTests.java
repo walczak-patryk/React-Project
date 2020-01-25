@@ -77,7 +77,7 @@ public class CentralApplicationBookingUnitTests {
         given(bookingRepository.findAll()).willReturn(bookings);
 
         // when
-        ResponseEntity<List<Booking>> response = bookingController.getAllBookings(null);
+        ResponseEntity<List<Booking>> response = bookingController.getAllBookings(null, null);
 
         //then
         then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -92,7 +92,7 @@ public class CentralApplicationBookingUnitTests {
         given(bookingRepository.findAll()).willReturn(new ArrayList<>(bookings));
 
         // when
-        ResponseEntity<List<Booking>> response = bookingController.getAllBookings("active");
+        ResponseEntity<List<Booking>> response = bookingController.getAllBookings("active", null);
 
         //then
         then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -107,7 +107,7 @@ public class CentralApplicationBookingUnitTests {
         given(bookingRepository.findAll()).willReturn(new ArrayList<>(bookings));
 
         // when
-        ResponseEntity<List<Booking>> response = bookingController.getAllBookings("inactive");
+        ResponseEntity<List<Booking>> response = bookingController.getAllBookings("inactive", null);
 
         //then
         then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -121,7 +121,7 @@ public class CentralApplicationBookingUnitTests {
         given(bookingRepository.findAll()).willReturn(new ArrayList<>(bookings));
 
         // when
-        ResponseEntity<List<Booking>> response = bookingController.getAllBookings("error");
+        ResponseEntity<List<Booking>> response = bookingController.getAllBookings("error", null);
 
         //then
         then(response.getStatusCode()).isEqualTo(HttpStatus.OK);

@@ -18,9 +18,9 @@ public class UserService {
     }
 
     public String login(LoginForm loginForm) {
-        User user = userRepository.findByLogin(loginForm.getLogin());
+        User user = userRepository.findByLogin(loginForm.getUsername());
         if (user == null)
-            throw new UserNotExistException("Login: " + loginForm.getLogin());
+            throw new UserNotExistException("Login: " + loginForm.getUsername());
         if (!user.getPassword().equals(loginForm.getPassword()))
             throw new IncorrectPasswordException(user.getPassword() + " " + loginForm.getPassword());
         return user.getSecurityToken();
