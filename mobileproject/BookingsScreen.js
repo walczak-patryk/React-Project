@@ -10,11 +10,27 @@ import {
 
 
 function Item({ details }) {
+    const type = details.type
     return (
-    <View >
-        <Text>{details.booking_id}</Text>
-        <Text>{details.start_date}</Text>
-        <Text>{details.type}</Text>
+    <View style={styles.booking}>
+        {details.type == 'car' &&
+        <View style={styles.car}>
+            <Text>{details.booking_id}</Text>
+            <Text>{details.start_date}</Text>
+            <Text>{details.type}</Text>
+        </View>}
+        {details.type == 'flat' &&
+        <View style={styles.flat}>
+            <Text>{details.booking_id}</Text>
+            <Text>{details.start_date}</Text>
+            <Text>{details.type}</Text>
+        </View>}
+        {details.type == 'parking' &&
+        <View style={styles.parking}>
+            <Text>{details.booking_id}</Text>
+            <Text>{details.start_date}</Text>
+            <Text>{details.type}</Text>
+        </View>}
     </View>
     );
 }
@@ -61,4 +77,25 @@ const styles = StyleSheet.create({
     container: {
       paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
+    booking: {
+        width: '90%',
+        alignSelf: "center",
+        margin: 10,
+        
+    },
+    car: {
+        backgroundColor: '#C13838',
+        borderRadius: 7,
+        paddingLeft: 5
+    },
+    flat: {
+        backgroundColor: '#008DC9',
+        borderRadius: 7,
+        paddingLeft: 5
+    },
+    parking: {
+        backgroundColor: '#4FAF4F',
+        borderRadius: 7,
+        paddingLeft: 5
+    }
 })
