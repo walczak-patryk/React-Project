@@ -5,6 +5,7 @@ import LoginScreen from "./LoginScreen";
 import MainScreen from "./MainScreen"
 import SearchScreen from "./SearchScreen"
 import BookingsScreen from "./BookingsScreen"
+import ListScreen from "./ListScreen"
 
 // const instructions = Platform.select({
 //   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -29,10 +30,18 @@ const MainNavigator = createStackNavigator(
         headerShown: true,
       }
      },
-    // ItemList: { screen: ListScreen },
+    ItemList: { 
+      screen: ListScreen,
+      navigationOptions: {
+        headerShown: true,
+      } 
+    },
     // ItemDetails: { scree: DetailsScreen }
     MyBookings :{
-      screen: BookingsScreen
+      screen: BookingsScreen,
+      navigationOptions: {
+        headerShown: true,
+      }
     },
   },
   {

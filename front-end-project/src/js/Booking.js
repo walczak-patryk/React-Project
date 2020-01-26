@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
 import Details from './Details'
-import './Booking.css';
+import '../css/Booking.css';
 
 class Booking extends React.Component {
   constructor(props) {
@@ -19,7 +19,9 @@ class Booking extends React.Component {
 
   element = (value) => {
     return (
-      <div className="Element">{value}</div>
+      <div className="Element">
+        <text style={{ marginLeft: "1%" }}>{value}</text>
+      </div>
     )
   }
 

@@ -1,20 +1,55 @@
 import React from "react";
 import {
     Text, 
-    SafeAreaView,
     FlatList,
     StyleSheet,
-    StatusBar,
-    View
+    View,
+    ActivityIndicator,
+    TouchableOpacity
 } from "react-native";
 
+function cancelFlat(booking_id) {
+    fetch('http://192.168.8.125:3004/bookings', {
+        method: 'DELETE', 
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(booking_id)
+    })
+}
 
 function Item({ details }) {
+    const type = details.type
     return (
-    <View >
-        <Text>{details.booking_id}</Text>
-        <Text>{details.start_date}</Text>
-        <Text>{details.type}</Text>
+    <View style={styles.booking}>
+        {details.type == 'car' &&
+        <View style={styles.car}>
+            <Text>{details.booking_id}</Text>
+            <Text>{details.start_date}</Text>
+            <Text>{details.type}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => cancelFlat(details.booking_id)}>
+                <Text style={styles.buttonText}>Cancel booking</Text>
+            </TouchableOpacity>
+        </View>}
+        {details.type == 'flat' &&
+        <View style={styles.flat}>
+            <Text>{details.booking_id}</Text>
+            <Text>{details.start_date}</Text>
+            <Text>{details.type}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => cancelFlat(details.booking_id)}>
+                <Text style={styles.buttonText}>Cancel booking</Text>
+            </TouchableOpacity>
+        </View>}
+        {details.type == 'parking' &&
+        <View style={styles.parking}>
+            <Text>{details.booking_id}</Text>
+            <Text>{details.start_date}</Text>
+            <Text>{details.type}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => cancelFlat(details.booking_id)}>
+                <Text style={styles.buttonText}>Cancel booking</Text>
+            </TouchableOpacity>
+        </View>}
     </View>
     );
 }
@@ -35,7 +70,7 @@ export default class BookingsScreen extends React.Component{
     
     getBookings() {
         this.setState({ isFetching: true });
-        fetch('http://192.168.0.122:3004/bookings')
+        fetch('http://192.168.8.125:3004/bookings')
         .then(response => response.json())
         .then(response => this.setState({ bookings: response}))
         .then(() => this.setState({isFetching: false}));
@@ -43,22 +78,57 @@ export default class BookingsScreen extends React.Component{
 
     render() {
         return(
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <Text>Bookings list:</Text>
                 {this.state.isFetching ?
-                <Text>Loading ...</Text>:
+                <ActivityIndicator size="large"/>:
                 <FlatList
                     data={this.state.bookings}
                     renderItem={({ item }) => <Item details={item} />}
                     keyExtractor={item => item.booking_id.toString()}
+                    contentContainerStyle={{ paddingBottom: 20}}
                 />}
-            </SafeAreaView>   
+            </View>   
         )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
+    booking: {
+        width: '90%',
+        alignSelf: "center",
+        margin: 10,
+        
+    },
+    car: {
+        backgroundColor: '#BC807C',
+        borderRadius: 7,
+        padding: 5
+    },
+    flat: {
+        backgroundColor: '#77A0B5',
+        borderRadius: 7,
+        padding: 5
+    },
+    parking: {
+        backgroundColor: '#8EB28D',
+        borderRadius: 7,
+        padding: 5
+    },
+    whitespace: {
+        margin: 80
+    },
+    button: {
+        alignSelf: "center",
+        width: "50%",
+        borderRadius: 10,
+        backgroundColor: '#BCBCBC',
+        
+    },
+    buttonText: {
+        alignSelf: "center",
+        fontSize: 20
+    }
 })

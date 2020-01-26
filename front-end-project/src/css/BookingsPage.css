@@ -1,0 +1,48 @@
+.ElementHeader {
+  width: 100%;
+  height: auto;
+  margin: auto;
+  text-align: center;
+  line-height: 45px;
+  position: relative;
+  user-select: none;
+  text-align: left;
+}
+
+.Clickable:hover {
+  background-color: #aebcfa;
+}
+
+.Content {
+  width: 95%;
+  height: 100%;
+  margin: auto;
+  display: inline-block;
+  background-color: #607dff;
+  display: flex;
+  position: relative;
+  margin-bottom: 2%;
+  border-radius: 1ex;
+  border: #0532fc solid 4px;
+}
+
+.Wrapper {
+  margin: 1%;
+  margin-top: 0%;
+  position: relative;
+  min-width: 780px;
+}
+
+.Helper {
+  border: 1px solid;
+  width: 95%;
+  display: inline-flex;
+}
+
+.SearchWrapper {
+  width: 40%;
+  height: 100%;
+  background-color: #737eac6e;
+  float: left;
+  border-radius: 1ex;
+}

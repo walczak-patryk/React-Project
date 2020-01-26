@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  overflow: auto;
 }
 
 .App-logo {
@@ -37,9 +38,9 @@
   }
 }
 
-.Title{
-  width:100%;
-  height:10%;
+.Title {
+  width: 100%;
+  height: 10%;
   margin: auto;
   text-align: left;
   position: relative;
