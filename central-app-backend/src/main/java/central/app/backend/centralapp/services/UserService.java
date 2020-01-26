@@ -5,11 +5,17 @@ import central.app.backend.centralapp.exceptions.UserNotExistException;
 import central.app.backend.centralapp.forms.LoginForm;
 import central.app.backend.centralapp.models.User;
 import central.app.backend.centralapp.repositories.UserRepository;
+import central.app.backend.centralapp.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
-public class UserService {
+public class UserService{
     private UserRepository userRepository;
 
     @Autowired
@@ -17,12 +23,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Autowired
+    private SecurityUserDetailsService securityUserDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     public String login(LoginForm loginForm) {
-        User user = userRepository.findByLogin(loginForm.getUsername());
-        if (user == null)
-            throw new UserNotExistException("Login: " + loginForm.getUsername());
-        if (!user.getPassword().equals(loginForm.getPassword()))
-            throw new IncorrectPasswordException(user.getPassword() + " " + loginForm.getPassword());
-        return user.getSecurityToken();
+        UserDetails userDetails = securityUserDetailsService.loadUserByUsername(loginForm.getLogin());
+        if (!userDetails.getPassword().equals(loginForm.getPassword()))
+            throw new IncorrectPasswordException(userDetails.getPassword() + " " + loginForm.getPassword());
+        return jwtUtil.generateToken(userDetails);
     }
+
 }
