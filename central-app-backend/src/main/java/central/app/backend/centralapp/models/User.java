@@ -28,18 +28,22 @@ public class User implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "security_tocken",nullable = false)
+    @Column(name = "role", nullable = false)
+    private String role;
+
+    @Column(name = "security_token",nullable = false)
     private String securityToken;
 
 	//constructors
     public User() {
     }
 
-    public User(String login, String password, String firstName, String lastName, String securityToken) {
+    public User(String login, String password, String firstName, String lastName, String role, String securityToken) {
         this.login = login;
         this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.role = role;
 		this.securityToken = securityToken;
     }
 
@@ -72,15 +76,20 @@ public class User implements Serializable {
 
     public void setLastName(String lastName) { this.lastName = lastName; }
 
+    public String getRole() { return this.role; }
+
+    public void setRole(String role) { this.role = role; }
+
 	public String getSecurityToken() { return this.securityToken; }
 
 	public void setSecurityToken(String securityToken) { this.securityToken = securityToken; }
 
-    public void setAll(String login, String password, String firstName, String lastName, String securityToken) {
+    public void setAll(String login, String password, String firstName, String lastName, String role, String securityToken) {
 		this.login = login;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.role = role;
 		this.securityToken = securityToken;
     }
 
@@ -91,7 +100,9 @@ public class User implements Serializable {
 				"\"password\":" + this.password + ",\n"+
                 "\"firstName\":" + this.firstName + ",\n"+
                 "\"lastName\":" + this.lastName + ",\n"+
+                "\"role\":" + this.role + ",\n"+
                 "\"securityTocken\":" + this.securityToken +",\n"+
                 "}";
     }
+
 }

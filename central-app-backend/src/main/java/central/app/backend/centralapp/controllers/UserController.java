@@ -4,6 +4,7 @@ import central.app.backend.centralapp.errors.ErrorResponse;
 import central.app.backend.centralapp.exceptions.IncorrectPasswordException;
 import central.app.backend.centralapp.exceptions.UserNotExistException;
 import central.app.backend.centralapp.forms.LoginForm;
+import central.app.backend.centralapp.forms.LoginResponse;
 import central.app.backend.centralapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@Valid @RequestBody LoginForm loginForm) {
-        return ResponseEntity.ok().body(userService.login(loginForm));
+    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginForm loginForm) {
+        return ResponseEntity.ok().body(new LoginResponse(userService.login(loginForm)));
     }
 
     @ExceptionHandler({UserNotExistException.class})
