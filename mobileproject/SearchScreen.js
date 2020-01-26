@@ -62,58 +62,28 @@ export default class LoginScreen extends React.Component{
 
     getItems() {
         if(this.state.Service == "Flatly")
-            fetch('http://192.168.0.122:3004/flats', {
-                method: "POST",
+            fetch('http://192.168.0.122:3004/flats?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}', {
+                method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify(
-                    this.state.Service,
-                    this.state.city,
-                    this.state.address,
-                    this.state.selectedStartDate,
-                    this.state.selectedEndDate,
-                    this.state.pricefrom,
-                    this.state.priceto
-                    )
             })
         else if(this.state.Service == "Carly")
-            fetch('http://192.168.0.122:3004/cars', {
-                method: "POST",
+            fetch('http://192.168.0.122:3004/cars?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}', {
+                method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify(
-                    this.state.Service,
-                    this.state.city,
-                    this.state.address,
-                    this.state.selectedStartDate,
-                    this.state.selectedEndDate,
-                    this.state.pricefrom,
-                    this.state.priceto,
-                    this.state.brand
-                    )
             })
         else
-            fetch('http://192.168.0.122:3004/parkings', {
-                method: "POST",
+            fetch('http://192.168.0.122:3004/parkings?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}&number=${encodeURIComponent(this.state.number)}&is247=${encodeURIComponent(this.state.is247)}', {
+                method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify(
-                    this.state.Service,
-                    this.state.city,
-                    this.state.address,
-                    this.state.selectedStartDate,
-                    this.state.selectedEndDate,
-                    this.state.pricefrom,
-                    this.state.priceto,
-                    this.state.number,
-                    this.state.is247
-                    )
             })
         .then(response => response.json())
         .then(response => this.setState({ Items: response}))
