@@ -8,12 +8,13 @@ import {
     TouchableOpacity
 } from "react-native";
 
-function cancelFlat(booking_id) {
+function cancelFlat(booking_id, token) {
     fetch('http://192.168.8.125:3004/bookings', {
         method: 'DELETE', 
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Authentication': 'Bearer ' + token     // token needs to be passed to the function
         },
         body: JSON.stringify(booking_id)
     })
