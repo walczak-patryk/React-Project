@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import CalendarPicker from 'react-native-calendar-picker';
 
-
+// Should this class be named LoginScreen??
 export default class LoginScreen extends React.Component{
     constructor(props) {
         super(props);
@@ -66,7 +66,8 @@ export default class LoginScreen extends React.Component{
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Authentication': 'Bearer ' + this.props.navigation.getParam('token')
                 },
             })
         else if(this.state.Service == "Carly")
@@ -74,7 +75,8 @@ export default class LoginScreen extends React.Component{
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Authentication': 'Bearer ' + this.props.navigation.getParam('token')
                 },
             })
         else
@@ -82,7 +84,8 @@ export default class LoginScreen extends React.Component{
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Authentication': 'Bearer ' + this.props.navigation.getParam('token')
                 },
             })
         .then(response => response.json())

@@ -9,6 +9,7 @@ import central.app.backend.centralapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,5 +41,12 @@ public class UserController {
         return new ResponseEntity<>(
                 new ErrorResponse("Your password is invalid", HttpStatus.UNAUTHORIZED.value(), ex.getMessage()),
                 HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({UsernameNotFoundException.class})
+    public ResponseEntity<ErrorResponse> notFound(UsernameNotFoundException ex) {
+        return new ResponseEntity<>(
+                new ErrorResponse("Username not found.", HttpStatus.NOT_FOUND.value(), ex.getMessage()),
+                HttpStatus.NOT_FOUND);
     }
 }

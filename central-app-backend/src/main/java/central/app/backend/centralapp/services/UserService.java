@@ -30,7 +30,7 @@ public class UserService{
     private JwtUtil jwtUtil;
 
     public String login(LoginForm loginForm) {
-        UserDetails userDetails = securityUserDetailsService.loadUserByUsername(loginForm.getLogin());
+        UserDetails userDetails = securityUserDetailsService.loadUserByUsername(loginForm.getUsername());
         if (!userDetails.getPassword().equals(loginForm.getPassword()))
             throw new IncorrectPasswordException(userDetails.getPassword() + " " + loginForm.getPassword());
         return jwtUtil.generateToken(userDetails);
