@@ -13,4 +13,9 @@ public class LoginForm {
         this.username = username;
         this.password = password;
     }
+
+    public LoginForm(LoginForm loginForm){
+        this.username = loginForm.username;
+        this.password = loginForm.password;
+    }
 }
