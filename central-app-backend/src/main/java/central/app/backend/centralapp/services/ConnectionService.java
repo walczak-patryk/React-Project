@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
+import java.util.Objects;
+
+import static org.springframework.http.MediaType.*;
 
 @Service
 public class ConnectionService {
@@ -25,35 +28,36 @@ public class ConnectionService {
                 .setConnectTimeout(Duration.ofSeconds(500))
                 .setReadTimeout(Duration.ofSeconds(500))
                 .build();
-
+        this.headers = new HttpHeaders();
     }
 
     public void connection(String url, LoginForm loginForm) throws UnauthorizedAccessException {
         this.url = url;
-        HttpEntity<LoginForm> request = new HttpEntity<>(loginForm);
-        this.headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<LoginForm> request = new HttpEntity<LoginForm>( new LoginForm(loginForm));
+        this.headers.setContentType(APPLICATION_JSON);
         try {
+
             this.headers.set("Authorization", "Bearer " +
-                    this.restTemplate.postForObject(this.url + "/admin", request, TokenForm.class).getToken());
+                    Objects.requireNonNull(this.restTemplate.postForObject(this.url + "/admin", request, TokenForm.class)).getToken());
         }catch (Exception ex){
-            throw new UnauthorizedAccessException(ex.getMessage());
+            throw new UnauthorizedAccessException(ex.getLocalizedMessage());
         }
     }
 
     public ParklyBookingForm[] getRequest() throws UrlNotRespondException {
-        HttpEntity<String> entity = new HttpEntity<>("body", this.headers);
+        HttpEntity<String> entity = new HttpEntity<String>("body", this.headers);
         ResponseEntity<ParklyBookingForm[]> responseEntity = this.restTemplate.exchange(this.url+"/Booking",
                 HttpMethod.GET,
                 entity,
                 ParklyBookingForm[].class);
-        if (!responseEntity.getStatusCode().is2xxSuccessful())
+        if (!responseEntity.getStatusCode().is2xxSuccessful() || !responseEntity.hasBody() || responseEntity.getBody() == null)
             throw new UrlNotRespondException(this.url);
 
         return responseEntity.getBody();
     }
 
     public ParklyBookingForm postRequest(ParklyBookingForm parklyBookingForm) throws UrlNotRespondException {
-        HttpEntity<String> entity = new HttpEntity<>(parklyBookingForm.toString(), this.headers);
+        HttpEntity<String> entity = new HttpEntity<String>(parklyBookingForm.toString(), this.headers);
         ResponseEntity<ParklyBookingForm> responseEntity = this.restTemplate.exchange(this.url+"/Booking",
                 HttpMethod.POST,
                 entity,
