@@ -1,13 +1,15 @@
-package central.app.backend.centralapp.forms;
+package central.app.backend.centralapp.forms.parklyForms;
 
 import java.time.LocalDateTime;
 
-public class ParkingBookingForm {
+public class ParklyBookingForm {
     private long id;
     private int parkingId;
     private int parkingSpotId;
-    private LocalDateTime bookDate;
+    private int placeNumber;
+    private Boolean active;
     private int paidAmount;
+    private LocalDateTime bookDate;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
@@ -38,6 +40,14 @@ public class ParkingBookingForm {
     public LocalDateTime getEndDate() { return this.endDate; }
 
     public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
+
+    public Boolean getActive() { return this.active; }
+
+    public void setActive(Boolean active) { this.active = active; }
+
+    public int getPlaceNumber() { return this.placeNumber; }
+
+    public void setPlaceNumber(int placeNumber) { this.placeNumber = placeNumber; }
 
 }
 
