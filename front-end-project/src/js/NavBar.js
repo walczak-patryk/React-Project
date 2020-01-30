@@ -11,19 +11,29 @@ class NavBar extends React.Component {
     console.log("current location: ", this.props.location.pathname)
   }
 
+  getCookieValue = (key) => {
+    return document.cookie.replace(`/(?:(?:^|.*;\s*)${key}\s*\=\s*([^;]*).*$)|^.*$/, "$1"`).split("=")[1];
+  }
+
   logoutHandler() {
+    if (this.getCookieValue("token") === undefined) {
+      console.log("XD")
+      return;
+    }
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
     this.props.history.push("/");
     console.log(document.cookie)
   }
 
   render() {
+    const clickable = "asd"
+    const unclickable = "asdd"
+    const cond = this.getCookieValue("token") === undefined
     return (
-      <div>
+      <div style={{ minWidth: "430px" }}>
         <ul>
-          <li><a onClick={() => this.props.history.push("/bookings")}>Bookings</a></li>
-          <li><a onClick={() => this.props.history.push("/")}>Login</a></li>
-          <li style={{ float: "right" }}><a onClick={this.logoutHandler}>Logout</a></li>
+          <div>Bookly - reservation history</div>
+          <li className="clickable"><p onClick={this.logoutHandler} style={{ display: !cond ? "block" : "none" }}>Logout</p></li>
         </ul>
       </div>
     )
