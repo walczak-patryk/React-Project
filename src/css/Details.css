@@ -1,0 +1,12 @@
+.WrapperDetails {
+    border: 1px solid #ccc;
+    background-color: rgb(105, 128, 204);
+    width: 70%;
+    display: inline-block;
+    margin-top: 0.5%;
+    border-radius: 10px;
+}
+
+.ElementDetails {
+    margin: 0.5%
+}
