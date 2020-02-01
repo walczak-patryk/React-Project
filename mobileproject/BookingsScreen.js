@@ -8,20 +8,20 @@ import {
     TouchableOpacity
 } from "react-native";
 
-function cancelFlat(booking_id, token) {
-    fetch('http://192.168.8.125:3004/bookings', {
-        method: 'DELETE', 
+
+function cancelBooking(booking_id, token) {
+    fetch('http://minibookly.us-east-1.elasticbeanstalk.com/bookings', {
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authentication': 'Bearer ' + token     // token needs to be passed to the function
+            'Authentication': 'Bearer ' + token
         },
         body: JSON.stringify(booking_id)
     })
 }
 
 function Item({ details }) {
-    const type = details.type
     return (
     <View style={styles.booking}>
         {details.type == 'car' &&
@@ -29,7 +29,7 @@ function Item({ details }) {
             <Text>{details.booking_id}</Text>
             <Text>{details.start_date}</Text>
             <Text>{details.type}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => cancelFlat(details.booking_id)}>
+            <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.booking_id, this.props.navigation.getParam('token'))}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
@@ -38,7 +38,7 @@ function Item({ details }) {
             <Text>{details.booking_id}</Text>
             <Text>{details.start_date}</Text>
             <Text>{details.type}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => cancelFlat(details.booking_id)}>
+            <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.booking_id, this.props.navigation.getParam('token'))}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
@@ -47,7 +47,7 @@ function Item({ details }) {
             <Text>{details.booking_id}</Text>
             <Text>{details.start_date}</Text>
             <Text>{details.type}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => cancelFlat(details.booking_id)}>
+            <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.booking_id, this.props.navigation.getParam('token'))}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
@@ -71,7 +71,13 @@ export default class BookingsScreen extends React.Component{
     
     getBookings() {
         this.setState({ isFetching: true });
-        fetch('http://192.168.8.125:3004/bookings')
+        fetch('http://minibookly.us-east-1.elasticbeanstalk.com/bookings', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authentication': 'Bearer ' + this.props.navigation.getParam('token')
+            },
+        })
         .then(response => response.json())
         .then(response => this.setState({ bookings: response}))
         .then(() => this.setState({isFetching: false}));
@@ -80,15 +86,18 @@ export default class BookingsScreen extends React.Component{
     render() {
         return(
             <View style={styles.container}>
-                <Text>Bookings list:</Text>
-                {this.state.isFetching ?
-                <ActivityIndicator size="large"/>:
+                {this.state.isFetching &&
+                <ActivityIndicator style={styles.indicator} size="large"/>}
+                {this.state.isFetching == false && (this.state.bookings.length > 0 ?
                 <FlatList
                     data={this.state.bookings}
                     renderItem={({ item }) => <Item details={item} />}
                     keyExtractor={item => item.booking_id.toString()}
                     contentContainerStyle={{ paddingBottom: 20}}
-                />}
+                />:
+                <Text style={styles.text}>You have no bookings yet</Text>
+                )}
+                
             </View>   
         )
     }
@@ -96,6 +105,9 @@ export default class BookingsScreen extends React.Component{
 
 const styles = StyleSheet.create({
     container: {
+    },
+    indicator: {
+        marginTop: 30,
     },
     booking: {
         width: '90%',
@@ -131,5 +143,10 @@ const styles = StyleSheet.create({
     buttonText: {
         alignSelf: "center",
         fontSize: 20
+    },
+    text: {
+        alignSelf: "center",
+        fontSize: 20,
+        margin: 30
     }
 })

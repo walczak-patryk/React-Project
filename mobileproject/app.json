@@ -2,8 +2,8 @@
   "name": "mobileproject",
   "displayName": "mobile",
   "expo": {
-    "name": "mobileproject",
-    "slug": "expo-template-bare",
+    "name": "BooklyApp",
+    "slug": "bookly-app",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
     "version": "1.0.0",
@@ -12,6 +12,7 @@
       "ios",
       "android",
       "web"
-    ]
+    ],
+    "description": ""
   }
 }

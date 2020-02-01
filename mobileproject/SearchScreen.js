@@ -13,8 +13,7 @@ import {
 } from "react-native";
 import CalendarPicker from 'react-native-calendar-picker';
 
-// Should this class be named LoginScreen??
-export default class LoginScreen extends React.Component{
+export default class SearchScreen extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -62,7 +61,7 @@ export default class LoginScreen extends React.Component{
 
     getItems() {
         if(this.state.Service == "Flatly")
-            fetch('http://192.168.0.122:3004/flats?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}', {
+            fetch('http://minibookly.us-east-1.elasticbeanstalk.com/flats?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}', {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,7 +70,7 @@ export default class LoginScreen extends React.Component{
                 },
             })
         else if(this.state.Service == "Carly")
-            fetch('http://192.168.0.122:3004/cars?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}', {
+            fetch('http://minibookly.us-east-1.elasticbeanstalk.com/cars?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}', {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,7 +79,7 @@ export default class LoginScreen extends React.Component{
                 },
             })
         else
-            fetch('http://192.168.0.122:3004/parkings?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}&number=${encodeURIComponent(this.state.number)}&is247=${encodeURIComponent(this.state.is247)}', {
+            fetch('http://minibookly.us-east-1.elasticbeanstalk.com/parkings?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}&number=${encodeURIComponent(this.state.number)}&is247=${encodeURIComponent(this.state.is247)}', {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,7 +89,7 @@ export default class LoginScreen extends React.Component{
             })
         .then(response => response.json())
         .then(response => this.setState({ Items: response}))
-        .then(this.props.navigation.navigate('ItemList', {List : this.state.Items}))
+        .then(this.props.navigation.navigate('ItemList', {token: this.props.navigation.getParam('token'), List : this.state.Items}))
     }
     
     static navigationOptions = ({ navigation }) => ({ title: navigation.state.params.service });

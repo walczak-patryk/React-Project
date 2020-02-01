@@ -6,20 +6,10 @@ import {
   Button, 
   TextInput,
   SafeAreaView, 
-  StatusBar 
+  StatusBar, 
+  Alert
 } from "react-native";
 import { StackActions, NavigationActions } from 'react-navigation';
-
-// is previous state deleted (LoginScreen)?
-const resetAction = StackActions.reset({
-  index: 0,
-  actions: [
-    NavigationActions.navigate({ 
-      routeName: 'Main',
-      params: {token: this.state.token}
-    }),
-  ],
-});
 
 export default class LoginScreen extends React.Component{
     constructor(props) {
@@ -27,29 +17,17 @@ export default class LoginScreen extends React.Component{
 
       this.state = { 
         token: "",
-        error: false,
-        accesDenied: false,
         username: "",
         password: ""
       }
 
-      this.usernameChanged = this.usernameChanged.bind(this);
-      this.passwordChanged = this.passwordChanged.bind(this);
       this.loginHandler = this.loginHandler.bind(this);
-    }
-
-    usernameChanged(e){
-      this.setState({username: e.target.value});
-    }
-
-    passwordChanged(e){
-      this.setState({password: e.target.value});
     }
 
     loginHandler(e) {
         e.preventDefault();
         this.setState({error: false})
-        fetch('http://localhost:8080/login', {
+        fetch('http://minibookly.us-east-1.elasticbeanstalk.com/login', {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json',
@@ -58,33 +36,49 @@ export default class LoginScreen extends React.Component{
             body: JSON.stringify({username: this.state.username, password: this.state.password})
            
         })
-        .then(res => {
-        if (res.status == 403) {
-            this.setState({accesDenied: true});   // TODO access denied information
-        }
-        else if(res.status !== 201) {
-            this.setState({error: true});
+        .then(response => {
+        console.log(response.status);
+        if (response.status == 404 || response.status == 401) {
+            Alert.alert(
+              'Access denied',
+              'Invalid username or password',
+              [
+                {text: 'OK'},
+              ],
+              {cancelable: true},
+            )
+            return null;
         }
         else {
-            this.setState({token: res.body.jwt});
-            this.props.navigation.dispatch(resetAction);
-        }
+            return response.json();
+          }
+        })
+        .then(responseData => {
+          console.log(responseData);
+          if (responseData != null) {
+            this.setState({token: responseData.jwt});
+            this.props.navigation.dispatch(StackActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({
+                  routeName: 'Main',
+                  params: {token: this.state.token}
+                }),
+              ],
+            }))
+          } 
         })
     }
-
-    // <Button title="Sign in" onPress={() => this.props.navigation.dispatch(resetAction)}/>
     
     render() {
-        //const { navigate } = this.props.navigation;
         return (
           <SafeAreaView>
             <View style={styles.container}>
                 <Text style={styles.title}>Bookly</Text>
-                <Text style={styles.credentialsText}>Token: {this.state.token}</Text>
-                <Text style={styles.credentialsText}>Username: {this.state.username}</Text>
-                <TextInput style={styles.input} onChange={this.usernameChanged}/>
-                <Text style={styles.credentialsText}>Password: {this.state.password}</Text>
-                <TextInput style={styles.input}/>
+                <Text style={styles.credentialsText}>Username:</Text>
+                <TextInput style={styles.input} onChangeText={(value) => this.setState({username: value})}/>
+                <Text style={styles.credentialsText}>Password:</Text>
+                <TextInput style={styles.input} secureTextEntry={true} onChangeText={(value) => this.setState({password: value})}/>
                 <View style={styles.logButton}>
                   <Button title="Sign in" onPress={this.loginHandler}/>
                 </View>
@@ -127,6 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     marginBottom: 30,
+    paddingLeft: 5,
   },
   logButton: {
     width: 150,
