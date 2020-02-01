@@ -8,22 +8,32 @@ import { StyleSheet,
 } from "react-native";
 
 export default class LoginScreen extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = { 
+          token: "",
+        }
+    }
+
+    componentDidMount(){
+        this.setState({token: this.props.navigation.getParam('token')})
+    }
 
     render() {
         const { navigate } = this.props.navigation;
         return (
             <SafeAreaView>
                 <View style={styles.container}>
-                    <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Flatly"})}}>
+                    <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Flatly", token : this.state.token})}}>
                         <Text style={styles.buttonText}>Flatly</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Carly"})}}>
+                    <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Carly", token : this.state.token})}}>
                         <Text style={styles.buttonText}>Carly</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Parkly"})}}>
+                    <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Parkly", token : this.state.token})}}>
                         <Text style={styles.buttonText}>Parkly</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => {navigate("MyBookings")}}>
+                    <TouchableOpacity style={styles.button} onPress={() => {navigate("MyBookings", {token : this.state.token})}}>
                         <Text style={styles.buttonText}>My Bookings</Text>
                     </TouchableOpacity>
                 </View>
@@ -36,7 +46,6 @@ export default class LoginScreen extends React.Component{
 const styles = StyleSheet.create({
     container: {
       paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-      //alignItems: 'center',
     },
     button: {
         height: 100,

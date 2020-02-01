@@ -27,13 +27,14 @@ export default class LoginScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            token: "",
             items: [],
             isFetching: false
         }
     }
 
     componentDidMount() {
-        this.setState({items: this.props.navigation.getParam('List')})
+        this.setState({token: this.props.navigation.getParam('token'), items: this.props.navigation.getParam('List')})
     }
 
 
