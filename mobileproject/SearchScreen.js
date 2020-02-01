@@ -17,7 +17,7 @@ export default class SearchScreen extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-          Service: null,
+          Service: this.props.navigation.getParam('service'),
           Items: [],
           selectedStartDate: null,
           selectedEndDate: null,
@@ -50,46 +50,45 @@ export default class SearchScreen extends React.Component{
         });
     }
 
-    componentDidMount(){
-        this.setState({Service: this.props.navigation.getParam('service')})
-    }
-
     componentDidUpdate(){
         if (this.state.priceto < this.state.pricefrom)
             this.setState({priceto: this.state.pricefrom})
     }
 
     getItems() {
+        const token = this.props.navigation.getParam('token');
         if(this.state.Service == "Flatly")
-            fetch('http://minibookly.us-east-1.elasticbeanstalk.com/flats?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}', {
+            fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/flats?&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authentication': 'Bearer ' + this.props.navigation.getParam('token')
+                    'Authorization': 'Bearer ' + token
                 },
             })
         else if(this.state.Service == "Carly")
-            fetch('http://minibookly.us-east-1.elasticbeanstalk.com/cars?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}', {
+            fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/cars?city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authentication': 'Bearer ' + this.props.navigation.getParam('token')
+                    'Authorization': 'Bearer ' + token
                 },
             })
         else
-            fetch('http://minibookly.us-east-1.elasticbeanstalk.com/parkings?service=${encodeURIComponent(this.state.Service)}&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}&number=${encodeURIComponent(this.state.number)}&is247=${encodeURIComponent(this.state.is247)}', {
+            fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/parkly?city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}&brand=${encodeURIComponent(this.state.brand)}&number=${encodeURIComponent(this.state.number)}&is247=${encodeURIComponent(this.state.is247)}`, {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authentication': 'Bearer ' + this.props.navigation.getParam('token')
+                    'Authorization': 'Bearer ' + token
                 },
             })
         .then(response => response.json())
-        .then(response => this.setState({ Items: response}))
-        .then(this.props.navigation.navigate('ItemList', {token: this.props.navigation.getParam('token'), List : this.state.Items}))
+
+        .then(response => {
+            this.props.navigation.navigate('ItemList', {token: token, service: this.state.Service, items : response})
+        })
     }
     
     static navigationOptions = ({ navigation }) => ({ title: navigation.state.params.service });
@@ -219,8 +218,6 @@ export default class SearchScreen extends React.Component{
 
 const styles = StyleSheet.create({
     container: {
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-      //width: '85%'
     },
     button: {
         height: 100,

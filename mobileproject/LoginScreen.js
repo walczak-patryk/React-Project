@@ -37,7 +37,6 @@ export default class LoginScreen extends React.Component{
            
         })
         .then(response => {
-        console.log(response.status);
         if (response.status == 404 || response.status == 401) {
             Alert.alert(
               'Access denied',
@@ -54,7 +53,6 @@ export default class LoginScreen extends React.Component{
           }
         })
         .then(responseData => {
-          console.log(responseData);
           if (responseData != null) {
             this.setState({token: responseData.jwt});
             this.props.navigation.dispatch(StackActions.reset({

@@ -8,46 +8,47 @@ import {
     TouchableOpacity
 } from "react-native";
 
-
-function cancelBooking(booking_id, token) {
-    fetch('http://minibookly.us-east-1.elasticbeanstalk.com/bookings', {
+function cancelBooking(id, token) {
+    fetch('http://minibookly.us-east-1.elasticbeanstalk.com/bookings/' + id, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authentication': 'Bearer ' + token
+            'Authorization': 'Bearer ' + token
         },
-        body: JSON.stringify(booking_id)
     })
 }
 
-function Item({ details }) {
+function Item({ details, token }) {
     return (
     <View style={styles.booking}>
-        {details.type == 'car' &&
+        {details.itemType == 'car' &&
         <View style={styles.car}>
-            <Text>{details.booking_id}</Text>
-            <Text>{details.start_date}</Text>
-            <Text>{details.type}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.booking_id, this.props.navigation.getParam('token'))}>
+            <Text>{details.id}</Text>
+            <Text>{details.startDateTime}</Text>
+            <Text>{details.active }</Text>
+            <Text>{details.itemType}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.id, token)}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
-        {details.type == 'flat' &&
+        {details.itemType == 'flat' &&
         <View style={styles.flat}>
-            <Text>{details.booking_id}</Text>
-            <Text>{details.start_date}</Text>
-            <Text>{details.type}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.booking_id, this.props.navigation.getParam('token'))}>
+            <Text>{details.id}</Text>
+            <Text>{details.startDateTime}</Text>
+            <Text>{details.active}</Text>
+            <Text>{details.itemType}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.id, token)}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
-        {details.type == 'parking' &&
+        {details.itemType == 'parking' &&
         <View style={styles.parking}>
-            <Text>{details.booking_id}</Text>
-            <Text>{details.start_date}</Text>
-            <Text>{details.type}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.booking_id, this.props.navigation.getParam('token'))}>
+            <Text>{details.id}</Text>
+            <Text>{details.startDateTime}</Text>
+            <Text>{details.active}</Text>
+            <Text>{details.itemType}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.id, token)}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
@@ -55,7 +56,7 @@ function Item({ details }) {
     );
 }
 
-export default class BookingsScreen extends React.Component{
+class BookingsScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -75,7 +76,7 @@ export default class BookingsScreen extends React.Component{
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authentication': 'Bearer ' + this.props.navigation.getParam('token')
+                'Authorization': 'Bearer ' + this.props.navigation.getParam('token')
             },
         })
         .then(response => response.json())
@@ -91,8 +92,8 @@ export default class BookingsScreen extends React.Component{
                 {this.state.isFetching == false && (this.state.bookings.length > 0 ?
                 <FlatList
                     data={this.state.bookings}
-                    renderItem={({ item }) => <Item details={item} />}
-                    keyExtractor={item => item.booking_id.toString()}
+                    renderItem={({ item }) => <Item details={item} token={this.props.navigation.getParam('token')} />}
+                    keyExtractor={item => item.id.toString()}
                     contentContainerStyle={{ paddingBottom: 20}}
                 />:
                 <Text style={styles.text}>You have no bookings yet</Text>
@@ -102,6 +103,8 @@ export default class BookingsScreen extends React.Component{
         )
     }
 }
+
+export default BookingsScreen;
 
 const styles = StyleSheet.create({
     container: {
