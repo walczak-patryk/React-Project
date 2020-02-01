@@ -17,35 +17,36 @@ class PageLogin extends React.Component {
 
 
     loginHandler(e) {
-        if (e.target.uname.value === "asd" && e.target.psw.value === "asd") {
-            document.cookie = `token=asd`
-            this.props.history.push("/bookings");
-            return;
-        }
+        // if (e.target.uname.value === "asd" && e.target.psw.value === "asd") {
+        //     document.cookie = `token=asd`
+        //     this.props.history.push("/bookings");
+        //     return;
+        // }
 
         e.preventDefault();
         this.setState({ error: false })
-        fetch('http://localhost:8080/login', {
+        fetch('http://minibookly.us-east-1.elasticbeanstalk.com/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ "login": e.target.uname.value, "password": e.target.psw.value })
+            body: JSON.stringify({ "username": e.target.uname.value, "password": e.target.psw.value })
 
         })
             .then(res => {
-                if (res.status === 200) {
-                    this.setState({ token: res.body });
-                    res.text().then(text => {
-                        document.cookie = `token=${text}` // expire date - on closing browser, path = current path
-                    });
-                    this.props.history.push("/bookings")
-                }
-                else {
-                    this.setState({ error: true });
-                    console.log(res.status)
-                }
+                console.log(res.status);
+                // if (res.status === 200) {
+                //     this.setState({ token: res.body });
+                //     res.text().then(text => {
+                //         document.cookie = `token=${text}` // expire date - on closing browser, path = current path
+                //     });sssssssssssss
+                //     this.props.history.push("/bookings")
+                // }
+                // else {
+                //     this.setState({ error: true });
+                //     console.log(res.status)
+                // }
             })
 
     }
