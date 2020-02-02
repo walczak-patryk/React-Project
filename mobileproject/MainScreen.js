@@ -24,13 +24,13 @@ export default class LoginScreen extends React.Component{
         return (
             <SafeAreaView>
                 <View style={styles.container}>
-                    <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Flatly", token : this.state.token})}}>
+                    <TouchableOpacity style={styles.buttonFlat} onPress={() => {navigate("Search", {service : "Flatly", token : this.state.token})}}>
                         <Text style={styles.buttonText}>Flatly</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Carly", token : this.state.token})}}>
+                    <TouchableOpacity style={styles.buttonCar} onPress={() => {navigate("Search", {service : "Carly", token : this.state.token})}}>
                         <Text style={styles.buttonText}>Carly</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => {navigate("Search", {service : "Parkly", token : this.state.token})}}>
+                    <TouchableOpacity style={styles.buttonParking} onPress={() => {navigate("Search", {service : "Parkly", token : this.state.token})}}>
                         <Text style={styles.buttonText}>Parkly</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={() => {navigate("MyBookings", {token : this.state.token})}}>
@@ -46,6 +46,39 @@ export default class LoginScreen extends React.Component{
 const styles = StyleSheet.create({
     container: {
       paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    },
+    buttonFlat: {
+        height: 100,
+        width: 200,
+        margin: 20,
+        alignItems: 'center',
+        backgroundColor:'#ABE3D0',
+        borderRadius: 7,
+        alignSelf: 'center',
+        marginTop: 60,
+        marginBottom: -20
+    },
+    buttonCar: {
+        height: 100,
+        width: 200,
+        margin: 20,
+        alignItems: 'center',
+        backgroundColor:'#E8DBC3',
+        borderRadius: 7,
+        alignSelf: 'center',
+        marginTop: 60,
+        marginBottom: -20
+    },
+    buttonParking: {
+        height: 100,
+        width: 200,
+        margin: 20,
+        alignItems: 'center',
+        backgroundColor:'#DFE1E3',
+        borderRadius: 7,
+        alignSelf: 'center',
+        marginTop: 60,
+        marginBottom: -20
     },
     button: {
         height: 100,
