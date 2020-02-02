@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import '../css/NavBar.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -26,16 +27,16 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const clickable = "asd"
-    const unclickable = "asdd"
     const cond = this.getCookieValue("token") === undefined
     return (
-      <div style={{ minWidth: "430px" }}>
-        <ul>
-          <div>Bookly - reservation history</div>
-          <li className="clickable"><p onClick={this.logoutHandler} style={{ display: !cond ? "block" : "none" }}>Logout</p></li>
+      <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul className="navbar-nav">
+          <a className="navbar-brand noSelect">Bookly - reservation history</a>
+          <li className="nav-item">
+            <a className="nav-link noSelect" onClick={this.logoutHandler} style={{ display: !cond ? "block" : "none" }}>Logout</a>
+          </li>
         </ul>
-      </div>
+      </nav>
     )
   }
 }

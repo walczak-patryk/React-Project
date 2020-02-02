@@ -1,4 +1,4 @@
-ul {
+/* ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -24,13 +24,13 @@ ul div {
 
 li p {
   color: white;
-  text-align: center;
+  text-align: center; 
   padding: 14px 16px;
   text-decoration: none;
   font-weight: bold;
 }
 
-/* Change the link color to #111 (black) on hover */
+/* Change the link color to #111 (black) on hover 
 
 .clickable:hover {
   background-color: #111;
@@ -38,4 +38,9 @@ li p {
 
 a:active {
   background-color: #4CAF50;
+} */
+
+.noSelect {
+
+  user-select: none;
 }
