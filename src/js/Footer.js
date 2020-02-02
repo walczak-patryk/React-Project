@@ -12,12 +12,12 @@ class Footer extends React.Component {
             <footer className="page-footer small">
                 <div className="bg-dark footerF container-fluid pt-4 text-white">
                     <div class="row ">
-                        <div class="col-md-6 text-left">
+                        <div class="col-md-4 text-left">
                             <h5 class="text-uppercase">About</h5>
                             <p>This is <b>Bookly</b> web app created for <i>Programming multilayered and mobile apps based on React</i> project.</p>
                         </div>
-                        <div class="col-md-3">
-                            <h5 class="text-uppercase">Contanct</h5>
+                        <div class="col-md-4">
+                            <h5 class="text-uppercase">Contact</h5>
                             <ul class="list-unstyled">
                                 <li>
                                     Phone number:
@@ -29,7 +29,7 @@ class Footer extends React.Component {
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4 text-right">
                             <h5 class="text-uppercase">Project information</h5>
                             <ul class="list-unstyled">
                                 <li>
