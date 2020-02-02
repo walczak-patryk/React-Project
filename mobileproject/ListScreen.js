@@ -62,14 +62,17 @@ export default class LoginScreen extends React.Component{
         return(
             <View style={styles.container}>
                 <Text>Items list:</Text>
-                {this.state.isFetching ?
-                <ActivityIndicator size="large"/>:
+                {this.state.isFetching &&
+                <ActivityIndicator size="large"/>}
+                {this.state.isFetching == false && ( this.state.items.length > 0 ?
                 <FlatList
                     data={this.state.items}
                     renderItem={({ item }) => <Item details={item} token={this.state.token} service={this.state.service} />}
                     keyExtractor={item => item.id.toString()}
                     contentContainerStyle={{ paddingBottom: 20}}
-                />}
+                />:
+                <Text style={styles.text}>No items match the search criteria</Text>
+                )}
             </View>   
         )
     }
