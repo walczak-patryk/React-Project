@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import '../css/Details.css'
 import { withRouter } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Details extends React.Component {
 
@@ -22,7 +23,7 @@ class Details extends React.Component {
         </div>
     )
     return (
-      <div className="WrapperDetails">
+      <div className="card-body">
         <div className="ElementDetails">
           {DetailsView}
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from "react-router-dom";
 import Details from './Details'
 import '../css/Booking.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Booking extends React.Component {
   constructor(props) {
@@ -15,14 +16,6 @@ class Booking extends React.Component {
     }
     this.buttonHandler = this.buttonHandler.bind(this)
     this.loadDetails = this.loadDetails.bind(this)
-  }
-
-  element = (value) => {
-    return (
-      <div className="Element">
-        <text style={{ marginLeft: "1%" }}>{value}</text>
-      </div>
-    )
   }
 
   buttonHandler = () => {
@@ -54,22 +47,49 @@ class Booking extends React.Component {
     // )
 
     const preDetails = (
-      this.state.detailsLoading ? <div style={{ marginTop: "0.5%" }}>Loading details...</div> : <Details data={this.state.details} itemType={booking.type} />
+      this.state.detailsLoading
+        ? <div style={{ marginTop: "0.5%" }}>Loading details...</div>
+        : <Details data={this.state.details} itemType={booking.type} />
     )
 
     return (
-      <div>
-        <div className="Booking" onClick={this.buttonHandler}>
-          {this.element(booking.booking_id)}
-          {this.element(booking.user_id)}
-          {this.element(booking.username)}
-          {this.element(booking.item_id)}
-          {this.element(booking.type)}
-          {this.element(booking.item_info)}
-          {this.element(booking.active.toString())}
-          {this.element(`${booking.start_date.getDate()} 
-                    ${booking.start_date.getMonth() + 1} ${booking.start_date.getFullYear()}`)}
-          {/* {this.element(myButton)} */}
+      <div className="card cardxd bg-light text-dark">
+        <div className="card-header cardClickable" onClick={this.buttonHandler}>
+          <div className="row">
+            <div className="col-md-6">
+              <div className="row">
+                <div className="col-md-3 text-left">
+                  {booking.booking_id}
+                </div>
+                <div className="col-md-3 text-left">
+                  {booking.user_id}
+                </div>
+                <div className="col-md-3 text-left">
+                  {booking.username}
+                </div>
+                <div className="col-md-3 text-left">
+                  {booking.item_id}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="row">
+                <div className="col-md-3 text-left">
+                  {booking.type}
+                </div>
+                <div className="col-md-3 text-left">
+                  {booking.item_info}
+                </div>
+                <div className="col-md-3 text-left">
+                  {booking.active.toString()}
+                </div>
+                <div className="col-md-3 text-left">
+                  {`${booking.start_date.getDate()} 
+                    ${booking.start_date.getMonth() + 1} ${booking.start_date.getFullYear()}`}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {this.state.showDetails && preDetails}
       </div>
@@ -79,6 +99,12 @@ class Booking extends React.Component {
 
 export default withRouter(Booking)
 
-// booking.start_date.getDate() + ' ' 
-// + booking.start_date.getMonth() + ' ' 
-// + booking.start_date.getFullYear()
+// {this.element(booking.booking_id)}
+// {this.element(booking.user_id)}
+// {this.element(booking.username)}
+// {this.element(booking.item_id)}
+// {this.element(booking.type)}
+// {this.element(booking.item_info)}
+// {this.element(booking.active.toString())}
+// {this.element(`${booking.start_date.getDate()} 
+//   ${booking.start_date.getMonth() + 1} ${booking.start_date.getFullYear()}`)}

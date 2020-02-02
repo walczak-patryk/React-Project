@@ -166,12 +166,40 @@ class Bookings extends React.Component {
     }
   }
 
+  ElementXD = (value, hanlder, cond, sortable) => {
+    if (value === "Item info:") {
+      return (
+        <div className="col-md-3 text-left">
+          <text>{value}</text>
+          <Icon name='info circle' className="infoIcon" onClick={() => alert("Click booking for detials;\n\nItem info for specific items:\n\nCar: Plate number\nFlat: Address\nParking: Street ParkingNumber")} />
+        </div>
+      )
+    }
+    else if (sortable) {
+      return (
+        <div className="col-md-3 text-left Clickable" onClick={hanlder}>
+          <text>{value}</text>
+          {cond === null ? <div></div>
+            : cond ? <Icon name='caret down' style={{ float: "right" }} />
+              : <Icon name='caret up' style={{ float: "right" }} />}
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="col-md-3 text-left">
+          <text>{value}</text>
+        </div>
+      )
+    }
+  }
+
   render() {
     if (this.state.isLoading) {
       return <p>Loading...</p>
     }
 
-    const header = (
+    const headerXD = (
       <div className="Content">
         {this.Element("Booking id:", this.handlerBID, this.state.bookingIdAsc, 1)}
         {this.Element("User id:", this.handlerUId, this.state.userIdAsc, 1)}
@@ -184,24 +212,53 @@ class Bookings extends React.Component {
       </div>
     )
 
+    const header = (
+      <div className="card bg-primary text-white cardBP">
+        <div className="card-header">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="row">
+              {this.ElementXD("Booking id:", this.handlerBID, this.state.bookingIdAsc, 1)}
+
+              {this.ElementXD("User id:", this.handlerUId, this.state.userIdAsc, 1)}
+
+              {this.ElementXD("Username:", this.hanlderUName, this.state.userNameAsc, 1)}
+
+              {this.ElementXD("Item id:", this.hanlderIID, this.state.itemIdAsc, 1)}
+
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="row">
+              {this.ElementXD("Item type:", null, null, 0)}
+              {this.ElementXD("Item info:")}
+              {this.ElementXD("Active:", null, null, 0)}
+              {this.ElementXD("Start date:", this.handlerSD, this.state.startDateAsc, 1)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+
     if (this.state.bookings) {
       const listBookings = (
         this.state.bookings.length === 0 ? <div>No bookings</div> :
           <div>
             {this.state.bookings.map(item => (
-              <Booking booking={item} className="Booking" key={item.booking_id} />
+              <Booking booking={item} key={item.booking_id} />
             ))}
           </div>
       )
 
       return (
         <div className="Wrapper">
-          <div className="Helper">
+          {/* <div className="Helper">
             <div className="SearchWrapper">
               <button className="SearchButton" onClick={this.handler}>XD</button>
               <input type="date"></input>
             </div>
-          </div>
+          </div> */}
           {header}
           {listBookings}
         </div>
