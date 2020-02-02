@@ -9,6 +9,7 @@ import Bookings from './BookingsPage'
 import '../css/App.css';
 import LoginPage from './LoginPage'
 import NavBar from './NavBar'
+import Footer from './Footer'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/bookings" component={Bookings} />
         </Switch>
       </Router>
+      <Footer/>
     </div>
   );
 }
