@@ -17,7 +17,7 @@ class Bookings extends React.Component {
       isLoading: false
     }
     this.loadBookings = this.loadBookings.bind(this);
-    this.Element = this.Element.bind(this);
+    this.ElementXD = this.ElementXD.bind(this);
     this.handlerBID = this.handlerBID.bind(this);
     this.handlerSD = this.handlerSD.bind(this);
     this.handlerUId = this.handlerUId.bind(this);
@@ -139,7 +139,7 @@ class Bookings extends React.Component {
   }
 
   Element = (value, hanlder, cond, sortable) => {
-    if (value === "Item info:") {
+    if (sortable === 2) {
       return (
         <div className="ElementHeader">
           <text style={{ marginLeft: "1%" }}>{value}</text>
@@ -152,8 +152,8 @@ class Bookings extends React.Component {
         <div className="ElementHeader Clickable" onClick={hanlder}>
           <text style={{ marginLeft: "1%" }}>{value}</text>
           {cond === null ? <div></div>
-            : cond ? <Icon name='caret down' style={{ float: "right" }} />
-              : <Icon name='caret up' style={{ float: "right" }} />}
+            : cond ? <Icon name='caret down' style={{ float: "left" }} />
+              : <Icon name='caret up' style={{ float: "left" }} />}
         </div>
       )
     }
@@ -170,7 +170,7 @@ class Bookings extends React.Component {
     if (value === "Item info:") {
       return (
         <div className="col-md-3 text-left">
-          <text>{value}</text>
+          {value}
           <Icon name='info circle' className="infoIcon" onClick={() => alert("Click booking for detials;\n\nItem info for specific items:\n\nCar: Plate number\nFlat: Address\nParking: Street ParkingNumber")} />
         </div>
       )
@@ -178,26 +178,24 @@ class Bookings extends React.Component {
     else if (sortable) {
       return (
         <div className="col-md-3 text-left Clickable" onClick={hanlder}>
-          <text>{value}</text>
+          {value}
           {cond === null ? <div></div>
-            : cond ? <Icon name='caret down' style={{ float: "right" }} />
-              : <Icon name='caret up' style={{ float: "right" }} />}
+            : cond ? <Icon name='caret down' style={{}} />
+              : <Icon name='caret up' style={{}} />}
         </div>
       )
     }
     else {
       return (
         <div className="col-md-3 text-left">
-          <text>{value}</text>
+          {value}
         </div>
       )
     }
   }
 
   render() {
-    if (this.state.isLoading) {
-      return <p>Loading...</p>
-    }
+
 
     const headerXD = (
       <div className="Content">
@@ -218,28 +216,36 @@ class Bookings extends React.Component {
           <div className="row">
             <div className="col-md-6">
               <div className="row">
-              {this.ElementXD("Booking id:", this.handlerBID, this.state.bookingIdAsc, 1)}
-
-              {this.ElementXD("User id:", this.handlerUId, this.state.userIdAsc, 1)}
-
-              {this.ElementXD("Username:", this.hanlderUName, this.state.userNameAsc, 1)}
-
-              {this.ElementXD("Item id:", this.hanlderIID, this.state.itemIdAsc, 1)}
-
+                {this.ElementXD("Booking id", this.handlerBID, this.state.bookingIdAsc, 1)}
+                {this.ElementXD("User id", this.handlerUId, this.state.userIdAsc, 1)}
+                {this.ElementXD("Username", this.hanlderUName, this.state.userNameAsc, 1)}
+                {this.ElementXD("Item id", this.hanlderIID, this.state.itemIdAsc, 1)}
               </div>
             </div>
             <div className="col-md-6">
               <div className="row">
-              {this.ElementXD("Item type:", null, null, 0)}
-              {this.ElementXD("Item info:")}
-              {this.ElementXD("Active:", null, null, 0)}
-              {this.ElementXD("Start date:", this.handlerSD, this.state.startDateAsc, 1)}
+                {this.ElementXD("Item type", null, null, 0)}
+                <div className="col-md-3 text-left">
+                  Item info
+                  <Icon name='info circle' className="infoIcon" onClick={() => alert("Click booking for detials;\n\nItem info for specific items:\n\nCar: Plate number\nFlat: Address\nParking: Street ParkingNumber")} />
+                </div>
+                {this.ElementXD("Active", null, null, 0)}
+                {this.ElementXD("Start date", this.handlerSD, this.state.startDateAsc, 1)}
               </div>
             </div>
           </div>
         </div>
       </div>
     )
+
+    if (this.state.isLoading) {
+      return (
+        <div className="Wrapper">
+          {header}
+          <div class="spinner-border text-primary "></div>
+        </div>
+      )
+    }
 
     if (this.state.bookings) {
       const listBookings = (

@@ -60,12 +60,15 @@ class PageLogin extends React.Component {
     render() {
         const btnProgress = (
             <button class="btn btn-primary" type="button" disabled>
+                <span>Signing in... </span>
                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                Signing in...
+                  
             </button>
         )
         const btnIdle = (
-            <button className="btn btn-primary" type="submit">Sign in</button>
+            <button className="btn btn-primary" type="submit">
+                <span>Sign in</span>
+            </button>
         )
 
         const loginForm = (
