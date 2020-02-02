@@ -61,7 +61,8 @@ class BookingsScreen extends React.Component{
         super(props);
         this.state = {
             bookings: [],
-            isFetching: false
+            isFetching: false,
+            canceled: false
         }
         this.getBookings = this.getBookings.bind(this);
     }
@@ -92,6 +93,7 @@ class BookingsScreen extends React.Component{
                 {this.state.isFetching == false && (this.state.bookings.length > 0 ?
                 <FlatList
                     data={this.state.bookings}
+                    extraData={this.state}
                     renderItem={({ item }) => <Item details={item} token={this.props.navigation.getParam('token')} />}
                     keyExtractor={item => item.id.toString()}
                     contentContainerStyle={{ paddingBottom: 20}}

@@ -51,11 +51,11 @@ export default class SearchScreen extends React.Component{
     }
 
     componentDidUpdate(){
-        if (this.state.priceto < this.state.pricefrom)
-            this.setState({priceto: this.state.pricefrom})
     }
 
     getItems() {
+        if (this.state.priceto < this.state.pricefrom)
+            this.setState({priceto: this.state.pricefrom})
         const token = this.props.navigation.getParam('token');
         if(this.state.Service == "Flatly")
             fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/flats?&city=${encodeURIComponent(this.state.city)}&address=${encodeURIComponent(this.state.address)}&selectedStartDate=${encodeURIComponent(this.state.selectedStartDate)}&selectedEndDate=${encodeURIComponent(this.state.selectedEndDate)}&pricefrom=${encodeURIComponent(this.state.pricefrom)}&priceto=${encodeURIComponent(this.state.priceto)}`, {
@@ -84,10 +84,25 @@ export default class SearchScreen extends React.Component{
                     'Authorization': 'Bearer ' + token
                 },
             })
-        .then(response => response.json())
-
         .then(response => {
-            this.props.navigation.navigate('ItemList', {token: token, service: this.state.Service, items : response})
+            if(response.status != 200){
+                Alert.alert(
+                    'Request failed',
+                    'Error' + response.status,
+                    [
+                      {text: 'OK'},
+                    ],
+                    {cancelable: false},
+                  )
+                return null;
+            }
+            else
+                return response.json();
+        })
+        .then(response => {
+            if(response != null){
+                this.props.navigation.navigate('ItemList', {token: token, service: this.state.Service, items : response});
+            }
         })
     }
     
@@ -101,24 +116,6 @@ export default class SearchScreen extends React.Component{
             
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.scrollView}>
-                    <Text>Service: {this.state.Service}</Text>
-                    <Text>City: {this.state.city}</Text>
-                    <Text>Address: {this.state.address}</Text>
-                    <Text>Start date: {startDate}</Text>
-                    <Text>End date: {endDate}</Text>
-                    <Text>Price from: {this.state.pricefrom} PLN</Text>
-                    <Text>Price to: {this.state.priceto} PLN</Text>
-                    {this.state.Service == "Parkly" &&
-                    <View>
-                        <Text>Number of spots: {this.state.number} </Text>
-                        <Text>Is 24/7: {this.state.is247 && "Yes" || "No"} </Text>
-                    </View>
-                    }
-                    {this.state.Service == "Carly" &&
-                    <View>
-                        <Text>Brand: {this.state.brand} </Text>
-                    </View>
-                    }
                     <TextInput 
                         style={styles.cityInput} 
                         placeholder="City" 
@@ -149,35 +146,57 @@ export default class SearchScreen extends React.Component{
                     <CalendarPicker
                         onDateChange={this.onEndDateChange}
                     />}
-                    <TextInput 
-                        style={styles.cityInput} 
-                        placeholder="Price from" 
-                        placeholderTextColor="#4F4F4F" 
-                        name="pricefrom" 
-                        value={this.state.pricefrom}
-                        keyboardType="numeric" 
-                        onChangeText={(value) => this.setState({pricefrom: value})}
-                    />
-                    <TextInput 
-                        style={styles.cityInput} 
-                        placeholder="Price to" 
-                        placeholderTextColor="#4F4F4F" 
-                        name="priceto" 
-                        value={this.state.priceto}
-                        keyboardType="numeric" 
-                        onChangeText={(value) => this.setState({priceto: value})}
-                    />
+                    <View style={styles.switchView}>
+                        <TextInput 
+                            style={styles.priceInput} 
+                            placeholder="Price from" 
+                            placeholderTextColor="#4F4F4F" 
+                            name="pricefrom" 
+                            value={this.state.pricefrom}
+                            keyboardType="numeric" 
+                            maxLength={10}
+                            onChangeText={(value) => this.setState({pricefrom: value})}
+                        />
+                        <Text style={styles.priceText}>PLN</Text>
+                    </View>
+                    <View style={styles.switchView}>
+                        <TextInput 
+                            style={styles.priceInput} 
+                            placeholder="Price to" 
+                            placeholderTextColor="#4F4F4F" 
+                            name="priceto" 
+                            value={this.state.priceto}
+                            keyboardType="numeric" 
+                            maxLength={10}
+                            onChangeText={(value) => this.setState({priceto: value})}
+                        />
+                        <Text style={styles.priceText}>PLN</Text>
+                    </View>
                     {this.state.Service == "Parkly" &&
                     <View>
-                        <TextInput 
-                        style={styles.cityInput} 
-                        placeholder="Number of spots" 
-                        placeholderTextColor="#4F4F4F" 
-                        name="number" 
-                        value={this.state.number}
-                        keyboardType="numeric" 
-                        onChangeText={(value) => this.setState({number: value})}
-                        />
+                        <View style={styles.pickerView}>
+                            <View style={{flex:.6}}>
+                                <Text style={styles.switchText}> Number of spots:</Text>
+                            </View>
+                            <View style={{flex:.5}}>
+                                <Picker
+                                    selectedValue={this.state.number}
+                                    onValueChange={(itemValue) =>
+                                        this.setState({number: itemValue})}
+                                >
+                                    <Picker.Item label="1" value={1}/>
+                                    <Picker.Item label="2" value={2}/>
+                                    <Picker.Item label="3" value={3}/>
+                                    <Picker.Item label="4" value={4}/>
+                                    <Picker.Item label="5" value={5}/>
+                                    <Picker.Item label="6" value={6}/>
+                                    <Picker.Item label="7" value={7}/>
+                                    <Picker.Item label="8" value={8}/>
+                                    <Picker.Item label="9" value={9}/>
+                                </Picker>
+                            </View>
+                        </View>
+                        
                         <View style={styles.switchView}>
                             <Text style={styles.switchText}> Is the parking 24/7:</Text>
                             <Switch 
@@ -285,4 +304,14 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 20
     },
+    priceInput: {
+        lineHeight: 40,
+        fontSize: 20,
+        paddingLeft: 5
+    },
+    priceText: {
+        lineHeight: 40,
+        fontSize: 20,
+        paddingRight: 10
+    }
 })
