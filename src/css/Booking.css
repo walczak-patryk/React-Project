@@ -3,7 +3,7 @@
   user-select: none;
 }
 
-.cardClickable:hover:hover {
+.cardClickable:hover {
   opacity: 50%;
 }
 

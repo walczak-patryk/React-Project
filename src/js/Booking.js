@@ -48,7 +48,7 @@ class Booking extends React.Component {
 
     const preDetails = (
       this.state.detailsLoading
-        ? <div style={{ margin: "1%" }}><div class="spinner-border text-dark"></div></div>
+        ? <div style={{ margin: "1%" }}><div className="spinner-border text-dark"></div></div>
         : <Details data={this.state.details} itemType={booking.type} />
     )
 

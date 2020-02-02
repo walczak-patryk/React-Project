@@ -1,7 +1,7 @@
 import React from 'react';
 import Booking from './Booking'
 import { withRouter } from "react-router-dom";
-import { Icon, Input } from "semantic-ui-react"
+import { Icon } from "semantic-ui-react"
 import '../css/BookingsPage.css'
 
 class Bookings extends React.Component {
@@ -59,6 +59,9 @@ class Bookings extends React.Component {
   }
 
   handlerBID = () => {
+    if (!this.state.bookings) {
+      return;
+    }
     if (this.state.bookingIdAsc === null) {
       this.state.bookingIdAsc = false; // i know this is stupid but it works (same for all sorting handlers)
     }
@@ -75,6 +78,9 @@ class Bookings extends React.Component {
   }
 
   handlerUId = () => {
+    if (!this.state.bookings) {
+      return;
+    }
     if (this.state.userIdAsc === null) {
       this.state.userIdAsc = false; // check handlerBID
     }
@@ -91,6 +97,9 @@ class Bookings extends React.Component {
   }
 
   hanlderUName = () => {
+    if (!this.state.bookings) {
+      return;
+    }
     if (this.state.userNameAsc === null) {
       this.state.userNameAsc = false; // check handlerBID
     }
@@ -107,6 +116,9 @@ class Bookings extends React.Component {
   }
 
   hanlderIID = () => {
+    if (!this.state.bookings) {
+      return;
+    }
     if (this.state.itemIdAsc === null) {
       this.state.itemIdAsc = false; // check handlerBID
     }
@@ -123,6 +135,9 @@ class Bookings extends React.Component {
   }
 
   handlerSD = () => {
+    if (!this.state.bookings) {
+      return;
+    }
     if (this.state.startDateAsc === null) {
       this.state.startDateAsc = false; // check handlerBID
     }
@@ -138,44 +153,8 @@ class Bookings extends React.Component {
       console.log("start date", this.state.startDateAsc))
   }
 
-  Element = (value, hanlder, cond, sortable) => {
-    if (sortable === 2) {
-      return (
-        <div className="ElementHeader">
-          <text style={{ marginLeft: "1%" }}>{value}</text>
-          <Icon name='info circle' onClick={() => alert("Click booking for detials;\n\nItem info for specific items:\n\nCar: Plate number\nFlat: Address\nParking: Street ParkingNumber")} />
-        </div>
-      )
-    }
-    else if (sortable) {
-      return (
-        <div className="ElementHeader Clickable" onClick={hanlder}>
-          <text style={{ marginLeft: "1%" }}>{value}</text>
-          {cond === null ? <div></div>
-            : cond ? <Icon name='caret down' style={{ float: "left" }} />
-              : <Icon name='caret up' style={{ float: "left" }} />}
-        </div>
-      )
-    }
-    else {
-      return (
-        <div className="ElementHeader">
-          <text style={{ marginLeft: "1%" }}>{value}</text>
-        </div>
-      )
-    }
-  }
-
   ElementXD = (value, hanlder, cond, sortable) => {
-    if (value === "Item info:") {
-      return (
-        <div className="col-md-3 text-left">
-          {value}
-          <Icon name='info circle' className="infoIcon" onClick={() => alert("Click booking for detials;\n\nItem info for specific items:\n\nCar: Plate number\nFlat: Address\nParking: Street ParkingNumber")} />
-        </div>
-      )
-    }
-    else if (sortable) {
+    if (sortable) {
       return (
         <div className="col-md-3 text-left Clickable" onClick={hanlder}>
           {value}
@@ -195,21 +174,6 @@ class Bookings extends React.Component {
   }
 
   render() {
-
-
-    const headerXD = (
-      <div className="Content">
-        {this.Element("Booking id:", this.handlerBID, this.state.bookingIdAsc, 1)}
-        {this.Element("User id:", this.handlerUId, this.state.userIdAsc, 1)}
-        {this.Element("Username:", this.hanlderUName, this.state.userNameAsc, 1)}
-        {this.Element("Item id:", this.hanlderIID, this.state.itemIdAsc, 1)}
-        {this.Element("Item type:", null, null, 0)}
-        {this.Element("Item info:")}
-        {this.Element("Active:", null, null, 0)}
-        {this.Element("Start date:", this.handlerSD, this.state.startDateAsc, 1)}
-      </div>
-    )
-
     const header = (
       <div className="card bg-primary text-white cardBP">
         <div className="card-header">
@@ -242,7 +206,7 @@ class Bookings extends React.Component {
       return (
         <div className="Wrapper">
           {header}
-          <div class="spinner-border text-primary "></div>
+          <div className="spinner-border text-primary "></div>
         </div>
       )
     }

@@ -13,9 +13,8 @@ class PageLogin extends React.Component {
         };
 
         this.loginHandler = this.loginHandler.bind(this);
+        this.logoutHandler = this.logoutHandler.bind(this);
     }
-
-
 
     loginHandler(e) {
         // this.setState({ loggingIn: true })
@@ -57,12 +56,26 @@ class PageLogin extends React.Component {
 
     }
 
+    getCookieValue = (key) => {
+        return document.cookie.replace(`/(?:(?:^|.*;\s*)${key}\s*\=\s*([^;]*).*$)|^.*$/, "$1"`).split("=")[1];
+    }
+
+    logoutHandler() {
+        if (this.getCookieValue("token") === undefined) {
+            console.log("XD")
+            return;
+        }
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+        this.props.history.push("/");
+        console.log(document.cookie)
+    }
+
     render() {
         const btnProgress = (
-            <button class="btn btn-primary" type="button" disabled>
+            <button className="btn btn-primary" type="button" disabled>
                 <span>Signing in... </span>
                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                  
+
             </button>
         )
         const btnIdle = (
@@ -85,6 +98,7 @@ class PageLogin extends React.Component {
                                     <div className="form-label-group">
                                         <input type="password" id="password" className="form-control" placeholder="Password" required />
                                     </div>
+                                    <hr style={{ marginBottom: "0" }} />
                                     {this.state.loggingIn ? btnProgress : btnIdle}
                                 </form>
                             </div>
@@ -95,8 +109,21 @@ class PageLogin extends React.Component {
         )
 
         const loggedInInfo = (
-            <div>
-                You're already logged in !
+            <div className="container">
+                <div className="row">
+                    <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                        <div className="card card-signin my-5">
+                            <div className="card">
+                                <div className="card-body">
+                                    <h3 className="card-title text-center">You're already logged in!</h3>
+                                    <hr style={{ marginBottom: "0" }} />
+                                    <button className="btn btn-primary" onClick={this.logoutHandler}>Sign out</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         )
         return (
@@ -104,6 +131,5 @@ class PageLogin extends React.Component {
         )
     }
 }
-
 
 export default withRouter(PageLogin);
