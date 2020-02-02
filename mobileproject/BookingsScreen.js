@@ -17,6 +17,7 @@ function cancelBooking(id, token) {
             'Authorization': 'Bearer ' + token
         },
     })
+    this.setState({ isFetching: true });
 }
 
 function Item({ details, token }) {
@@ -24,30 +25,36 @@ function Item({ details, token }) {
     <View style={styles.booking}>
         {details.itemType == 'car' &&
         <View style={styles.car}>
-            <Text>{details.id}</Text>
-            <Text>{details.startDateTime}</Text>
-            <Text>{details.active }</Text>
-            <Text>{details.itemType}</Text>
+            <Text>Id: {details.id}</Text>
+            <Text>Start time: {details.startDateTime}</Text>
+            {details.active ?
+            <Text>Active: True</Text>:
+            <Text>Active: False</Text>}
+            <Text>Type: {details.itemType}</Text>
             <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.id, token)}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
         {details.itemType == 'flat' &&
         <View style={styles.flat}>
-            <Text>{details.id}</Text>
-            <Text>{details.startDateTime}</Text>
-            <Text>{details.active}</Text>
-            <Text>{details.itemType}</Text>
+            <Text>Id: {details.id}</Text>
+            <Text>Start time: {details.startDateTime}</Text>
+            {details.active ?
+            <Text>Active: True</Text>:
+            <Text>Active: False</Text>}
+            <Text>Type: {details.itemType}</Text>
             <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.id, token)}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
         {details.itemType == 'parking' &&
         <View style={styles.parking}>
-            <Text>{details.id}</Text>
-            <Text>{details.startDateTime}</Text>
-            <Text>{details.active}</Text>
-            <Text>{details.itemType}</Text>
+            <Text>Id: {details.id}</Text>
+            <Text>Start time: {details.startDateTime}</Text>
+            {details.active ?
+            <Text>Active: True</Text>:
+            <Text>Active: False</Text>}
+            <Text>Type: {details.itemType}</Text>
             <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.id, token)}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
@@ -62,7 +69,6 @@ class BookingsScreen extends React.Component{
         this.state = {
             bookings: [],
             isFetching: false,
-            canceled: false
         }
         this.getBookings = this.getBookings.bind(this);
     }
@@ -91,13 +97,18 @@ class BookingsScreen extends React.Component{
                 {this.state.isFetching &&
                 <ActivityIndicator style={styles.indicator} size="large"/>}
                 {this.state.isFetching == false && (this.state.bookings.length > 0 ?
-                <FlatList
-                    data={this.state.bookings}
-                    extraData={this.state}
-                    renderItem={({ item }) => <Item details={item} token={this.props.navigation.getParam('token')} />}
-                    keyExtractor={item => item.id.toString()}
-                    contentContainerStyle={{ paddingBottom: 20}}
-                />:
+                <View>
+                    <TouchableOpacity style={styles.Reloadbutton} onPress={this.getBookings}>
+                        <Text style={styles.ReloadbuttonText}>Reload</Text>
+                    </TouchableOpacity>
+                    <FlatList
+                        data={this.state.bookings}
+                        extraData={this.state}
+                        renderItem={({ item }) => <Item details={item} token={this.props.navigation.getParam('token')} />}
+                        keyExtractor={item => item.id.toString()}
+                        contentContainerStyle={{ paddingBottom: 20}}
+                    />
+                </View>:
                 <Text style={styles.text}>You have no bookings yet</Text>
                 )}
                 
@@ -121,17 +132,17 @@ const styles = StyleSheet.create({
         
     },
     car: {
-        backgroundColor: '#BC807C',
+        backgroundColor: '#E8DBC3',
         borderRadius: 7,
         padding: 5
     },
     flat: {
-        backgroundColor: '#77A0B5',
+        backgroundColor: '#ABE3D0',
         borderRadius: 7,
         padding: 5
     },
     parking: {
-        backgroundColor: '#8EB28D',
+        backgroundColor: '#DFE1E3',
         borderRadius: 7,
         padding: 5
     },
@@ -143,7 +154,8 @@ const styles = StyleSheet.create({
         width: "50%",
         borderRadius: 10,
         backgroundColor: '#BCBCBC',
-        
+        marginTop: 10,
+        padding: 5
     },
     buttonText: {
         alignSelf: "center",
@@ -153,5 +165,19 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         fontSize: 20,
         margin: 30
+    },
+    Reloadbutton: {
+        alignSelf: "center",
+        width: "90%",
+        borderRadius: 10,
+        backgroundColor: '#9E9891',
+        height: 60,
+        marginTop: 10,
+        marginBottom: 10
+    },
+    ReloadbuttonText: {
+        alignSelf: "center",
+        fontSize: 30,
+        lineHeight: 60
     }
 })
