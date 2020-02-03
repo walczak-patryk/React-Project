@@ -26,6 +26,12 @@
   }
 }
 
+@media (min-height: 1100px) {
+  .App-content {
+    padding-bottom: 5%;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
