@@ -52,8 +52,10 @@
 
 .Clickable:hover {
   color: black;
+  cursor: pointer;
 }
 
 .infoIcon:hover {
   color: black;
+  cursor: pointer;
 }

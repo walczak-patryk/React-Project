@@ -41,6 +41,13 @@ a:active {
 } */
 
 .noSelect {
-
   user-select: none;
+}
+
+.Clickable {
+  margin-top: 1px;
+}
+
+.Clickable:hover {
+  cursor: pointer;
 }
