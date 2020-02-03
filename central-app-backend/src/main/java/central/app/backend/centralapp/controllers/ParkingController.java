@@ -4,6 +4,8 @@ import central.app.backend.centralapp.errors.ErrorResponse;
 import central.app.backend.centralapp.exceptions.UnauthorizedAccessException;
 import central.app.backend.centralapp.exceptions.UrlNotRespondException;
 import central.app.backend.centralapp.forms.parklyForms.ParklyBookingForm;
+import central.app.backend.centralapp.forms.parklyForms.ParklyForm;
+import central.app.backend.centralapp.forms.parklyForms.ParklySpotForm;
 import central.app.backend.centralapp.models.Booking;
 import central.app.backend.centralapp.services.ParklyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/parkly")
@@ -24,8 +27,13 @@ public class ParkingController {
     }
 
     @GetMapping("")
-    public ResponseEntity<ParklyBookingForm[]> getAllBookings() throws Exception {
-        return ResponseEntity.ok().body(parklyService.getAllBookings());
+    public ResponseEntity<List<ParklyForm>> getAllParkings() throws Exception {
+        return ResponseEntity.ok().body(parklyService.getAllParkings());
+    }
+
+    @GetMapping("/spots")
+    public ResponseEntity<List<ParklySpotForm>> getAllParkingSpots() throws Exception {
+        return ResponseEntity.ok().body(parklyService.getAllParkingSpots());
     }
 
     @PostMapping("")

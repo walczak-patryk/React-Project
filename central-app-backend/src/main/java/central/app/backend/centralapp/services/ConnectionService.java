@@ -6,6 +6,9 @@ import central.app.backend.centralapp.exceptions.UrlNotRespondException;
 import central.app.backend.centralapp.forms.LoginForm;
 import central.app.backend.centralapp.forms.TokenForm;
 import central.app.backend.centralapp.forms.parklyForms.ParklyBookingForm;
+import central.app.backend.centralapp.forms.parklyForms.ParklyForm;
+import central.app.backend.centralapp.forms.parklyForms.ParklySpotForm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -44,15 +47,14 @@ public class ConnectionService {
         }
     }
 
-    public ParklyBookingForm[] getRequest() throws UrlNotRespondException {
+    public String getRequest(String endpoint) throws UrlNotRespondException {
         HttpEntity<String> entity = new HttpEntity<String>("body", this.headers);
-        ResponseEntity<ParklyBookingForm[]> responseEntity = this.restTemplate.exchange(this.url+"/Booking",
+        ResponseEntity<String> responseEntity = this.restTemplate.exchange(this.url+endpoint,
                 HttpMethod.GET,
                 entity,
-                ParklyBookingForm[].class);
+                String.class);
         if (!responseEntity.getStatusCode().is2xxSuccessful() || !responseEntity.hasBody() || responseEntity.getBody() == null)
             throw new UrlNotRespondException(this.url);
-
         return responseEntity.getBody();
     }
 
@@ -71,6 +73,4 @@ public class ConnectionService {
     public void deleteRequest(int parkingId){
         this.restTemplate.delete(this.url + parkingId);
     }
-
-
 }

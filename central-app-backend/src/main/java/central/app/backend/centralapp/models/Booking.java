@@ -1,5 +1,6 @@
 package central.app.backend.centralapp.models;
 
+import central.app.backend.centralapp.repositories.UserRepository;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -32,7 +33,9 @@ public class Booking implements Serializable {
     @Column(name = "item_type", nullable = false)
     private String itemType;
 
-    //constructors
+    @Column(name = "details", nullable = false)
+    private String details;
+
     public Booking() {
     }
 
@@ -43,23 +46,26 @@ public class Booking implements Serializable {
         this.active = booking.active;
         this.itemId = booking.itemId;
         this.itemType = booking.itemType;
+        this.details = booking.details;
     }
 
-    public Booking(int owner, LocalDate startDateTime, boolean active, int itemId, String itemType) {
+    public Booking(int owner, LocalDate startDateTime, boolean active, int itemId, String itemType, String details) {
         this.owner = owner;
         this.startDateTime = startDateTime;
         this.active = active;
         this.itemId = itemId;
         this.itemType = itemType;
+        this.details = details;
     }
 
-    public Booking(int id,int owner, LocalDate startDateTime, boolean active, int itemId, String itemType) {
+    public Booking(int id,int owner, LocalDate startDateTime, boolean active, int itemId, String itemType, String details) {
         this.id = id;
         this.owner = owner;
         this.startDateTime = startDateTime;
         this.active = active;
         this.itemId = itemId;
         this.itemType = itemType;
+        this.details = details;
     }
 
     // setters and getters
@@ -91,21 +97,27 @@ public class Booking implements Serializable {
 
     public void setItemType(String itemType) { this.itemType = itemType; }
 
-    public void setAll(int owner, LocalDate startDateTime, boolean active, int itemId, String itemType) {
+    public String getDetails() { return this.details; }
+
+    public void setDetails(String details) { this.details = details; }
+
+    public void setAll(int owner, LocalDate startDateTime, boolean active, int itemId, String itemType, String details) {
         this.owner = owner;
         this.startDateTime = startDateTime;
         this.active = active;
         this.itemId = itemId;
         this.itemType = itemType;
+        this.details = details;
     }
 
-    public void setAll(int id, int owner, LocalDate startDateTime, boolean active, int itemId, String itemType) {
+    public void setAll(int id, int owner, LocalDate startDateTime, boolean active, int itemId, String itemType, String details) {
         this.id = id;
         this.owner = owner;
         this.startDateTime = startDateTime;
         this.active = active;
         this.itemId = itemId;
         this.itemType = itemType;
+        this.details = details;
     }
 
     public void setAll(Booking booking) {
@@ -114,6 +126,7 @@ public class Booking implements Serializable {
         this.active = booking.active;
         this.itemId = booking.itemId;
         this.itemType = booking.itemType;
+        this.details = booking.details;
     }
 
     @Override
@@ -124,6 +137,7 @@ public class Booking implements Serializable {
                 "\"active\":" + this.active + ",\n"+
                 "\"itemId\":" + this.itemId + ",\n"+
                 "\"itemType\":" + this.itemType +",\n"+
+                "\"details\":" + this.details +",\n"+
                 "}";
     }
 }
