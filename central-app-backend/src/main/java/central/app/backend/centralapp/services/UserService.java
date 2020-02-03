@@ -36,4 +36,11 @@ public class UserService{
         return jwtUtil.generateToken(userDetails);
     }
 
+    public String getUsername(int id){
+        User u =  userRepository.findById(id);
+        if (u == null)
+            return "No user in database";
+        return u.getFirstName() + " " + u.getLastName();
+    }
+
 }
