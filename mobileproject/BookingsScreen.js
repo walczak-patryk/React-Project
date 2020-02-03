@@ -25,36 +25,39 @@ function Item({ details, token }) {
     <View style={styles.booking}>
         {details.itemType == 'car' &&
         <View style={styles.car}>
-            <Text>Id: {details.id}</Text>
+            <Text>Booking Id: {details.id}</Text>
             <Text>Start time: {details.startDateTime}</Text>
             {details.active ?
             <Text>Active: True</Text>:
             <Text>Active: False</Text>}
             <Text>Type: {details.itemType}</Text>
+            <Text>Details: {details.details}</Text>
             <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.id, token)}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
         {details.itemType == 'flat' &&
         <View style={styles.flat}>
-            <Text>Id: {details.id}</Text>
+            <Text>Booking Id: {details.id}</Text>
             <Text>Start time: {details.startDateTime}</Text>
             {details.active ?
             <Text>Active: True</Text>:
             <Text>Active: False</Text>}
             <Text>Type: {details.itemType}</Text>
+            <Text>Details: {details.details}</Text>
             <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.id, token)}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
         </View>}
         {details.itemType == 'parking' &&
         <View style={styles.parking}>
-            <Text>Id: {details.id}</Text>
+            <Text>Booking Id: {details.id}</Text>
             <Text>Start time: {details.startDateTime}</Text>
             {details.active ?
             <Text>Active: True</Text>:
             <Text>Active: False</Text>}
             <Text>Type: {details.itemType}</Text>
+            <Text>Details: {details.details}</Text>
             <TouchableOpacity style={styles.button} onPress={() => cancelBooking(details.id, token)}>
                 <Text style={styles.buttonText}>Cancel booking</Text>
             </TouchableOpacity>
@@ -87,7 +90,7 @@ class BookingsScreen extends React.Component{
             },
         })
         .then(response => response.json())
-        .then(response => this.setState({ bookings: response}))
+        .then(response => this.setState({ bookings: response.bookingForms}))
         .then(() => this.setState({isFetching: false}));
     }
 
@@ -101,6 +104,7 @@ class BookingsScreen extends React.Component{
                     <TouchableOpacity style={styles.Reloadbutton} onPress={this.getBookings}>
                         <Text style={styles.ReloadbuttonText}>Reload</Text>
                     </TouchableOpacity>
+                    <Text style={styles.buttonText}>User: {this.state.bookings[0].username}</Text>
                     <FlatList
                         data={this.state.bookings}
                         extraData={this.state}
