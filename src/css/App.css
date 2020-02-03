@@ -5,7 +5,7 @@
 }
 
 .App-content {
-  padding-bottom: 20%;
+  padding-bottom: 10%;
 }
 
 .App-footer {
@@ -20,15 +20,15 @@
   pointer-events: none;
 }
 
-@media (max-width: 770px) {
+@media (max-width: 1600px) {
   .App-content {
-    padding-bottom: 50%;
+    padding-bottom: 20%;
   }
 }
 
-@media (min-height: 1100px) {
+@media (max-width: 770px) {
   .App-content {
-    padding-bottom: 5%;
+    padding-bottom: 50%;
   }
 }
 

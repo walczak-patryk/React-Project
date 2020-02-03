@@ -74,7 +74,7 @@ class Bookings extends React.Component {
     if (this.state.bookingIdAsc === null) {
       this.state.bookingIdAsc = false; // i know this is stupid but it works (same for all sorting handlers)
     }
-    var sorted = this.state.bookings.sort((a, b) => this.mySort(a.booking_id, b.booking_id, this.state.bookingIdAsc))
+    var sorted = this.state.bookings.sort((a, b) => this.mySort(a.id, b.id, this.state.bookingIdAsc))
     this.setState(prevstate => ({
       bookings: sorted,
       bookingIdAsc: !prevstate.bookingIdAsc,
@@ -93,7 +93,7 @@ class Bookings extends React.Component {
     if (this.state.userIdAsc === null) {
       this.state.userIdAsc = false; // check handlerBID
     }
-    var sorted = this.state.bookings.sort((a, b) => this.mySort(a.user_id, b.user_id, this.state.userIdAsc))
+    var sorted = this.state.bookings.sort((a, b) => this.mySort(a.owner, b.owner, this.state.userIdAsc))
     this.setState(prevstate => ({
       bookings: sorted,
       userIdAsc: !prevstate.userIdAsc,
@@ -131,7 +131,7 @@ class Bookings extends React.Component {
     if (this.state.itemIdAsc === null) {
       this.state.itemIdAsc = false; // check handlerBID
     }
-    var sorted = this.state.bookings.sort((a, b) => this.mySort(a.item_id, b.item_id, this.state.itemIdAsc))
+    var sorted = this.state.bookings.sort((a, b) => this.mySort(a.itemId, b.itemId, this.state.itemIdAsc))
     this.setState(prevstate => ({
       bookings: sorted,
       itemIdAsc: !prevstate.itemIdAsc,
@@ -150,7 +150,7 @@ class Bookings extends React.Component {
     if (this.state.startDateAsc === null) {
       this.state.startDateAsc = false; // check handlerBID
     }
-    var sorted = this.state.bookings.sort((a, b) => this.mySort(a.start_date, b.start_date, this.state.startDateAsc))
+    var sorted = this.state.bookings.sort((a, b) => this.mySort(a.startDateTime, b.startDateTime, this.state.startDateAsc))
     this.setState(prevstate => ({
       bookings: sorted,
       startDateAsc: !prevstate.startDateAsc,
