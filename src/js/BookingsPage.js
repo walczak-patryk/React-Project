@@ -3,19 +3,25 @@ import Booking from './Booking'
 import { withRouter } from "react-router-dom";
 import { Icon } from "semantic-ui-react"
 import '../css/BookingsPage.css'
+import InfiniteScroll from 'react-infinite-scroller';
 
 class Bookings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookings: null,
+      bookings: [],
       bookingIdAsc: false,
       userIdAsc: null,
       userNameAsc: null,
       itemIdAsc: null,
       startDateAsc: null,
       isLoading: false,
-      pageNumber: 1
+      pageNumber: 1,
+
+      //test
+      testBookings: [],
+      testNextPage: 1,
+      testHasMoreItems: true
     }
     this.loadBookings = this.loadBookings.bind(this);
     this.ElementXD = this.ElementXD.bind(this);
@@ -24,21 +30,24 @@ class Bookings extends React.Component {
     this.handlerUId = this.handlerUId.bind(this);
     this.hanlderIID = this.hanlderIID.bind(this);
     this.hanlderUName = this.hanlderUName.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
+    //this.componentDidMount = this.componentDidMount.bind(this);
+
+    //test
+    this.testLoadItems= this.testLoadItems.bind(this);
   }
 
   getCookieValue = (key) => {
     return document.cookie.replace(`/(?:(?:^|.*;\s*)${key}\s*\=\s*([^;]*).*$)|^.*$/, "$1"`).split("=")[1];
   }
 
-  componentDidMount() {
-    if (this.getCookieValue("token") === undefined) {
-      this.props.history.push("/");
-      return;
-    }
-    //console.log("cookie 'token' value: ", this.getCookieValue("token"))
-    this.loadBookings();
-  }
+  // componentDidMount() {
+  //   if (this.getCookieValue("token") === undefined) {
+  //     this.props.history.push("/");
+  //     return;
+  //   }
+  //   //console.log("cookie 'token' value: ", this.getCookieValue("token"))
+  //   this.loadBookings();
+  // }
 
   loadBookings() {
     this.setState({
@@ -52,11 +61,12 @@ class Bookings extends React.Component {
       }
     })
       .then(response => {
-        console.log(response.status)
+        //console.log(response.status)
         return response.json();
       })
       .then(data => this.setState({ bookings: data.bookingForms }))
       .then(() => this.setState({ isLoading: false }));
+      
   }
 
   mySort = (a, b, cond) => {
@@ -182,6 +192,30 @@ class Bookings extends React.Component {
     }
   }
 
+  //fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${5}&pageNumber=${this.state.testNextPage}`, {
+    // http://localhost:3004/bookings?_page=0&_limit=10
+  testLoadItems() {
+    console.log("XD")
+    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${10}&pageNumber=${this.state.testNextPage}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.getCookieValue('token')}`
+      }
+    })
+      .then(response => {
+       // console.log(response.status)
+        return response.json();
+      })
+      .then(data => {
+        var testNewState = this.state.bookings.concat(data.bookingForms)
+        //console.log(testNewState)
+        this.setState(prevstate => ({ 
+          bookings: testNewState,
+        testHasMoreItems: data.isNext,
+        testNextPage: prevstate.testNextPage+1
+      }))})
+  }
+
   render() {
     const header = (
       <div className="card bg-primary text-white cardBP">
@@ -211,11 +245,15 @@ class Bookings extends React.Component {
       </div>
     )
 
+    const loader = (
+      <div className="spinner-border text-primary " style={{clear: "both"}}></div>
+    )
+
     if (this.state.isLoading) {
-      return (
-        <div className="Wrapper">
+      return ( 
+        <div>
           {header}
-          <div className="spinner-border text-primary "></div>
+          {loader}
         </div>
       )
     }
@@ -229,6 +267,24 @@ class Bookings extends React.Component {
             ))}
           </div>
       )
+      //console.log(this.state.testBookings)
+      var items = [];
+      this.state.bookings.map(booking => {
+        items.push(
+          <Booking booking={booking} key={booking.id} />
+        )
+      })
+      //console.log(this.state.testBookings)
+      const testListBookings = (
+          <InfiniteScroll
+            pageStart={1}
+            loadMore={this.testLoadItems}
+            hasMore={this.state.testHasMoreItems}
+            loader={loader}
+            threshold={0}>
+              {items}
+          </InfiniteScroll>
+      )
 
       return (
         <div className="Wrapper">
@@ -239,7 +295,10 @@ class Bookings extends React.Component {
             </div>
           </div> */}
           {header}
-          {listBookings}
+          {testListBookings}
+          {/* <div style={{ float: "left", margin: "1em" }}>
+            asdasd
+          </div> */}
         </div>
       )
     } else {
