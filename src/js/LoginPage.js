@@ -118,6 +118,7 @@ class PageLogin extends React.Component {
                                     <h3 className="card-title text-center">You're already logged in!</h3>
                                     <hr style={{ marginBottom: "0" }} />
                                     <button className="btn btn-primary" onClick={this.logoutHandler}>Sign out</button>
+                                    <button className="btn btn-secondary" onClick={() => this.props.history.push("/bookings")}>Bookings history</button>
                                 </div>
                             </div>
                         </div>

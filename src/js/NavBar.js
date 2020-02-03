@@ -33,7 +33,7 @@ class NavBar extends React.Component {
         <ul className="navbar-nav">
           <a className="navbar-brand noSelect">Bookly - reservation history</a>
           <li className="nav-item">
-            <a className="nav-link noSelect" onClick={this.logoutHandler} style={{ display: !cond ? "block" : "none", marginTop: "1px" }}>Logout</a>
+            <a className="nav-link noSelect" onClick={this.logoutHandler} style={{ display: !cond ? "block" : "none", marginTop: "1.5px" }}>Logout</a>
           </li>
         </ul>
       </nav>
