@@ -8,6 +8,9 @@ import {
     TouchableOpacity
 } from "react-native";
 
+//Zmienić wyświetlanie w funkcji Item tak, żeby dla odpowiednich serwisów wyświetlało odpowiednie pola 
+//(pola dla danych serwisów są w SearchScreen) i zrobić fetch POST z bookingiem (wzorując się na całości BookingsScreen bo tam jest podobnie i działa)
+
 function Item({ details, token, service }) {
     return (
     <View style={styles.booking}>
