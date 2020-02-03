@@ -9,7 +9,7 @@ class NavBar extends React.Component {
     this.logoutHandler = this.logoutHandler.bind(this);
   }
   componentDidMount() {
-    console.log("current location: ", this.props.location.pathname)
+    //console.log("current location: ", this.props.location.pathname)
   }
 
   getCookieValue = (key) => {
@@ -18,12 +18,12 @@ class NavBar extends React.Component {
 
   logoutHandler() {
     if (this.getCookieValue("token") === undefined) {
-      console.log("XD")
+      //console.log("XD")
       return;
     }
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
     this.props.history.push("/");
-    console.log(document.cookie)
+    //console.log(document.cookie)
   }
 
   render() {
@@ -33,7 +33,7 @@ class NavBar extends React.Component {
         <ul className="navbar-nav">
           <a className="navbar-brand noSelect">Bookly - reservation history</a>
           <li className="nav-item">
-            <a className="nav-link noSelect" onClick={this.logoutHandler} style={{ display: !cond ? "block" : "none", marginTop: "1.5px" }}>Logout</a>
+            <a className="nav-link noSelect" onClick={this.logoutHandler} style={{ display: !cond ? "block" : "none", marginTop: "1px" }}>Logout</a>
           </li>
         </ul>
       </nav>
