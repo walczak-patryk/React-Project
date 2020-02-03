@@ -14,7 +14,8 @@ class Bookings extends React.Component {
       userNameAsc: null,
       itemIdAsc: null,
       startDateAsc: null,
-      isLoading: false
+      isLoading: false,
+      pageNumber: 1
     }
     this.loadBookings = this.loadBookings.bind(this);
     this.ElementXD = this.ElementXD.bind(this);
@@ -35,7 +36,7 @@ class Bookings extends React.Component {
       this.props.history.push("/");
       return;
     }
-    // console.log("cookie 'token' value: ", this.getCookieValue("token"))
+    //console.log("cookie 'token' value: ", this.getCookieValue("token"))
     this.loadBookings();
   }
 
@@ -44,9 +45,17 @@ class Bookings extends React.Component {
       isLoading: true
     });
 
-    fetch('http://localhost:3004/bookings')
-      .then(response => response.json())
-      .then(data => this.setState({ bookings: data }))
+    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.getCookieValue('token')}`
+      }
+    })
+      .then(response => {
+        //console.log(response.status)
+        return response.json();
+      })
+      .then(data => this.setState({ bookings: data.bookingForms }))
       .then(() => this.setState({ isLoading: false }));
   }
 
@@ -74,7 +83,7 @@ class Bookings extends React.Component {
       itemIdAsc: null,
       startDateAsc: null,
     }))
-      // console.log("booking id: ", this.state.bookingIdAsc))
+    // console.log("booking id: ", this.state.bookingIdAsc))
   }
 
   handlerUId = () => {
@@ -93,7 +102,7 @@ class Bookings extends React.Component {
       itemIdAsc: null,
       startDateAsc: null,
     }))
-      // console.log("User id: ", this.state.userIdAsc))
+    // console.log("User id: ", this.state.userIdAsc))
   }
 
   hanlderUName = () => {
@@ -112,7 +121,7 @@ class Bookings extends React.Component {
       itemIdAsc: null,
       startDateAsc: null,
     }))
-      // cnsole.log("user name: ", this.state.userNameAsc))
+    // cnsole.log("user name: ", this.state.userNameAsc))
   }
 
   hanlderIID = () => {
@@ -131,7 +140,7 @@ class Bookings extends React.Component {
       userNameAsc: null,
       startDateAsc: null,
     }))
-      // console.log("item id:", this.state.itemIdAsc))
+    // console.log("item id:", this.state.itemIdAsc))
   }
 
   handlerSD = () => {
@@ -150,7 +159,7 @@ class Bookings extends React.Component {
       userNameAsc: null,
       itemIdAsc: null,
     }))
-      // console.log("start date", this.state.startDateAsc))
+    // console.log("start date", this.state.startDateAsc))
   }
 
   ElementXD = (value, hanlder, cond, sortable) => {
@@ -216,7 +225,7 @@ class Bookings extends React.Component {
         this.state.bookings.length === 0 ? <div>No bookings</div> :
           <div>
             {this.state.bookings.map(item => (
-              <Booking booking={item} key={item.booking_id} />
+              <Booking booking={item} key={item.id} />
             ))}
           </div>
       )

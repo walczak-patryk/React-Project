@@ -14,8 +14,8 @@ class Footer extends React.Component {
                     <div className="row ">
                         <div className="col-md-4 text-left">
                             <h5 className="text-uppercase">About</h5>
-                            <p>This is <b>Bookly</b> web app created for 
-                                <i>Programming multilayered and mobile apps based on React</i> project.
+                            <p style={{textAlign: "justify"}}>This is <b>Bookly</b> web app created for
+                                <i> Programming multilayered and mobile apps based on React</i> project.
                                 It imitates bookings online page allowing an admin to look into history
                                 of bookings for the <b>Bookly</b> service.
                             </p>

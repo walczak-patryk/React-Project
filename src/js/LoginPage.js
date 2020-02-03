@@ -36,12 +36,9 @@ class PageLogin extends React.Component {
 
         })
             .then(res => {
-                //console.log(res)
-                //console.log(`status: ${res.status}`)
                 if (res.status === 200) {
-                    //this.setState({ token: res.body });
-                    res.text().then(text => {
-                        document.cookie = `token=${text}`;
+                    res.json().then(data => {
+                        document.cookie = `token=${data.jwt}`;
                         this.props.history.push("/bookings")
                     });
                 }

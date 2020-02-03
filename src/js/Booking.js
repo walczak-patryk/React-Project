@@ -59,33 +59,32 @@ class Booking extends React.Component {
             <div className="col-md-6">
               <div className="row">
                 <div className="col-md-3 text-left">
-                  {booking.booking_id}
+                  {booking.id}
                 </div>
                 <div className="col-md-3 text-left">
-                  {booking.user_id}
+                  {booking.owner}
                 </div>
                 <div className="col-md-3 text-left">
                   {booking.username}
                 </div>
                 <div className="col-md-3 text-left">
-                  {booking.item_id}
+                  {booking.itemId}
                 </div>
               </div>
             </div>
             <div className="col-md-6">
               <div className="row">
                 <div className="col-md-3 text-left">
-                  {booking.type}
+                  {booking.itemType}
                 </div>
                 <div className="col-md-3 text-left">
-                  {booking.item_info}
+                  {booking.details}
                 </div>
                 <div className="col-md-3 text-left">
                   {booking.active.toString()}
                 </div>
                 <div className="col-md-3 text-left">
-                  {`${booking.start_date.getDate()} 
-                    ${booking.start_date.getMonth() + 1} ${booking.start_date.getFullYear()}`}
+                  {booking.startDateTime} 
                 </div>
               </div>
             </div>
