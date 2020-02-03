@@ -35,7 +35,7 @@ class Bookings extends React.Component {
       this.props.history.push("/");
       return;
     }
-    console.log("cookie 'token' value: ", this.getCookieValue("token"))
+    // console.log("cookie 'token' value: ", this.getCookieValue("token"))
     this.loadBookings();
   }
 
@@ -73,8 +73,8 @@ class Bookings extends React.Component {
       userNameAsc: null,
       itemIdAsc: null,
       startDateAsc: null,
-    }),
-      console.log("booking id: ", this.state.bookingIdAsc))
+    }))
+      // console.log("booking id: ", this.state.bookingIdAsc))
   }
 
   handlerUId = () => {
@@ -92,8 +92,8 @@ class Bookings extends React.Component {
       userNameAsc: null,
       itemIdAsc: null,
       startDateAsc: null,
-    }),
-      console.log("User id: ", this.state.userIdAsc))
+    }))
+      // console.log("User id: ", this.state.userIdAsc))
   }
 
   hanlderUName = () => {
@@ -111,8 +111,8 @@ class Bookings extends React.Component {
       userIdAsc: null,
       itemIdAsc: null,
       startDateAsc: null,
-    }),
-      console.log("user name: ", this.state.userNameAsc))
+    }))
+      // cnsole.log("user name: ", this.state.userNameAsc))
   }
 
   hanlderIID = () => {
@@ -130,8 +130,8 @@ class Bookings extends React.Component {
       userIdAsc: null,
       userNameAsc: null,
       startDateAsc: null,
-    }),
-      console.log("item id:", this.state.itemIdAsc))
+    }))
+      // console.log("item id:", this.state.itemIdAsc))
   }
 
   handlerSD = () => {
@@ -149,8 +149,8 @@ class Bookings extends React.Component {
       userIdAsc: null,
       userNameAsc: null,
       itemIdAsc: null,
-    }),
-      console.log("start date", this.state.startDateAsc))
+    }))
+      // console.log("start date", this.state.startDateAsc))
   }
 
   ElementXD = (value, hanlder, cond, sortable) => {
@@ -182,7 +182,7 @@ class Bookings extends React.Component {
               <div className="row">
                 {this.ElementXD("Booking id", this.handlerBID, this.state.bookingIdAsc, 1)}
                 {this.ElementXD("User id", this.handlerUId, this.state.userIdAsc, 1)}
-                {this.ElementXD("Username", this.hanlderUName, this.state.userNameAsc, 1)}
+                {this.ElementXD("Name", this.hanlderUName, this.state.userNameAsc, 1)}
                 {this.ElementXD("Item id", this.hanlderIID, this.state.itemIdAsc, 1)}
               </div>
             </div>

@@ -36,19 +36,19 @@ class PageLogin extends React.Component {
 
         })
             .then(res => {
-                console.log(res)
-                console.log(`status: ${res.status}`)
-                // if (res.status === 200) {
-                //     this.setState({ token: res.body });
-                //     res.text().then(text => {
-                //         document.cookie = `token=${text}` // expire date - on closing browser, path = current path
-                //     });
-                //     this.props.history.push("/bookings")
-                // }
-                // else {
-                //     this.setState({ error: true });
-                //     console.log(res.status)
-                // }
+                //console.log(res)
+                //console.log(`status: ${res.status}`)
+                if (res.status === 200) {
+                    //this.setState({ token: res.body });
+                    res.text().then(text => {
+                        document.cookie = `token=${text}`;
+                        this.props.history.push("/bookings")
+                    });
+                }
+                else {
+                    this.setState({ error: true });
+                    //console.log(res.status)
+                }
             })
             .then(() => {
                 this.setState({ loggingIn: false });
@@ -67,7 +67,7 @@ class PageLogin extends React.Component {
         }
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
         this.props.history.push("/");
-        console.log(document.cookie)
+        // console.log(document.cookie)
     }
 
     render() {
