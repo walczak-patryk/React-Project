@@ -14,14 +14,18 @@ import Footer from './Footer'
 function App() {
   return (
     <div className="App">
-      <Router>
-        <NavBar />
-        <Switch>
-          <Route exact path="/" component={LoginPage} />
-          <Route exact path="/bookings" component={Bookings} />
-        </Switch>
-      </Router>
-      <Footer/>
+      <div className="App-content">
+        <Router>
+          <NavBar />
+          <Switch>
+            <Route exact path="/" component={LoginPage} />
+            <Route exact path="/bookings" component={Bookings} />
+          </Switch>
+        </Router>
+      </div>
+      <div className="App-footer">
+        <Footer />
+      </div>
     </div>
   );
 }

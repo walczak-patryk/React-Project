@@ -9,7 +9,7 @@ class Footer extends React.Component {
 
     render() {
         return (
-            <footer className="page-footer small">
+            <footer className="footerFF small">
                 <div className="bg-dark footerF container-fluid pt-4 text-white">
                     <div className="row ">
                         <div className="col-md-4 text-left">

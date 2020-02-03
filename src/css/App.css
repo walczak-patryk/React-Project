@@ -1,11 +1,29 @@
 .App {
   text-align: center;
-  overflow: auto;
+  position: relative;
+  min-height: 100vh;
+}
+
+.App-content {
+  padding-bottom: 20%;
+}
+
+.App-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 15%;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+@media (max-width: 770px) {
+  .App-content {
+    padding-bottom: 50%;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

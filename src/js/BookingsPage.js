@@ -45,14 +45,14 @@ class Bookings extends React.Component {
       isLoading: true
     });
 
-    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings`, {
+    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${11}&pageNumber=${this.state.pageNumber}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${this.getCookieValue('token')}`
       }
     })
       .then(response => {
-        //console.log(response.status)
+        console.log(response.status)
         return response.json();
       })
       .then(data => this.setState({ bookings: data.bookingForms }))
