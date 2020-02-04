@@ -43,4 +43,14 @@ public class UserService{
         return u.getFirstName() + " " + u.getLastName();
     }
 
+    public User getUserByToken(String token){
+        String username = jwtUtil.extractUsername(token);
+        return userRepository.findByLogin(username);
+    }
+
+    public String getRoleByToken(String token){
+        User currentUser = getUserByToken(token);
+        return currentUser.getRole();
+    }
+
 }

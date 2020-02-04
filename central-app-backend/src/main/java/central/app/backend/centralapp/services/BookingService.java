@@ -1,11 +1,16 @@
 package central.app.backend.centralapp.services;
 
 import central.app.backend.centralapp.exceptions.BookingNotExistException;
+import central.app.backend.centralapp.exceptions.UnauthorizedAccessException;
 import central.app.backend.centralapp.forms.BookingForm;
 import central.app.backend.centralapp.forms.PageForm;
 import central.app.backend.centralapp.models.Booking;
+import central.app.backend.centralapp.models.User;
 import central.app.backend.centralapp.repositories.BookingRepository;
+import central.app.backend.centralapp.repositories.UserRepository;
+import central.app.backend.centralapp.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -42,8 +47,13 @@ public class BookingService {
         return pages;
     }
 
-    public PageForm getAll(String filter, Integer pageSize, Integer pageNumber) {
-        List<Booking> bookings =  bookingRepository.findAll();
+    public PageForm getAll(String filter, Integer pageSize, Integer pageNumber, User currentUser) {
+        List<Booking> bookings;
+        if(currentUser.getRole().equals("USER"))
+            bookings =  bookingRepository.findByOwner(currentUser.getId());
+        else
+            bookings =  bookingRepository.findAll();
+
         int maxSize = 0;
         boolean isNext = false;
         List<BookingForm> bookingForms =  new ArrayList<>();
@@ -73,25 +83,31 @@ public class BookingService {
 
     }
 
-    public BookingForm get(int id) {
+    public BookingForm get(int id, User currentUser) {
         Booking booking = bookingRepository.findById(id);
         if (booking == null)
             throw new BookingNotExistException("Id " + id);
+        if(currentUser.getRole().equals("USER") && currentUser.getId() != booking.getOwner())
+            throw new AccessDeniedException("This user does not have access to this booking: " + id);
         return new BookingForm(booking,userService.getUsername(booking.getOwner()));
     }
 
-    public String delete(int id) {
+    public String delete(int id, User currentUser) {
         Booking booking = bookingRepository.findById(id);
         if (booking == null)
             throw new BookingNotExistException("Id: " + id);
+        if (currentUser.getRole().equals("USER") && currentUser.getId() != booking.getOwner())
+            throw new AccessDeniedException("This user does not have access to this booking: " + id);
         bookingRepository.delete(booking);
         return "Booking Deleted";
     }
 
-    public BookingForm update(int id, Booking userToUpdate) {
+    public BookingForm update(int id, Booking userToUpdate, User currentUser) {
         Booking user = bookingRepository.findById(id);
         if (user == null)
             throw new BookingNotExistException("Id: " + id);
+        if (currentUser.getRole().equals("USER") && currentUser.getId() != user.getOwner())
+            throw new AccessDeniedException("This user does not have access to this booking: " + id);
         user.setAll(userToUpdate);
         user = bookingRepository.save(user);
         return new BookingForm(user,userService.getUsername(user.getOwner()));
