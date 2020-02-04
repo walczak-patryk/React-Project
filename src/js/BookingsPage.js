@@ -27,7 +27,7 @@ class Bookings extends React.Component {
       itemIdAsc: null,
       startDateAsc: null,
       isLoading: false,
-      pageNumber: 1,
+      pageNumber: 0,
 
       //test
       testBookings: [],
@@ -202,11 +202,9 @@ class Bookings extends React.Component {
 
   //fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${5}&pageNumber=${this.state.testNextPage}`, {
   // http://localhost:3004/bookings?_page=0&_limit=10
-
   // fetching used in infinite scroll component
-  testLoadItems() {
-    //console.log("XD")
-    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${10}&pageNumber=${this.state.testNextPage}`, {
+  testLoadItems(page) {
+    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${1}&pageNumber=${page}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${this.getCookieValue('token')}`
@@ -261,7 +259,8 @@ class Bookings extends React.Component {
 
   // to do !
   handlerSearchButton = () => {
-    console.log(JSON.stringify({ "data": this.state.searchSelected}))
+    this.setState({ testHasMoreItems: true, bookings: [] })
+    this.scroller.pageLoaded = 0;
   }
 
   render() {
@@ -329,6 +328,39 @@ class Bookings extends React.Component {
     // to do !
     const cardFilter = (
       <div className="card-body">
+        <div className="row">
+          <div className="col-md-3">
+            Active
+          </div>
+          <div className="col-md-3">
+            Item type
+          </div>
+          <div className="col-md-6">
+            <div className="row">
+              <div className="col-md-6">
+                Date
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-3">
+            Tick box active
+          </div>
+          <div className="col-md-3">
+            Dropdown item type
+          </div>
+          <div className="col-md-6">
+            <div className="row">
+              <div className="col-md-6">
+                datefrom
+              </div>
+              <div className="col-md-6">
+                dateTo
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
 
@@ -353,10 +385,15 @@ class Bookings extends React.Component {
         {cardToShow === null ? cardNone : cardToShow === 'cardSearch' ? cardSearch : cardFilter}
       </div>
     )
-
+    const noBookings = (
+      <div>
+        XD
+      </div>
+    )
     if (this.state.bookings) {
       var items = [];
       this.state.bookings.map(booking => {
+        //console.log(this.state.bookings)
         items.push(
           <Booking booking={booking} key={booking.id} />
         )
@@ -370,8 +407,9 @@ class Bookings extends React.Component {
           loader={loader}
           threshold={5}
           isReverse={cond}
+          ref={scroller => this.scroller = scroller}
         >
-          {items}
+          {items.length === 0 && !this.state.testHasMoreItems ? noBookings : items}
         </InfiniteScroll>
       )
       return (
