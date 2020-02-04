@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.time.LocalDate;
 
 @Service
 public class BookingService {
@@ -47,21 +48,33 @@ public class BookingService {
         return pages;
     }
 
-    public PageForm getAll(String filter, Integer pageSize, Integer pageNumber, User currentUser) {
+    public PageForm getAll(String filter,String itemType,String dateFromString,String dateToString,String username, Integer pageSize, Integer pageNumber, User currentUser) {
         List<Booking> bookings;
-        if(currentUser.getRole().equals("USER"))
-            bookings =  bookingRepository.findByOwner(currentUser.getId());
+        if (currentUser.getRole().equals("USER"))
+            bookings = bookingRepository.findByOwner(currentUser.getId());
         else
-            bookings =  bookingRepository.findAll();
+            bookings = bookingRepository.findAll();
 
         int maxSize = 0;
         boolean isNext = false;
-        List<BookingForm> bookingForms =  new ArrayList<>();
-        for (Booking book:bookings ) {
+        List<BookingForm> bookingForms = new ArrayList<>();
+        for (Booking book : bookings) {
             bookingForms.add(new BookingForm(book, userService.getUsername(book.getOwner())));
         }
         if (filter != null && filter.matches("active|inactive"))
             bookingForms.removeIf(booking -> booking.getActive() != filter.equals("active"));
+        if (itemType != null)
+            bookingForms.removeIf(booking -> !itemType.equals(booking.getItemType()));
+        if (dateFromString != null) {
+            LocalDate dateFrom = LocalDate.parse(dateFromString);
+            bookingForms.removeIf(booking -> dateFrom.compareTo(booking.getStartDateTime()) > 0);
+        }
+        if (dateToString != null) {
+            LocalDate dateTo = LocalDate.parse(dateToString);
+            bookingForms.removeIf(booking -> dateTo.compareTo(booking.getStartDateTime()) < 0);
+        }
+        if (username != null )
+            bookingForms.removeIf(booking -> !username.equals(booking.getUsername()));
         if(pageSize != null && pageNumber != null){
             pageNumber -= 1;
             if(pageSize > 0 && pageSize <= bookingForms.size()){
