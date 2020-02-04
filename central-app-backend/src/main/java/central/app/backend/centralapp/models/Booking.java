@@ -1,5 +1,6 @@
 package central.app.backend.centralapp.models;
 
+import central.app.backend.centralapp.forms.parklyForms.ParklyBookingForm;
 import central.app.backend.centralapp.repositories.UserRepository;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -67,6 +68,17 @@ public class Booking implements Serializable {
         this.itemType = itemType;
         this.details = details;
     }
+
+    public Booking(ParklyBookingForm parklyBookingForm) {
+        this.owner = parklyBookingForm.getUserId();
+        this.startDateTime = LocalDate.from(parklyBookingForm.getStartDate());
+        this.active = parklyBookingForm.getActive();
+        this.itemId = parklyBookingForm.getParkingId();
+        this.itemType = "parking";
+        this.details = "";
+    }
+
+
 
     // setters and getters
     public int getId() {
