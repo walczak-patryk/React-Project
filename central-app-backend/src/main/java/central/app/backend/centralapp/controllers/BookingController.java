@@ -1,4 +1,5 @@
 package central.app.backend.centralapp.controllers;
+import java.time.LocalDate;
 
 import central.app.backend.centralapp.errors.ErrorResponse;
 import central.app.backend.centralapp.exceptions.BookingNotExistException;
@@ -43,12 +44,16 @@ public class BookingController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("")
     public ResponseEntity<PageForm> getAllBookings(@RequestParam(name = "filter", required = false) String filter,
+                                                   @RequestParam(name = "itemType", required = false) String itemType,
+                                                   @RequestParam(name = "dateFrom", required = false) String dateFromString,
+                                                   @RequestParam(name = "dateTo", required = false) String dateToString,
+                                                   @RequestParam(name = "username", required = false) String username,
                                                    @RequestParam(name = "pageSize", required = false) Integer pageSize,
                                                    @RequestParam(name = "pageNumber", required = false) Integer pageNumber,
                                                    @RequestHeader(name = "Authorization") String requestAuthorizationHeader) {
         String token = requestAuthorizationHeader.substring(7);
         User currentUser = userService.getUserByToken(token);
-        return ResponseEntity.ok().body(bookingService.getAll(filter,pageSize,pageNumber,currentUser));
+        return ResponseEntity.ok().body(bookingService.getAll(filter,itemType,dateFromString,dateToString,username,pageSize,pageNumber,currentUser));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
