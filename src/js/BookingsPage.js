@@ -201,7 +201,7 @@ class Bookings extends React.Component {
 
   // fetching used in infinite scroll component
   testLoadItems() {
-    console.log("XD")
+    //console.log("XD")
     fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${10}&pageNumber=${this.state.testNextPage}`, {
       method: 'GET',
       headers: {
@@ -226,36 +226,19 @@ class Bookings extends React.Component {
   // sort new data handler
   sortInfiteScroll = (bookings) => {
     if (this.state.bookingIdAsc !== null) {
-      console.log(this.state.bookingIdAsc)
       if (this.state.bookingIdAsc) {
         return bookings.sort((a, b) => this.mySort(a.id, b.id, !this.state.bookingIdAsc));
       } else {
         return bookings;
       }
     } else if (this.state.userIdAsc !== null) {
-      if (this.state.userIdAsc) {
-        return bookings.sort((a, b) => this.mySort(a.owner, b.owner, !this.state.userIdAsc));
-      } else {
-        return bookings.sort((a, b) => this.mySort(a.owner, b.owner, !this.state.userIdAsc));
-      }
+      return bookings.sort((a, b) => this.mySort(a.owner, b.owner, !this.state.userIdAsc));
     } else if (this.state.userNameAsc !== null) {
-      if (this.state.userNameAsc) {
-        return bookings.sort((a, b) => this.mySort(a.username, b.username, !this.state.userNameAsc));
-      } else {
-        return bookings.sort((a, b) => this.mySort(a.username, b.username, !this.state.userNameAsc));
-      }
+      return bookings.sort((a, b) => this.mySort(a.username, b.username, !this.state.userNameAsc));
     } else if (this.state.itemIdAsc !== null) {
-      if (this.state.itemIdAsc) {
-        return bookings.sort((a, b) => this.mySort(a.itemId, b.itemId, !this.state.itemIdAsc));
-      } else {
-        return bookings.sort((a, b) => this.mySort(a.itemId, b.itemId, !this.state.itemIdAsc));
-      }
+      return bookings.sort((a, b) => this.mySort(a.itemId, b.itemId, !this.state.itemIdAsc));
     } else if (this.state.startDateAsc !== null) {
-      if (this.state.startDateAsc) {
-        return bookings.sort((a, b) => this.mySort(a.startDateTime, b.startDateTime, !this.state.startDateAsc));
-      } else {
-        return bookings.sort((a, b) => this.mySort(a.startDateTime, b.startDateTime, !this.state.startDateAsc));
-      }
+      return bookings.sort((a, b) => this.mySort(a.startDateTime, b.startDateTime, !this.state.startDateAsc));
     } else {
       return;
     }
@@ -308,7 +291,7 @@ class Bookings extends React.Component {
           loadMore={this.testLoadItems}
           hasMore={this.state.testHasMoreItems}
           loader={loader}
-          threshold={cond ? 5 : 0}
+          threshold={5}
           isReverse={cond}>
           {items}
         </InfiniteScroll>
