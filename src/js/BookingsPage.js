@@ -21,7 +21,8 @@ class Bookings extends React.Component {
       //test
       testBookings: [],
       testNextPage: 1,
-      testHasMoreItems: true
+      testHasMoreItems: true,
+      cardToShow: null
     }
     this.loadBookings = this.loadBookings.bind(this);
     this.ElementXD = this.ElementXD.bind(this);
@@ -244,6 +245,17 @@ class Bookings extends React.Component {
     }
   }
 
+  handlerShowSearchFilter = (str) => {
+    var xd = null;
+    if (this.state.cardToShow === null || this.state.cardToShow !== str) {
+      xd = str;
+    } else if (this.state.cardToShow === str) {
+      xd = null;
+    }
+    this.setState({ cardToShow: xd })
+
+  }
+
   render() {
     const header = (
       <div className="card bg-primary text-white cardBP">
@@ -277,6 +289,49 @@ class Bookings extends React.Component {
       <div className="spinner-border text-primary " style={{ clear: "both" }}></div>
     )
 
+    const cardSearch = (
+      <div className="card-body">
+        <select className="colorful-select dropdown-primary" multiple searchable="Search here..">
+          <option value="1">Booking id</option>
+          <option value="2">User id</option>
+          <option value="3">Name</option>
+          <option value="4">Item id</option>
+          <option value="5">Item type</option>
+          <option value="6">Item info</option>
+          <option value="7">Active</option>
+          <option value="8">Start date</option>
+        </select>
+      </div>
+    )
+
+    const cardFilter = (
+      <div className="card-body">
+
+      </div>
+    )
+
+    const cardNone = (
+      <div style={{ display: "none" }} />
+    )
+
+    const { cardToShow } = this.state;
+
+    const cardSearchFilter = (
+      <div className="card cardSF">
+        <div className="card-header">
+          <ul className="nav nav-tabs card-header-tabs">
+            <li className="nav-item">
+              <a className={cardToShow === 'cardSearch' ? "nav-link active" : "nav-link"} onClick={() => this.handlerShowSearchFilter('cardSearch')}>Search</a>
+            </li>
+            <li className="nav-item">
+              <a className={cardToShow === 'cardFilter' ? "nav-link active" : "nav-link"} onClick={() => this.handlerShowSearchFilter('cardFilter')}>Filter</a>
+            </li>
+          </ul>
+        </div>
+        {cardToShow === null ? cardNone : cardToShow === 'cardSearch' ? cardSearch : cardFilter}
+      </div>
+    )
+
     if (this.state.bookings) {
       var items = [];
       this.state.bookings.map(booking => {
@@ -298,6 +353,7 @@ class Bookings extends React.Component {
       )
       return (
         <div>
+          {cardSearchFilter}
           {header}
           {testListBookings}
         </div>

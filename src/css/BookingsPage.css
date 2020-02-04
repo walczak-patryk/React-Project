@@ -59,3 +59,9 @@
   color: black;
   cursor: pointer;
 }
+
+.cardSF {
+  margin: 1em;
+  width: 40%;
+  user-select: none;
+}
