@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -26,16 +27,15 @@ public class ParklyService {
 
     public ParklyService(ConnectionService connectionService) {
         this.connectionService = connectionService;
-        this.urlToParkly = "http://parklybe.us-east-1.elasticbeanstalk.com/";
+        this.urlToParkly = "http://parklybe2.us-east-1.elasticbeanstalk.com";
         this.loginForm = new LoginForm( "bookly","bkl");
     }
 
     public List<ParklyForm> getAllParkings() throws Exception {
         this.connectionService.connection(this.urlToParkly,this.loginForm);
         List<ParklyForm> parklyFormsList = new ArrayList<>();
-        String result = this.connectionService.getRequest("/Parking");
         try{
-            parklyFormsList = new ObjectMapper().readValue(result, new TypeReference<List<ParklyForm>>(){});
+            parklyFormsList = this.connectionService.getRequestParklyForm("/parking");
         }catch(Exception ex){
             throw new UrlNotRespondException(ex.getMessage());
         }
@@ -45,9 +45,8 @@ public class ParklyService {
     public List<ParklySpotForm> getAllParkingSpots() throws Exception {
         this.connectionService.connection(this.urlToParkly,this.loginForm);
         List<ParklySpotForm> parklySpotList = new ArrayList<>();
-        String result = this.connectionService.getRequest("/ParkingSpot");
         try{
-            parklySpotList = new ObjectMapper().readValue(result, new TypeReference<List<ParklySpotForm>>(){});
+            parklySpotList = this.connectionService.getRequestParklySpot("/parkingSpot");
         }catch(Exception ex){
             throw new UrlNotRespondException(ex.getMessage());
         }

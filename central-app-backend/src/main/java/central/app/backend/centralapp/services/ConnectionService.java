@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import static org.springframework.http.MediaType.*;
@@ -41,21 +43,32 @@ public class ConnectionService {
         try {
 
             this.headers.set("Authorization", "Bearer " +
-                    Objects.requireNonNull(this.restTemplate.postForObject(this.url + "/admin", request, TokenForm.class)).getToken());
+                    Objects.requireNonNull(this.restTemplate.postForObject(this.url + "/login", request, TokenForm.class)).getToken());
         }catch (Exception ex){
             throw new UnauthorizedAccessException(ex.getLocalizedMessage());
         }
     }
 
-    public String getRequest(String endpoint) throws UrlNotRespondException {
+    public List<ParklyForm> getRequestParklyForm(String endpoint) throws UrlNotRespondException {
         HttpEntity<String> entity = new HttpEntity<String>("body", this.headers);
-        ResponseEntity<String> responseEntity = this.restTemplate.exchange(this.url+endpoint,
+        ResponseEntity<ParklyForm[]> responseEntity = this.restTemplate.exchange(this.url+endpoint,
                 HttpMethod.GET,
                 entity,
-                String.class);
+                ParklyForm[].class);
         if (!responseEntity.getStatusCode().is2xxSuccessful() || !responseEntity.hasBody() || responseEntity.getBody() == null)
             throw new UrlNotRespondException(this.url);
-        return responseEntity.getBody();
+        return Arrays.asList(responseEntity.getBody());
+    }
+
+    public List<ParklySpotForm> getRequestParklySpot(String endpoint) throws UrlNotRespondException {
+        HttpEntity<String> entity = new HttpEntity<String>("body", this.headers);
+        ResponseEntity<ParklySpotForm[]> responseEntity = this.restTemplate.exchange(this.url+endpoint,
+                HttpMethod.GET,
+                entity,
+                ParklySpotForm[].class);
+        if (!responseEntity.getStatusCode().is2xxSuccessful() || !responseEntity.hasBody() || responseEntity.getBody() == null)
+            throw new UrlNotRespondException(this.url);
+        return Arrays.asList(responseEntity.getBody());
     }
 
     public ParklyBookingForm postRequest(ParklyBookingForm parklyBookingForm) throws UrlNotRespondException {
