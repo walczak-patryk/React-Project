@@ -7,6 +7,7 @@ import central.app.backend.centralapp.forms.TokenForm;
 import central.app.backend.centralapp.forms.parklyForms.ParklyBookingForm;
 import central.app.backend.centralapp.forms.parklyForms.ParklyForm;
 import central.app.backend.centralapp.forms.parklyForms.ParklySpotForm;
+import central.app.backend.centralapp.models.Booking;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class ParklyService {
 
     @Autowired
     private final ConnectionService connectionService;
+    private BookingService bookingService;
     private String urlToParkly;
     private LoginForm loginForm;
 
@@ -55,13 +57,20 @@ public class ParklyService {
 
     public ParklyBookingForm createBooking(ParklyBookingForm parklyBookingForm) throws Exception {
         this.connectionService.connection(this.urlToParkly,this.loginForm);
-        return this.connectionService.postRequest(parklyBookingForm);
+        ParklyBookingForm result;
+        try{
+            result = this.connectionService.postRequestParklyBooking("/booking", parklyBookingForm);
+            this.bookingService.create(new Booking(result));
+        }catch(Exception ex){
+            throw new UrlNotRespondException(ex.getMessage());
+        }
+        return result;
     }
 
-    public void bookParking(ParklyBookingForm parkingBookingForm) throws Exception {
-        this.connectionService.connection(this.urlToParkly,this.loginForm);
-        this.connectionService.postRequest(parkingBookingForm);
-    }
+//    public void bookParking(ParklyBookingForm parkingBookingForm) throws Exception {
+//        this.connectionService.connection(this.urlToParkly,this.loginForm);
+//        this.connectionService.postRequest(parkingBookingForm);
+//    }
 
     public void releaseParking(int parkingId) throws Exception {
         this.connectionService.connection(this.urlToParkly,this.loginForm);

@@ -71,15 +71,14 @@ public class ConnectionService {
         return Arrays.asList(responseEntity.getBody());
     }
 
-    public ParklyBookingForm postRequest(ParklyBookingForm parklyBookingForm) throws UrlNotRespondException {
+    public ParklyBookingForm postRequestParklyBooking(String endpoint, ParklyBookingForm parklyBookingForm) throws UrlNotRespondException {
         HttpEntity<String> entity = new HttpEntity<String>(parklyBookingForm.toString(), this.headers);
-        ResponseEntity<ParklyBookingForm> responseEntity = this.restTemplate.exchange(this.url+"/Booking",
+        ResponseEntity<ParklyBookingForm> responseEntity = this.restTemplate.exchange(this.url+"/booking",
                 HttpMethod.POST,
                 entity,
                 ParklyBookingForm.class);
         if (!responseEntity.getStatusCode().is2xxSuccessful())
             throw new UrlNotRespondException(this.url);
-
         return responseEntity.getBody();
     }
 
