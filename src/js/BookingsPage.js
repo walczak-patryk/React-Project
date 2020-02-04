@@ -54,15 +54,6 @@ class Bookings extends React.Component {
     return document.cookie.replace(`/(?:(?:^|.*;\s*)${key}\s*\=\s*([^;]*).*$)|^.*$/, "$1"`).split("=")[1];
   }
 
-  // componentDidMount() {
-  //   if (this.getCookieValue("token") === undefined) {
-  //     this.props.history.push("/");
-  //     return;
-  //   }
-  //   //console.log("cookie 'token' value: ", this.getCookieValue("token"))
-  //   this.loadBookings();
-  // }
-
   loadBookings() {
     this.setState({
       isLoading: true
@@ -268,8 +259,9 @@ class Bookings extends React.Component {
 
   }
 
+  // to do !
   handlerSearchButton = () => {
-    console.log(this.state.searchSelected)
+    console.log(JSON.stringify({ "data": this.state.searchSelected}))
   }
 
   render() {
@@ -305,6 +297,7 @@ class Bookings extends React.Component {
       <div className="spinner-border text-primary " style={{ clear: "both" }}></div>
     )
 
+    // to do !
     const cardSearch = (
       <div className="card-body text-left">
         <div className="row">
@@ -333,6 +326,7 @@ class Bookings extends React.Component {
 
     )
 
+    // to do !
     const cardFilter = (
       <div className="card-body">
       </div>
@@ -375,7 +369,8 @@ class Bookings extends React.Component {
           hasMore={this.state.testHasMoreItems}
           loader={loader}
           threshold={5}
-          isReverse={cond}>
+          isReverse={cond}
+        >
           {items}
         </InfiniteScroll>
       )
