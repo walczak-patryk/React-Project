@@ -11,6 +11,8 @@ import central.app.backend.centralapp.services.ParklyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,16 +28,19 @@ public class ParkingController {
         this.parklyService = parklyService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("")
     public ResponseEntity<List<ParklyForm>> getAllParkings() throws Exception {
         return ResponseEntity.ok().body(parklyService.getAllParkings());
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/spots")
     public ResponseEntity<List<ParklySpotForm>> getAllParkingSpots() throws Exception {
         return ResponseEntity.ok().body(parklyService.getAllParkingSpots());
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping("")
     public ResponseEntity<ParklyBookingForm> createBooking(@Valid @RequestBody ParklyBookingForm parklyBookingForm) throws Exception{
         return ResponseEntity.ok().body(parklyService.createBooking(parklyBookingForm));
@@ -53,5 +58,12 @@ public class ParkingController {
         return new ResponseEntity<>(
                 new ErrorResponse("Parkly Does Not Respond Exception.", HttpStatus.BAD_REQUEST.value(), ex.getMessage()),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<ErrorResponse> accessDenied(AccessDeniedException ex){
+        return new ResponseEntity<>(
+                new ErrorResponse("Access denied. You don't have enough permissions.", HttpStatus.FORBIDDEN.value(), ex.getMessage()),
+                HttpStatus.FORBIDDEN);
     }
 }
