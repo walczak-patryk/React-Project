@@ -1,9 +1,20 @@
 import React from 'react';
 import Booking from './Booking'
 import { withRouter } from "react-router-dom";
-import { Icon } from "semantic-ui-react"
+import { Icon, Select, Dropdown } from "semantic-ui-react"
 import '../css/BookingsPage.css'
 import InfiniteScroll from 'react-infinite-scroller';
+
+const options = [
+  { value: 'id', text: 'Booking id' },
+  { value: 'owner', text: 'User id' },
+  { value: 'username', text: 'Name' },
+  { value: 'itemId', text: 'Item id' },
+  { value: 'itemType', text: 'Item type' },
+  { value: 'details', text: 'Item info' },
+  { value: 'active', text: 'Active' },
+  { value: 'startDateTime', text: 'Start date' }
+];
 
 class Bookings extends React.Component {
   constructor(props) {
@@ -22,7 +33,8 @@ class Bookings extends React.Component {
       testBookings: [],
       testNextPage: 1,
       testHasMoreItems: true,
-      cardToShow: null
+      cardToShow: null,
+      searchSelected: null
     }
     this.loadBookings = this.loadBookings.bind(this);
     this.ElementXD = this.ElementXD.bind(this);
@@ -256,6 +268,10 @@ class Bookings extends React.Component {
 
   }
 
+  handlerSearchButton = () => {
+    console.log(this.state.searchSelected)
+  }
+
   render() {
     const header = (
       <div className="card bg-primary text-white cardBP">
@@ -290,23 +306,35 @@ class Bookings extends React.Component {
     )
 
     const cardSearch = (
-      <div className="card-body">
-        <select className="colorful-select dropdown-primary" multiple searchable="Search here..">
-          <option value="1">Booking id</option>
-          <option value="2">User id</option>
-          <option value="3">Name</option>
-          <option value="4">Item id</option>
-          <option value="5">Item type</option>
-          <option value="6">Item info</option>
-          <option value="7">Active</option>
-          <option value="8">Start date</option>
-        </select>
+      <div className="card-body text-left">
+        <div className="row">
+          <div style={{ width: "60%", margin: "0.5em", marginTop: "0", marginBottom: "0" }}>
+            <Dropdown
+              clearable
+              fluid
+              multiple
+              options={options}
+              search
+              selection
+              placeholder='Select fields to search by'
+              onChange={(e, data) => {
+                this.setState({ searchSelected: data.value });
+              }}
+            />
+          </div>
+          <div className="ui action input" style={{ margin: "0.5em", marginTop: "0", marginBottom: "0" }}>
+            <input type="text" placeholder="Search..." />
+            <button className="ui icon button" onClick={this.handlerSearchButton}>
+              <i className="search icon"></i>
+            </button>
+          </div>
+        </div>
       </div>
+
     )
 
     const cardFilter = (
       <div className="card-body">
-
       </div>
     )
 
