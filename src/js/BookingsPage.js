@@ -33,7 +33,8 @@ class Bookings extends React.Component {
     //this.componentDidMount = this.componentDidMount.bind(this);
 
     //test
-    this.testLoadItems= this.testLoadItems.bind(this);
+    this.testLoadItems = this.testLoadItems.bind(this);
+    this.sortInfiteScroll = this.sortInfiteScroll.bind(this);
   }
 
   getCookieValue = (key) => {
@@ -66,9 +67,10 @@ class Bookings extends React.Component {
       })
       .then(data => this.setState({ bookings: data.bookingForms }))
       .then(() => this.setState({ isLoading: false }));
-      
+
   }
 
+  // helper function for sorting
   mySort = (a, b, cond) => {
     if (!cond)
       return a < b ? 1 : -1;
@@ -77,12 +79,13 @@ class Bookings extends React.Component {
     }
   }
 
+  // sorting by booking id handler
   handlerBID = () => {
     if (!this.state.bookings) {
       return;
     }
     if (this.state.bookingIdAsc === null) {
-      this.state.bookingIdAsc = false; // i know this is stupid but it works (same for all sorting handlers)
+      this.state.bookingIdAsc = true; // i know this is stupid but it works (same for all sorting handlers)
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.id, b.id, this.state.bookingIdAsc))
     this.setState(prevstate => ({
@@ -96,12 +99,13 @@ class Bookings extends React.Component {
     // console.log("booking id: ", this.state.bookingIdAsc))
   }
 
+  // sorting by user id handler
   handlerUId = () => {
     if (!this.state.bookings) {
       return;
     }
     if (this.state.userIdAsc === null) {
-      this.state.userIdAsc = false; // check handlerBID
+      this.state.userIdAsc = true; // check handlerBID
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.owner, b.owner, this.state.userIdAsc))
     this.setState(prevstate => ({
@@ -114,13 +118,13 @@ class Bookings extends React.Component {
     }))
     // console.log("User id: ", this.state.userIdAsc))
   }
-
+  // sorting by user name handler  
   hanlderUName = () => {
     if (!this.state.bookings) {
       return;
     }
     if (this.state.userNameAsc === null) {
-      this.state.userNameAsc = false; // check handlerBID
+      this.state.userNameAsc = true; // check handlerBID
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.username, b.username, this.state.userNameAsc))
     this.setState(prevstate => ({
@@ -133,13 +137,13 @@ class Bookings extends React.Component {
     }))
     // cnsole.log("user name: ", this.state.userNameAsc))
   }
-
+  // sorting by item id handler
   hanlderIID = () => {
     if (!this.state.bookings) {
       return;
     }
     if (this.state.itemIdAsc === null) {
-      this.state.itemIdAsc = false; // check handlerBID
+      this.state.itemIdAsc = true; // check handlerBID
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.itemId, b.itemId, this.state.itemIdAsc))
     this.setState(prevstate => ({
@@ -152,13 +156,13 @@ class Bookings extends React.Component {
     }))
     // console.log("item id:", this.state.itemIdAsc))
   }
-
+  // sorting by start date handler
   handlerSD = () => {
     if (!this.state.bookings) {
       return;
     }
     if (this.state.startDateAsc === null) {
-      this.state.startDateAsc = false; // check handlerBID
+      this.state.startDateAsc = true; // check handlerBID
     }
     var sorted = this.state.bookings.sort((a, b) => this.mySort(a.startDateTime, b.startDateTime, this.state.startDateAsc))
     this.setState(prevstate => ({
@@ -193,7 +197,9 @@ class Bookings extends React.Component {
   }
 
   //fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${5}&pageNumber=${this.state.testNextPage}`, {
-    // http://localhost:3004/bookings?_page=0&_limit=10
+  // http://localhost:3004/bookings?_page=0&_limit=10
+
+  // fetching used in infinite scroll component
   testLoadItems() {
     console.log("XD")
     fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${10}&pageNumber=${this.state.testNextPage}`, {
@@ -203,17 +209,56 @@ class Bookings extends React.Component {
       }
     })
       .then(response => {
-       // console.log(response.status)
+        // console.log(response.status)
         return response.json();
       })
       .then(data => {
-        var testNewState = this.state.bookings.concat(data.bookingForms)
-        //console.log(testNewState)
-        this.setState(prevstate => ({ 
+        var testNewState = this.sortInfiteScroll(this.state.bookings.concat(data.bookingForms))
+        //console.log(this.sortInfiteScroll(this.state.bookings.concat(data.bookingForms)));
+        this.setState(prevstate => ({
           bookings: testNewState,
-        testHasMoreItems: data.isNext,
-        testNextPage: prevstate.testNextPage+1
-      }))})
+          testHasMoreItems: data.isNext,
+          testNextPage: prevstate.testNextPage + 1
+        }))
+      })
+  }
+
+  // sort new data handler
+  sortInfiteScroll = (bookings) => {
+    if (this.state.bookingIdAsc !== null) {
+      console.log(this.state.bookingIdAsc)
+      if (this.state.bookingIdAsc) {
+        return bookings.sort((a, b) => this.mySort(a.id, b.id, !this.state.bookingIdAsc));
+      } else {
+        return bookings;
+      }
+    } else if (this.state.userIdAsc !== null) {
+      if (this.state.userIdAsc) {
+        return bookings.sort((a, b) => this.mySort(a.owner, b.owner, !this.state.userIdAsc));
+      } else {
+        return bookings.sort((a, b) => this.mySort(a.owner, b.owner, !this.state.userIdAsc));
+      }
+    } else if (this.state.userNameAsc !== null) {
+      if (this.state.userNameAsc) {
+        return bookings.sort((a, b) => this.mySort(a.username, b.username, !this.state.userNameAsc));
+      } else {
+        return bookings.sort((a, b) => this.mySort(a.username, b.username, !this.state.userNameAsc));
+      }
+    } else if (this.state.itemIdAsc !== null) {
+      if (this.state.itemIdAsc) {
+        return bookings.sort((a, b) => this.mySort(a.itemId, b.itemId, !this.state.itemIdAsc));
+      } else {
+        return bookings.sort((a, b) => this.mySort(a.itemId, b.itemId, !this.state.itemIdAsc));
+      }
+    } else if (this.state.startDateAsc !== null) {
+      if (this.state.startDateAsc) {
+        return bookings.sort((a, b) => this.mySort(a.startDateTime, b.startDateTime, !this.state.startDateAsc));
+      } else {
+        return bookings.sort((a, b) => this.mySort(a.startDateTime, b.startDateTime, !this.state.startDateAsc));
+      }
+    } else {
+      return;
+    }
   }
 
   render() {
@@ -246,28 +291,10 @@ class Bookings extends React.Component {
     )
 
     const loader = (
-      <div className="spinner-border text-primary " style={{clear: "both"}}></div>
+      <div className="spinner-border text-primary " style={{ clear: "both" }}></div>
     )
 
-    if (this.state.isLoading) {
-      return ( 
-        <div>
-          {header}
-          {loader}
-        </div>
-      )
-    }
-
     if (this.state.bookings) {
-      const listBookings = (
-        this.state.bookings.length === 0 ? <div>No bookings</div> :
-          <div>
-            {this.state.bookings.map(item => (
-              <Booking booking={item} key={item.id} />
-            ))}
-          </div>
-      )
-      //console.log(this.state.testBookings)
       var items = [];
       this.state.bookings.map(booking => {
         items.push(
@@ -275,34 +302,25 @@ class Bookings extends React.Component {
         )
       })
       //console.log(this.state.testBookings)
+      var cond = this.state.startDateAsc || this.state.itemIdAsc || this.state.userNameAsc || this.state.userIdAsc || this.state.bookingIdAsc;
       const testListBookings = (
-          <InfiniteScroll
-            pageStart={1}
-            loadMore={this.testLoadItems}
-            hasMore={this.state.testHasMoreItems}
-            loader={loader}
-            threshold={0}>
-              {items}
-          </InfiniteScroll>
+        <InfiniteScroll
+          loadMore={this.testLoadItems}
+          hasMore={this.state.testHasMoreItems}
+          loader={loader}
+          threshold={cond ? 5 : 0}
+          isReverse={cond}>
+          {items}
+        </InfiniteScroll>
       )
-
       return (
-        <div className="Wrapper">
-          {/* <div className="Helper">
-            <div className="SearchWrapper">
-              <button className="SearchButton" onClick={this.handler}>XD</button>
-              <input type="date"></input>
-            </div>
-          </div> */}
+        <div>
           {header}
           {testListBookings}
-          {/* <div style={{ float: "left", margin: "1em" }}>
-            asdasd
-          </div> */}
         </div>
       )
     } else {
-      return <div>Error</div>
+      return <div>Unexpected error!</div>
     }
 
   }
