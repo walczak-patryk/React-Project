@@ -11,7 +11,7 @@ function book(token, details, startDate, endDate) {
     var day = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
-    var date = day + '/' + month + '/' + year;
+    var date = month + '-' + day + '-' + year;
     fetch('http://minibookly.us-east-1.elasticbeanstalk.com/Parkly', {
         method: 'POST',
         headers: {
@@ -20,12 +20,12 @@ function book(token, details, startDate, endDate) {
             'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify({
-            id: 1, 
+            id: null, 
             parkingId: details.id,
             parkingSpotId: 0,
-            userId: 0,
+            userId: null,
             bookDate: date,
-            paidAmount: 0,
+            paidAmount: details.price,
             startDate: startDate,
             endDate: endDate,
             active: true
@@ -33,25 +33,25 @@ function book(token, details, startDate, endDate) {
     })
     .then(response => { 
         if(response.status == 200){
-            Alert.alert(
-                'Your booking is complete',
-                'Thank You for using Bookly',
-                [
-                  {text: 'OK'},
-                ],
-                {cancelable: true},
-            );
+            // Alert.alert(
+            //     'Your booking is complete',
+            //     'Thank You for using Bookly',
+            //     [
+            //       {text: 'OK'},
+            //     ],
+            //     {cancelable: true},
+            // );
             this.props.navigation.navigate("MyBookings", {token : this.state.token});
         }
         else{
-            Alert.alert(
-                'An error occured',
-                'Try again later',
-                [
-                  {text: 'OK'},
-                ],
-                {cancelable: true},
-            );
+            // Alert.alert(
+            //     'An error occured',
+            //     'Try again later',
+            //     [
+            //       {text: 'OK'},
+            //     ],
+            //     {cancelable: true},
+            // );
             return null;
         }
     })
