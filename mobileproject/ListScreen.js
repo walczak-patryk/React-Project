@@ -8,6 +8,10 @@ import {
 } from "react-native";
 
 function book(token, details, startDate, endDate) {
+    var day = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+    var date = day + '/' + month + '/' + year;
     fetch('http://minibookly.us-east-1.elasticbeanstalk.com/Parkly', {
         method: 'POST',
         headers: {
@@ -20,7 +24,7 @@ function book(token, details, startDate, endDate) {
             parkingId: details.id,
             parkingSpotId: 0,
             userId: 0,
-            bookDate: 0,
+            bookDate: date,
             paidAmount: 0,
             startDate: startDate,
             endDate: endDate,
