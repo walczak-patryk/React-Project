@@ -24,6 +24,7 @@ public class ParklyBookingForm {
     public int getPaidAmount() {return paidAmount;}
     public boolean getActive() {return active;}
 
+    public void setUserId(int userId) { this.userId = userId; }
 
     @Override
     public String toString() {

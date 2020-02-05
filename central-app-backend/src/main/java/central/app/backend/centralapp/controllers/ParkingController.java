@@ -7,7 +7,9 @@ import central.app.backend.centralapp.forms.parklyForms.ParklyBookingForm;
 import central.app.backend.centralapp.forms.parklyForms.ParklyForm;
 import central.app.backend.centralapp.forms.parklyForms.ParklySpotForm;
 import central.app.backend.centralapp.models.Booking;
+import central.app.backend.centralapp.models.User;
 import central.app.backend.centralapp.services.ParklyService;
+import central.app.backend.centralapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ import java.util.Objects;
 @RequestMapping(path = "/parkly")
 public class ParkingController {
     private ParklyService parklyService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public ParkingController(ParklyService parklyService) {
@@ -43,7 +48,11 @@ public class ParkingController {
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping("")
-    public ResponseEntity<ParklyBookingForm> createBooking(@Valid @RequestBody ParklyBookingForm parklyBookingForm) throws Exception{
+    public ResponseEntity<ParklyBookingForm> createBooking(@Valid @RequestBody ParklyBookingForm parklyBookingForm,
+                                                           @RequestHeader ("Authorization") String requestAuthorizationHeader) throws Exception{
+        String token = requestAuthorizationHeader.substring(7);
+        User currentUser = userService.getUserByToken(token);
+        parklyBookingForm.setUserId(currentUser.getId());
         return ResponseEntity.ok().body(parklyService.createBooking(parklyBookingForm));
     }
 
