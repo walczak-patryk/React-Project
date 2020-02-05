@@ -25,7 +25,7 @@ class Details extends React.Component {
     return (
       <div className="card-body">
         <div className="ElementDetails">
-          {DetailsView}
+          Sadly this endpoint has not been implemented!
         </div>
       </div>
     )
