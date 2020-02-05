@@ -4,43 +4,91 @@ import {
     FlatList,
     StyleSheet,
     View,
-    ActivityIndicator,
     TouchableOpacity
 } from "react-native";
 
-//Zmienić wyświetlanie w funkcji Item tak, żeby dla odpowiednich serwisów wyświetlało odpowiednie pola 
-//(pola dla danych serwisów są w SearchScreen) i zrobić fetch POST z bookingiem (wzorując się na całości BookingsScreen bo tam jest podobnie i działa)
+function book(token, details, startDate, endDate) {
+    var day = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+    var date = month + '-' + day + '-' + year;
+    fetch('http://minibookly.us-east-1.elasticbeanstalk.com/Parkly', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            id: null, 
+            parkingId: details.id,
+            parkingSpotId: 0,
+            userId: null,
+            bookDate: date,
+            paidAmount: details.price,
+            startDate: startDate,
+            endDate: endDate,
+            active: true
+        })
+    })
+    .then(response => { 
+        if(response.status == 200){
+            // Alert.alert(
+            //     'Your booking is complete',
+            //     'Thank You for using Bookly',
+            //     [
+            //       {text: 'OK'},
+            //     ],
+            //     {cancelable: true},
+            // );
+            this.props.navigation.navigate("MyBookings", {token : this.state.token});
+        }
+        else{
+            // Alert.alert(
+            //     'An error occured',
+            //     'Try again later',
+            //     [
+            //       {text: 'OK'},
+            //     ],
+            //     {cancelable: true},
+            // );
+            return null;
+        }
+    })
+}
 
-function Item({ details, token, service }) {
+
+function Item({ details, token, service, startDate, endDate }) {
     return (
     <View style={styles.booking}>
         {service == 'Carly' &&
         <View style={styles.car}>
             <Text>{details.id}</Text>
-            <Text>{details.startDateTime}</Text>
-            <Text>{details.active }</Text>
-            <Text>{details.itemType}</Text>
             <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Cancel booking</Text>
+                <Text style={styles.buttonText}>Book</Text>
             </TouchableOpacity>
         </View>}
         {service == 'Flatly' &&
         <View style={styles.flat}>
             <Text>{details.id}</Text>
-            <Text>{details.startDateTime}</Text>
-            <Text>{details.active}</Text>
-            <Text>{details.itemType}</Text>
             <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Cancel booking</Text>
+                <Text style={styles.buttonText}>Book</Text>
             </TouchableOpacity>
         </View>}
         {service == 'Parkly' &&
         <View style={styles.parking}>
-            <Text>{details.id}</Text>
-            <Text>{details.startDateTime}</Text>
-            <Text>{details.active}</Text>
-            <Text>{details.itemType}</Text>
-            <TouchableOpacity style={styles.button}>
+            <Text>Parking Id: {details.id}</Text>
+            <Text>Name: {details.name}</Text>
+            <Text>City: {details.city}</Text>
+            <Text>Zip code: {details.zip}</Text>
+            <Text>Address: {details.address}</Text>
+            <Text>Price: {details.price} PLN/day</Text>
+            <Text>Description: {details.description}</Text>
+            <Text>Number of spots: {details.nspots}</Text>
+            {details.active ?
+            <Text>Active: True</Text>:
+            <Text>Active: False</Text>}
+            <TouchableOpacity style={styles.button} onPress={() => book(token, details, startDate, endDate)}>
                 <Text style={styles.buttonText}>Book</Text>
             </TouchableOpacity>
         </View>}
@@ -56,7 +104,8 @@ export default class LoginScreen extends React.Component{
             token: this.props.navigation.getParam('token'),
             service: this.props.navigation.getParam('service'),
             items: this.props.navigation.getParam('items'),
-            isFetching: false
+            startDate: this.props.navigation.getParam('startDate'),
+            endDate: this.props.navigation.getParam('endDate')
         }
     }
 
@@ -64,18 +113,22 @@ export default class LoginScreen extends React.Component{
     render() {
         return(
             <View style={styles.container}>
-                <Text>Items list:</Text>
-                {this.state.isFetching &&
-                <ActivityIndicator size="large"/>}
-                {this.state.isFetching == false && ( this.state.items.length > 0 ?
+                {this.state.items.length > 0 ?
                 <FlatList
                     data={this.state.items}
-                    renderItem={({ item }) => <Item details={item} token={this.state.token} service={this.state.service} />}
+                    renderItem={({ item }) => 
+                        <Item 
+                            details={item} 
+                            token={this.state.token} 
+                            service={this.state.service} 
+                            startDate={this.state.startDate}
+                            endDate={this.state.endDate} 
+                        />}
                     keyExtractor={item => item.id.toString()}
                     contentContainerStyle={{ paddingBottom: 20}}
                 />:
                 <Text style={styles.text}>No items match the search criteria</Text>
-                )}
+                }
             </View>   
         )
     }
@@ -91,19 +144,25 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     car: {
-        backgroundColor: '#BC807C',
+        backgroundColor: '#E8DBC3',
         borderRadius: 7,
-        padding: 5
+        padding: 5,
+        borderWidth: 1,
+        borderColor: '#BCBCBC'
     },
     flat: {
-        backgroundColor: '#77A0B5',
+        backgroundColor: '#ABE3D0',
         borderRadius: 7,
-        padding: 5
+        padding: 5,
+        borderWidth: 1,
+        borderColor: '#BCBCBC'
     },
     parking: {
-        backgroundColor: '#8EB28D',
+        backgroundColor: '#DFE1E3',
         borderRadius: 7,
-        padding: 5
+        padding: 5,
+        borderWidth: 1,
+        borderColor: '#BCBCBC'
     },
     whitespace: {
         margin: 80
@@ -113,7 +172,8 @@ const styles = StyleSheet.create({
         width: "50%",
         borderRadius: 10,
         backgroundColor: '#BCBCBC',
-        
+        marginTop: 10,
+        padding: 5
     },
     buttonText: {
         alignSelf: "center",

@@ -5,7 +5,6 @@ import {
     Text, 
     TextInput, 
     SafeAreaView, 
-    StatusBar, 
     TouchableOpacity,
     ScrollView,
     Switch,
@@ -101,7 +100,14 @@ export default class SearchScreen extends React.Component{
         })
         .then(response => {
             if(response != null){
-                this.props.navigation.navigate('ItemList', {token: token, service: this.state.Service, items : response});
+                this.props.navigation.navigate('ItemList', 
+                {
+                    token: token, 
+                    service: this.state.Service, 
+                    items: response, 
+                    startDate: this.state.selectedStartDate, 
+                    endDate: this.state.selectedEndDate
+                });
             }
         })
     }
@@ -116,14 +122,33 @@ export default class SearchScreen extends React.Component{
             
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.scrollView}>
-                    <TextInput 
+                    {this.state.Service == "Parkly" ?
+                    <View>
+                        <View style={styles.pickerView}>
+                            <View style={{flex:.6}}>
+                                <Text style={styles.switchText}> City:</Text>
+                            </View>
+                            <View style={{flex:.5}}>
+                                <Picker
+                                    selectedValue={this.state.city}
+                                    onValueChange={(itemValue) =>
+                                        this.setState({city: itemValue})}
+                                >
+                                    <Picker.Item label="Warsaw" value="Warsaw"/>
+                                    <Picker.Item label="Moscow" value="Moscow"/>
+                                    <Picker.Item label="Paris"  value="Paris" />
+                                </Picker>
+                            </View>
+                        </View>
+                    </View>
+                    :<TextInput 
                         style={styles.cityInput} 
                         placeholder="City" 
                         placeholderTextColor="#4F4F4F" 
                         name="city" 
                         value={this.state.city} 
                         onChangeText={(value) => this.setState({city: value})}
-                    />
+                    />}
                     <TextInput 
                         style={styles.cityInput} 
                         placeholder="Address" 
@@ -157,7 +182,7 @@ export default class SearchScreen extends React.Component{
                             maxLength={10}
                             onChangeText={(value) => this.setState({pricefrom: value})}
                         />
-                        <Text style={styles.priceText}>PLN</Text>
+                        <Text style={styles.priceText}>PLN/day</Text>
                     </View>
                     <View style={styles.switchView}>
                         <TextInput 
@@ -170,7 +195,7 @@ export default class SearchScreen extends React.Component{
                             maxLength={10}
                             onChangeText={(value) => this.setState({priceto: value})}
                         />
-                        <Text style={styles.priceText}>PLN</Text>
+                        <Text style={styles.priceText}>PLN/day</Text>
                     </View>
                     {this.state.Service == "Parkly" &&
                     <View>
