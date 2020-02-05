@@ -48,9 +48,20 @@ export default class LoginScreen extends React.Component{
             )
             return null;
         }
-        else {
+        else if (response.status == 200) {
             return response.json();
           }
+        else{
+          Alert.alert(
+            'An error occured',
+            'Error ' + response.status,
+            [
+              {text: 'OK'},
+            ],
+            {cancelable: true},
+          )
+          return null;
+        }
         })
         .then(responseData => {
           if (responseData != null) {
