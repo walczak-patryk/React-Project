@@ -215,7 +215,7 @@ class Bookings extends React.Component {
 
   // fetching used in infinite scroll component
   testLoadItems(page) {
-    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${1}&pageNumber=${page}`, {
+    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${10}&pageNumber=${page}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${this.getCookieValue('token')}`
