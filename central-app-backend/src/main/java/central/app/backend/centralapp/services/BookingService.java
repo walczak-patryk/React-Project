@@ -61,21 +61,21 @@ public class BookingService {
         for (Booking book : bookings) {
             bookingForms.add(new BookingForm(book, userService.getUsername(book.getOwner())));
         }
-        if (filter != null && filter.matches("active|inactive"))
+        if (filter != null && !filter.equals("") && filter.matches("active|inactive"))
             bookingForms.removeIf(booking -> booking.getActive() != filter.equals("active"));
-        if (itemType != null)
+        if (itemType != null && !itemType.equals(""))
             bookingForms.removeIf(booking -> !itemType.equals(booking.getItemType()));
-        if (dateFromString != null) {
+        if (dateFromString != null && !dateFromString.equals("")) {
             LocalDate dateFrom = LocalDate.parse(dateFromString);
             bookingForms.removeIf(booking -> dateFrom.compareTo(booking.getStartDateTime()) > 0);
         }
-        if (dateToString != null) {
+        if (dateToString != null && !dateToString.equals("")) {
             LocalDate dateTo = LocalDate.parse(dateToString);
             bookingForms.removeIf(booking -> dateTo.compareTo(booking.getStartDateTime()) < 0);
         }
-        if (username != null )
+        if (username != null && !username.equals(""))
             bookingForms.removeIf(booking -> !username.equals(booking.getUsername()));
-        if(pageSize != null && pageNumber != null){
+        if(pageSize != null && pageNumber != null && pageSize != 0 && pageNumber != 0){
             pageNumber -= 1;
             if(pageSize > 0 && pageSize <= bookingForms.size()){
                 maxSize = (int)Math.floor(bookingForms.size()/pageSize);
