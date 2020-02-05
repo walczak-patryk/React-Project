@@ -48,19 +48,12 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .authorizeRequests().antMatchers("/login").permitAll()
-                .anyRequest().authenticated().and().exceptionHandling()
+                    .antMatchers("/users").access("hasRole('ADMIN')")
+                    .anyRequest().authenticated()
+                .and().exceptionHandling()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-    }
-
-    @Override
-    public void configure(WebSecurity webSecurity) throws Exception {
-        webSecurity
-                .ignoring()
-                .antMatchers(
-                        HttpMethod.OPTIONS, "/**"
-                );
     }
 
 }
