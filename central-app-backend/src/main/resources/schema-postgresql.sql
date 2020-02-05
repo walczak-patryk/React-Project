@@ -8,7 +8,8 @@ CREATE TABLE users (
                        password VARCHAR(250) NOT NULL,
                        first_name VARCHAR(250) NOT NULL,
                        last_name VARCHAR(250) NOT NULL,
-                       security_tocken VARCHAR(250) NOT NULL
+                       security_tocken VARCHAR(250) NOT NULL,
+role VARCHAR(250) NOT NULL
 );
 
 CREATE TABLE booking (
@@ -18,5 +19,6 @@ CREATE TABLE booking (
                          active BOOLEAN  NOT NULL,
                          item_id INT NOT NULL,
                          item_type VARCHAR(250) NOT NULL,
+details VARCHAR(250)
 
 );
