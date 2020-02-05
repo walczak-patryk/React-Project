@@ -10,10 +10,7 @@ const options = [
   { value: 'owner', text: 'User id' },
   { value: 'username', text: 'Name' },
   { value: 'itemId', text: 'Item id' },
-  { value: 'itemType', text: 'Item type' },
   { value: 'details', text: 'Item info' },
-  { value: 'active', text: 'Active' },
-  { value: 'startDateTime', text: 'Start date' }
 ];
 
 class Bookings extends React.Component {
@@ -34,7 +31,13 @@ class Bookings extends React.Component {
       testNextPage: 1,
       testHasMoreItems: true,
       cardToShow: null,
-      searchSelected: null
+      searchSelected: null,
+
+      //filters
+      filterActive: '',
+      filterItemType: '',
+      filterDateFrom: '',
+      filterDateTo: ''
     }
     this.loadBookings = this.loadBookings.bind(this);
     this.ElementXD = this.ElementXD.bind(this);
@@ -48,6 +51,13 @@ class Bookings extends React.Component {
     //test
     this.testLoadItems = this.testLoadItems.bind(this);
     this.sortInfiteScroll = this.sortInfiteScroll.bind(this);
+
+    //filtering
+    this.handlerFilterActive = this.handlerFilterActive.bind(this);
+    this.handlerFilterDateFrom = this.handlerFilterDateFrom.bind(this);
+    this.handlerFilterDateTo = this.handlerFilterDateTo.bind(this);
+    this.handlerFilterItemType = this.handlerFilterItemType.bind(this);
+    this.clearFilters = this.clearFilters.bind(this);
   }
 
   getCookieValue = (key) => {
@@ -202,6 +212,7 @@ class Bookings extends React.Component {
 
   //fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${5}&pageNumber=${this.state.testNextPage}`, {
   // http://localhost:3004/bookings?_page=0&_limit=10
+
   // fetching used in infinite scroll component
   testLoadItems(page) {
     fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${1}&pageNumber=${page}`, {
@@ -257,10 +268,41 @@ class Bookings extends React.Component {
 
   }
 
+  clearFilters = () => {
+    this.setState({
+      filterActive: '',
+      filterDateFrom: '',
+      filterDateTo: '',
+      filterItemType: ''
+    })
+  }
   // to do !
   handlerSearchButton = () => {
-    this.setState({ testHasMoreItems: true, bookings: [] })
-    this.scroller.pageLoaded = 0;
+    //this.setState({ testHasMoreItems: true, bookings: [] })
+    //this.scroller.pageLoaded = 0;
+    //console.log(this.state)
+  }
+
+  handlerFilterItemType = (e) => {
+    if (e.target.value === 'xdType') {
+      this.setState({ filterItemType: '' });
+    } else {
+      this.setState({ filterItemType: e.target.value })
+    }
+  }
+
+  handlerFilterActive = (e) => {
+    var xd = e.target.value === 'on' ? true : false;
+    this.setState({ filterActive: xd })
+  }
+
+  handlerFilterDateFrom = (e) => {
+    this.setState({ filterDateFrom: e.target.value })
+
+  }
+
+  handlerFilterDateTo = (e) => {
+    this.setState({ filterDateTo: e.target.value })
   }
 
   render() {
@@ -300,7 +342,7 @@ class Bookings extends React.Component {
     const cardSearch = (
       <div className="card-body text-left">
         <div className="row">
-          <div style={{ width: "60%", margin: "0.5em", marginTop: "0", marginBottom: "0" }}>
+          <div className="col-md-8">
             <Dropdown
               clearable
               fluid
@@ -314,11 +356,13 @@ class Bookings extends React.Component {
               }}
             />
           </div>
-          <div className="ui action input" style={{ margin: "0.5em", marginTop: "0", marginBottom: "0" }}>
-            <input type="text" placeholder="Search..." />
-            <button className="ui icon button" onClick={this.handlerSearchButton}>
-              <i className="search icon"></i>
-            </button>
+          <div className="col-md-4">
+            <div className="ui action input" style={{ marginRight: "3em" }}>
+              <input type="text" placeholder="Search..." />
+              <button className="ui icon button" onClick={this.handlerSearchButton}>
+                <i className="search icon"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -330,33 +374,45 @@ class Bookings extends React.Component {
       <div className="card-body">
         <div className="row">
           <div className="col-md-3">
-            Active
+            <label className="label">Booking state</label>
           </div>
           <div className="col-md-3">
-            Item type
+            <label className="label">Item type</label>
           </div>
           <div className="col-md-6">
             <div className="row">
               <div className="col-md-6">
-                Date
+                <label className="label">Date from</label>
+              </div>
+              <div className="col-md-6">
+                <label className="label">Date to</label>
               </div>
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-3">
-            Tick box active
+        <div className="row"  >
+          <div className="col-md-3 form-group">
+            <select className="form-control" defaultValue="xd" onChange={this.handlerFilterItemType}>
+              <option value="xdState">Any state</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
           </div>
-          <div className="col-md-3">
-            Dropdown item type
+          <div className="col-md-3 form-group">
+            <select className="form-control" defaultValue="xd" onChange={this.handlerFilterItemType}>
+              <option value="xdType">Any type</option>
+              <option value="car">Car</option>
+              <option value="flat">Flat</option>
+              <option value="parking">Parking</option>
+            </select>
           </div>
           <div className="col-md-6">
             <div className="row">
               <div className="col-md-6">
-                datefrom
+                <input type="date" className="form-control" onChange={this.handlerFilterDateFrom} />
               </div>
               <div className="col-md-6">
-                dateTo
+                <input type="date" className="form-control" onChange={this.handlerFilterDateTo} />
               </div>
             </div>
           </div>
@@ -385,11 +441,13 @@ class Bookings extends React.Component {
         {cardToShow === null ? cardNone : cardToShow === 'cardSearch' ? cardSearch : cardFilter}
       </div>
     )
+
     const noBookings = (
       <div>
         XD
       </div>
     )
+
     if (this.state.bookings) {
       var items = [];
       this.state.bookings.map(booking => {
@@ -427,3 +485,9 @@ class Bookings extends React.Component {
 }
 
 export default withRouter(Bookings)
+
+// checkbox for active/inactive
+{/* <div className="custom-control custom-checkbox">
+  <input type="checkbox" className="custom-control-input" id="customCheck1"  onClick={this.handlerFilterActive}/>
+  <label className="custom-control-label" htmlFor="customCheck1">Active</label>
+</div> */}

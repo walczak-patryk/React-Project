@@ -63,5 +63,9 @@
 .cardSF {
   margin: 1em;
   user-select: none;
-  width: 75%;
+  width: 90%;
+}
+
+.noSelect {
+  user-select: none;
 }
