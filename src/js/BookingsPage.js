@@ -265,7 +265,7 @@ class Bookings extends React.Component {
       xd = null;
     }
     this.setState({ cardToShow: xd })
-
+    this.clearFilters();
   }
 
   clearFilters = () => {
@@ -273,7 +273,8 @@ class Bookings extends React.Component {
       filterActive: '',
       filterDateFrom: '',
       filterDateTo: '',
-      filterItemType: ''
+      filterItemType: '',
+      searchSelected: null
     })
   }
   // to do !
@@ -392,14 +393,14 @@ class Bookings extends React.Component {
         </div>
         <div className="row"  >
           <div className="col-md-3 form-group">
-            <select className="form-control" defaultValue="xd" onChange={this.handlerFilterItemType}>
+            <select className="form-control" onChange={this.handlerFilterItemType}>
               <option value="xdState">Any state</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
           </div>
           <div className="col-md-3 form-group">
-            <select className="form-control" defaultValue="xd" onChange={this.handlerFilterItemType}>
+            <select className="form-control" onChange={this.handlerFilterItemType}>
               <option value="xdType">Any type</option>
               <option value="car">Car</option>
               <option value="flat">Flat</option>
@@ -427,7 +428,7 @@ class Bookings extends React.Component {
     const { cardToShow } = this.state;
 
     const cardSearchFilter = (
-      <div className="card cardSF">
+      <div className="card text-white bg-secondary mb-3 cardSF">
         <div className="card-header">
           <ul className="nav nav-tabs card-header-tabs">
             <li className="nav-item">
