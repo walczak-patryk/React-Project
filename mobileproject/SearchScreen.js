@@ -101,7 +101,14 @@ export default class SearchScreen extends React.Component{
         })
         .then(response => {
             if(response != null){
-                this.props.navigation.navigate('ItemList', {token: token, service: this.state.Service, items : response});
+                this.props.navigation.navigate('ItemList', 
+                {
+                    token: token, 
+                    service: this.state.Service, 
+                    items: response, 
+                    startDate: this.state.selectedStartDate, 
+                    endDate: this.state.selectedEndDate
+                });
             }
         })
     }
@@ -157,7 +164,7 @@ export default class SearchScreen extends React.Component{
                             maxLength={10}
                             onChangeText={(value) => this.setState({pricefrom: value})}
                         />
-                        <Text style={styles.priceText}>PLN</Text>
+                        <Text style={styles.priceText}>PLN/day</Text>
                     </View>
                     <View style={styles.switchView}>
                         <TextInput 
@@ -170,7 +177,7 @@ export default class SearchScreen extends React.Component{
                             maxLength={10}
                             onChangeText={(value) => this.setState({priceto: value})}
                         />
-                        <Text style={styles.priceText}>PLN</Text>
+                        <Text style={styles.priceText}>PLN/day</Text>
                     </View>
                     {this.state.Service == "Parkly" &&
                     <View>

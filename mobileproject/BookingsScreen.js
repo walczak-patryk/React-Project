@@ -5,7 +5,8 @@ import {
     StyleSheet,
     View,
     ActivityIndicator,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from "react-native";
 
 function cancelBooking(id, token) {
@@ -89,8 +90,28 @@ class BookingsScreen extends React.Component{
                 'Authorization': 'Bearer ' + this.props.navigation.getParam('token')
             },
         })
-        .then(response => response.json())
-        .then(response => this.setState({ bookings: response.bookingForms}))
+        .then(response => { 
+            if(response.status == 200){
+                return response.json();
+            }
+            else{
+                Alert.alert(
+                    'An error occured',
+                    'Error ' + response.status,
+                    [
+                      {text: 'OK'},
+                    ],
+                    {cancelable: true},
+                );
+                return null;
+            }
+        })
+        .then(response => {
+            if(response != null){
+                if(response.bookingForms)
+                    this.setState({ bookings: response.bookingForms});
+            }
+        })
         .then(() => this.setState({isFetching: false}));
     }
 
