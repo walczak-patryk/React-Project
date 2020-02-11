@@ -39,7 +39,7 @@ class Bookings extends React.Component {
       filterDateFrom: '',
       filterDateTo: ''
     }
-    this.loadBookings = this.loadBookings.bind(this);
+    //this.loadBookings = this.loadBookings.bind(this);
     this.ElementXD = this.ElementXD.bind(this);
     this.handlerBID = this.handlerBID.bind(this);
     this.handlerSD = this.handlerSD.bind(this);
@@ -64,25 +64,25 @@ class Bookings extends React.Component {
     return document.cookie.replace(`/(?:(?:^|.*;\s*)${key}\s*\=\s*([^;]*).*$)|^.*$/, "$1"`).split("=")[1];
   }
 
-  loadBookings() {
-    this.setState({
-      isLoading: true
-    });
+  // loadBookings() {
+  //   this.setState({
+  //     isLoading: true
+  //   });
 
-    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${11}&pageNumber=${this.state.pageNumber}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${this.getCookieValue('token')}`
-      }
-    })
-      .then(response => {
-        //console.log(response.status)
-        return response.json();
-      })
-      .then(data => this.setState({ bookings: data.bookingForms }))
-      .then(() => this.setState({ isLoading: false }));
+  //   fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${11}&pageNumber=${this.state.pageNumber}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Authorization': `Bearer ${this.getCookieValue('token')}`
+  //     }
+  //   })
+  //     .then(response => {
+  //       //console.log(response.status)
+  //       return response.json();
+  //     })
+  //     .then(data => this.setState({ bookings: data.bookingForms }))
+  //     .then(() => this.setState({ isLoading: false }));
 
-  }
+  // }
 
   // helper function for sorting
   mySort = (a, b, cond) => {
@@ -215,15 +215,21 @@ class Bookings extends React.Component {
 
   // fetching used in infinite scroll component
   testLoadItems(page) {
-    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${1}&pageNumber=${page}`, {
+    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings?pageSize=${10}&pageNumber=${page}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${this.getCookieValue('token')}`
       }
     })
       .then(response => {
-        // console.log(response.status)
-        return response.json();
+        if (response.status === 200) {
+          return response.json();
+        }
+        else if (response.status === 403) {
+          alert('You have been logged out of your session, please login in again!');
+          document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+          this.props.history.push("/");
+        }
       })
       .then(data => {
         var testNewState = this.sortInfiteScroll(this.state.bookings.concat(data.bookingForms))
@@ -360,7 +366,7 @@ class Bookings extends React.Component {
           <div className="col-md-4">
             <div className="ui action input" style={{ marginRight: "3em" }}>
               <input type="text" placeholder="Search..." />
-              <button className="ui icon button" onClick={this.handlerSearchButton}>
+              <button className="ui icon button" onClick={this.handlerSearchButton} disabled>
                 <i className="search icon"></i>
               </button>
             </div>
@@ -385,7 +391,7 @@ class Bookings extends React.Component {
               <div className="col-md-6">
                 <label className="label">Date from</label>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-6 text-left">
                 <label className="label">Date to</label>
               </div>
             </div>
@@ -413,10 +419,18 @@ class Bookings extends React.Component {
                 <input type="date" className="form-control" onChange={this.handlerFilterDateFrom} />
               </div>
               <div className="col-md-6">
-                <input type="date" className="form-control" onChange={this.handlerFilterDateTo} />
+                <div className="row">
+                  <div className="col-md-6">
+                    <input type="date" className="form-control" onChange={this.handlerFilterDateTo} />
+                  </div>
+                  <div className="col-md-6">
+                    <button type="button" className="form-control bg-info text-white" disabled>Filter list</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     )

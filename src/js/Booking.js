@@ -12,7 +12,8 @@ class Booking extends React.Component {
       showDetails: false,
       detailsLoaded: false,
       detailsLoading: false,
-      details: null
+      details: null,
+      error: false
     }
     this.buttonHandler = this.buttonHandler.bind(this)
     this.loadDetails = this.loadDetails.bind(this)
@@ -24,7 +25,9 @@ class Booking extends React.Component {
     }))
     this.loadDetails();
   }
-
+  getCookieValue = (key) => {
+    return document.cookie.replace(`/(?:(?:^|.*;\s*)${key}\s*\=\s*([^;]*).*$)|^.*$/, "$1"`).split("=")[1];
+  }
   loadDetails() {
     if (this.state.detailsLoaded) {
       return;
@@ -33,9 +36,28 @@ class Booking extends React.Component {
       detailsLoading: true
     });
     //console.log(this.props.booking.type)
-    fetch(`http://localhost:3004/${this.props.booking.type}/${this.props.booking.item_id}`)
-      .then(response => response.json())
-      .then(data => this.setState({ details: data }))
+    fetch(`http://minibookly.us-east-1.elasticbeanstalk.com/bookings/${this.props.booking.id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.getCookieValue('token')}`
+      }
+    })
+      .then(response => {
+        if (response.status === 200) {
+          return response.json();
+        } else if (response.status === 403) {
+          alert('You have been logged out of your session, please login in again!');
+          document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+          this.props.history.push("/");
+        } else {
+          this.setState({ error: true })
+        }
+      })
+      .then(data => {
+        if (!this.state.error) {
+          this.setState({ details: data })
+        }
+      })
       .then(() => this.setState({ detailsLoading: false, detailsLoaded: true }));
   }
 
@@ -46,10 +68,17 @@ class Booking extends React.Component {
     //   <button onClick={this.buttonHandler}>XD</button>
     // )
 
+    const error = (
+      <div style={{ margin: "1%" }}>
+        There has been an error while loading the details.
+        <button onClick={this.loadDetails} className="btn-primary">X Retry D</button>
+      </div>
+    )
+
     const preDetails = (
       this.state.detailsLoading
         ? <div style={{ margin: "1%" }}><div className="spinner-border text-dark"></div></div>
-        : <Details data={this.state.details} itemType={booking.type} />
+        : !this.state.error ? <Details data={this.state.details} itemType={booking.type} /> : error
     )
 
     return (
@@ -84,7 +113,7 @@ class Booking extends React.Component {
                   {booking.active.toString()}
                 </div>
                 <div className="col-md-3 text-left">
-                  {booking.startDateTime} 
+                  {booking.startDateTime}
                 </div>
               </div>
             </div>

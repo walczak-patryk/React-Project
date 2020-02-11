@@ -18,13 +18,7 @@ class PageLogin extends React.Component {
     }
 
     loginHandler(e) {
-        // this.setState({ loggingIn: true })
-        if (e.target.username.value === "asd" && e.target.password.value === "asd") {
-            document.cookie = `token=asd`
-            this.props.history.push("/bookings");
-            return;
-        }
-
+      
         e.preventDefault();
         this.setState({ errorData: false, errorServer: false, loggingIn: true })
         fetch('http://minibookly.us-east-1.elasticbeanstalk.com/login', {
@@ -40,7 +34,7 @@ class PageLogin extends React.Component {
                 //console.log(res.status)
                 if (res.status === 200) {
                     res.json().then(data => {
-                        document.cookie = `token=${data.jwt}`;
+                        document.cookie = `token=${data.jwt}; expires=Thu, 01 Jan 2050 00:00:00 GMT`;
                         this.props.history.push("/bookings")
                     });
                 }
@@ -133,7 +127,9 @@ class PageLogin extends React.Component {
             </div>
         )
         return (
-            document.cookie ? loggedInInfo : loginForm
+          <div>
+            {document.cookie ? loggedInInfo : loginForm}
+          </div>
         )
     }
 }
