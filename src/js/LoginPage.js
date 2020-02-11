@@ -8,7 +8,8 @@ class PageLogin extends React.Component {
         super(props);
         this.state = {
             token: null,
-            error: false,
+            errorData: false,
+            errorServer: false,
             loggingIn: false
         };
 
@@ -25,7 +26,7 @@ class PageLogin extends React.Component {
         }
 
         e.preventDefault();
-        this.setState({ error: false, loggingIn: true })
+        this.setState({ errorData: false, errorServer: false, loggingIn: true })
         fetch('http://minibookly.us-east-1.elasticbeanstalk.com/login', {
             method: 'POST',
             headers: {
@@ -36,6 +37,7 @@ class PageLogin extends React.Component {
 
         })
             .then(res => {
+                //console.log(res.status)
                 if (res.status === 200) {
                     res.json().then(data => {
                         document.cookie = `token=${data.jwt}`;
@@ -43,9 +45,11 @@ class PageLogin extends React.Component {
                     });
                 }
                 else {
-                    this.setState({ error: true });
-                    //console.log(res.status)
+                    this.setState({ errorData: true });
                 }
+            })
+            .catch(() => {
+                this.setState({ errorServer: true });
             })
             .then(() => {
                 this.setState({ loggingIn: false });
@@ -72,7 +76,6 @@ class PageLogin extends React.Component {
             <button className="btn btn-primary" type="button" disabled>
                 <span>Signing in... </span>
                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-
             </button>
         )
         const btnIdle = (
@@ -80,7 +83,12 @@ class PageLogin extends React.Component {
                 <span>Sign in</span>
             </button>
         )
-
+        const err = (
+            <div>
+                {this.state.errorData ? <span className="error text-error">Wrong username or password!</span> : <div></div>}
+                {this.state.errorServer ? <span className="error text-error">Server is not responding, please try again later!</span> : <div></div>}
+            </div>
+        )
         const loginForm = (
             <div className="container">
                 <div className="row">
@@ -98,13 +106,13 @@ class PageLogin extends React.Component {
                                     <hr style={{ marginBottom: "0" }} />
                                     {this.state.loggingIn ? btnProgress : btnIdle}
                                 </form>
+                                {err}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         )
-
         const loggedInInfo = (
             <div className="container">
                 <div className="row">
